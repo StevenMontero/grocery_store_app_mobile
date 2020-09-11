@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import 'package:proyecto_sistemas/library/language_library/easy_localization.dart';
-import 'package:proyecto_sistemas/pages/LoginAndSignUp/Signup/signup_page.dart';
+import 'package:lamanda_petshopcr/library/language_library/easy_localization.dart';
+import 'package:lamanda_petshopcr/pages/LoginAndSignUp/Signup/signup_page.dart';
 
 class LoginScreen extends StatefulWidget {
   @override

@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:proyecto_sistemas/library/language_library/easy_localization.dart';
-import 'package:proyecto_sistemas/pages/LoginAndSignUp/choseLoginOrSignuo_page.dart';
+import 'package:lamanda_petshopcr/library/language_library/easy_localization.dart';
+import 'package:lamanda_petshopcr/pages/LoginAndSignUp/choseLoginOrSignuo_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

@@ -2,10 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:proyecto_sistemas/library/language_library/easy_localization_delegate.dart';
-import 'package:proyecto_sistemas/library/language_library/easy_localization_provider.dart';
-import 'package:proyecto_sistemas/pages/LoginAndSignUp/Login/login_page.dart';
-import 'package:proyecto_sistemas/pages/LoginAndSignUp/Signup/signup_page.dart';
+import 'package:lamanda_petshopcr/library/language_library/easy_localization_delegate.dart';
+import 'package:lamanda_petshopcr/library/language_library/easy_localization_provider.dart';
+import 'package:lamanda_petshopcr/pages/LoginAndSignUp/Login/login_page.dart';
+import 'package:lamanda_petshopcr/pages/LoginAndSignUp/Signup/signup_page.dart';
 
 class ChoseLogin extends StatefulWidget {
   @override
