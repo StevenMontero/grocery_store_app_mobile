@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:proyecto_sistemas/library/language_library/easy_localization_delegate.dart';
 import 'package:proyecto_sistemas/library/language_library/easy_localization_provider.dart';
+import 'package:proyecto_sistemas/pages/LoginAndSignUp/Login/login_page.dart';
+import 'package:proyecto_sistemas/pages/LoginAndSignUp/Signup/signup_page.dart';
 
 class ChoseLogin extends StatefulWidget {
   @override
@@ -128,7 +130,12 @@ class _ChoseLoginState extends State<ChoseLogin> with TickerProviderStateMixin {
                                   child: InkWell(
                                     borderRadius: BorderRadius.circular(30),
                                     splashColor: Colors.white10,
-                                    onTap: () {},
+                                    onTap: () {
+                                      Navigator.of(context).pushReplacement(
+                                          PageRouteBuilder(
+                                              pageBuilder: (_, __, ___) =>
+                                                  Signup()));
+                                    },
                                     child: ButtonCustom(
                                         txt: AppLocalizations.of(context)
                                             .tr('signUp')),
@@ -190,7 +197,12 @@ class _ChoseLoginState extends State<ChoseLogin> with TickerProviderStateMixin {
                               child: InkWell(
                                 borderRadius: BorderRadius.circular(30),
                                 splashColor: Colors.white10,
-                                onTap: () {},
+                                onTap: () {
+                                  Navigator.of(context).pushReplacement(
+                                      PageRouteBuilder(
+                                          pageBuilder: (_, __, ___) =>
+                                              LoginScreen()));
+                                },
                                 child: ButtonCustom(
                                     txt: AppLocalizations.of(context)
                                         .tr('login')),

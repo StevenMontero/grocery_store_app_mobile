@@ -81,12 +81,23 @@ class _LoginScreenState extends State<LoginScreen>
                               Padding(
                                   padding:
                                       EdgeInsets.symmetric(vertical: 30.0)),
-                              ButtonCustomFacebook(),
+                              ButtonCustomSocialLogin(
+                                colorBackground:
+                                    Color.fromRGBO(107, 112, 248, 1.0),
+                                textColor: Colors.white,
+                                text: 'loginGoogle',
+                                icon: 'assets/images/icon_facebook.png',
+                              ),
 
                               /// ButtonCustomGoogle
                               Padding(
                                   padding: EdgeInsets.symmetric(vertical: 7.0)),
-                              ButtonCustomGoogle(),
+                              ButtonCustomSocialLogin(
+                                colorBackground: Colors.white,
+                                textColor: Colors.black26,
+                                text: 'loginGoogle',
+                                icon: 'assets/images/google.png',
+                              ),
 
                               /// Set Text
                               Padding(
@@ -136,6 +147,7 @@ class _LoginScreenState extends State<LoginScreen>
                                   child: Text(
                                     AppLocalizations.of(context).tr('notHave'),
                                     style: TextStyle(
+                                        decoration: TextDecoration.underline,
                                         color: Colors.white,
                                         fontSize: 13.0,
                                         fontWeight: FontWeight.w600,
@@ -151,25 +163,31 @@ class _LoginScreenState extends State<LoginScreen>
                         ),
                       ],
                     ),
-                    MaterialButton(
-                      onPressed: () {
-                        print('valiadar');
-                      },
-                      minWidth: mediaQueryData.size.width * 0.85,
-                      height: mediaQueryData.size.height * 0.065,
-                      color: Color(0xFF825BC6),
-                      elevation: 1.0,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30.0)),
-                      child: Text(
-                        AppLocalizations.of(context).tr('login'),
-                        style: TextStyle(
-                            color: Colors.white,
-                            letterSpacing: 0.2,
-                            fontFamily: "Sans",
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.w800),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                      child: MaterialButton(
+                        onPressed: () {
+                          print('valiadar');
+                        },
+                        height: 49.0,
+                        minWidth: 500.0,
+                        color: Color(0xFF825BC6),
+                        elevation: 1.0,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.0)),
+                        child: Text(
+                          AppLocalizations.of(context).tr('login'),
+                          style: TextStyle(
+                              color: Colors.white,
+                              letterSpacing: 0.2,
+                              fontFamily: "Sans",
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.w800),
+                        ),
                       ),
+                    ),
+                    SizedBox(
+                      height: 10.0,
                     )
                   ],
                 ),
@@ -231,71 +249,42 @@ class TextFromField extends StatelessWidget {
   }
 }
 
-///buttonCustomFacebook class
-class ButtonCustomFacebook extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 30.0),
-      child: Container(
-        alignment: FractionalOffset.center,
-        height: 49.0,
-        width: 500.0,
-        decoration: BoxDecoration(
-          color: Color.fromRGBO(107, 112, 248, 1.0),
-          borderRadius: BorderRadius.circular(40.0),
-          boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 15.0)],
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Image.asset(
-              "assets/images/icon_facebook.png",
-              height: 25.0,
-            ),
-            Padding(padding: EdgeInsets.symmetric(horizontal: 7.0)),
-            Text(
-              AppLocalizations.of(context).tr('loginFacebook'),
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 15.0,
-                  fontWeight: FontWeight.w500,
-                  fontFamily: 'Sans'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
+class ButtonCustomSocialLogin extends StatelessWidget {
+  final Color colorBackground;
+  final Color textColor;
+  final String text;
+  final String icon;
 
-///buttonCustomGoogle class
-class ButtonCustomGoogle extends StatelessWidget {
+  const ButtonCustomSocialLogin(
+      {Key key, this.colorBackground, this.textColor, this.text, this.icon})
+      : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 30.0),
-      child: Container(
-        alignment: FractionalOffset.center,
+      child: MaterialButton(
+        onPressed: () {
+          print('valiadar');
+        },
         height: 49.0,
-        width: 500.0,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 10.0)],
-          borderRadius: BorderRadius.circular(40.0),
-        ),
+        minWidth: 500.0,
+        color: colorBackground,
+        elevation: 1.0,
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Image.asset(
-              "assets/images/google.png",
+              icon, //"assets/images/google.png",
               height: 25.0,
             ),
             Padding(padding: EdgeInsets.symmetric(horizontal: 7.0)),
             Text(
-              AppLocalizations.of(context).tr('loginGoogle'),
+              AppLocalizations.of(context).tr(text), //loginGoogle
               style: TextStyle(
-                  color: Colors.black26,
+                  color: textColor, //Colors.black26,
                   fontSize: 15.0,
                   fontWeight: FontWeight.w500,
                   fontFamily: 'Sans'),

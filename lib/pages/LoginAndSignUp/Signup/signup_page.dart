@@ -90,7 +90,7 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
                                     password: false,
                                     email: AppLocalizations.of(context)
                                         .tr('email'),
-                                    inputType: TextInputType.emailAddress,
+                                    inputType: TextInputType.text,
                                   ),
                                   Padding(
                                       padding:
@@ -100,7 +100,7 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
                                     password: false,
                                     email: AppLocalizations.of(context)
                                         .tr('email'),
-                                    inputType: TextInputType.emailAddress,
+                                    inputType: TextInputType.number,
                                   ),
                                   Padding(
                                       padding:
@@ -141,6 +141,8 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
                                         AppLocalizations.of(context)
                                             .tr('notHaveLogin'),
                                         style: TextStyle(
+                                            decoration:
+                                                TextDecoration.underline,
                                             color: Colors.white,
                                             fontSize: 15.0,
                                             fontWeight: FontWeight.w600,
@@ -178,6 +180,9 @@ class _SignupState extends State<Signup> with TickerProviderStateMixin {
                                 fontSize: 18.0,
                                 fontWeight: FontWeight.w800),
                           ),
+                        ),
+                        SizedBox(
+                          height: 10.0,
                         )
                       ],
                     ),
