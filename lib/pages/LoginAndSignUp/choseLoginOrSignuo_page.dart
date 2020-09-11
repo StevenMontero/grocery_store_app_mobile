@@ -10,49 +10,7 @@ class ChoseLogin extends StatefulWidget {
   _ChoseLoginState createState() => _ChoseLoginState();
 }
 
-/// Component Widget this layout UI
 class _ChoseLoginState extends State<ChoseLogin> with TickerProviderStateMixin {
-  /// Declare Animation
-  AnimationController animationController;
-  var tapLogin = 0;
-  var tapSignup = 0;
-
-  @override
-
-  /// Declare animation in initState
-  void initState() {
-    // TODO: implement initState
-    /// Animation proses duration
-    animationController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 300))
-          ..addStatusListener((statuss) {
-            if (statuss == AnimationStatus.dismissed) {
-              setState(() {
-                tapLogin = 0;
-                tapSignup = 0;
-              });
-            }
-          });
-    super.initState();
-  }
-
-  /// To dispose animation controller
-  @override
-  void dispose() {
-    animationController.dispose();
-    super.dispose();
-    // TODO: implement dispose
-  }
-
-  /// Playanimation set forward reverse
-  void _playAnimation() async {
-    try {
-      await animationController.forward();
-      await animationController.reverse();
-    } on TickerCanceled {}
-  }
-
-  /// Component Widget layout UI
   @override
   Widget build(BuildContext context) {
     MediaQueryData mediaQuery = MediaQuery.of(context);
@@ -123,8 +81,8 @@ class _ChoseLoginState extends State<ChoseLogin> with TickerProviderStateMixin {
                                     child: Hero(
                                       tag: "Treva",
                                       child: Container(
-                                        height: 150,
-                                        width: 150,
+                                        height: mediaQuery.size.height * 0.2,
+                                        width: mediaQuery.size.width * 0.45,
                                         child: SvgPicture.asset(
                                           'assets/images/Logo_COLOR.svg',
                                           fit: BoxFit.cover,
@@ -165,29 +123,18 @@ class _ChoseLoginState extends State<ChoseLogin> with TickerProviderStateMixin {
                               mainAxisSize: MainAxisSize.max,
                               children: <Widget>[
                                 /// To create animation if user tap == animation play (Click to open code)
-                                tapLogin == 0
-                                    ? Material(
-                                        color: Colors.transparent,
-                                        child: InkWell(
-                                          borderRadius:
-                                              BorderRadius.circular(30),
-                                          splashColor: Colors.white10,
-                                          onTap: () {
-                                            setState(() {
-                                              tapLogin = 1;
-                                            });
-                                            _playAnimation();
-                                            return tapLogin;
-                                          },
-                                          child: ButtonCustom(
-                                              txt: AppLocalizations.of(context)
-                                                  .tr('signUp')),
-                                        ),
-                                      )
-                                    : AnimationSplashSignup(
-                                        animationController:
-                                            animationController.view,
-                                      ),
+                                Material(
+                                  color: Colors.transparent,
+                                  child: InkWell(
+                                    borderRadius: BorderRadius.circular(30),
+                                    splashColor: Colors.white10,
+                                    onTap: () {},
+                                    child: ButtonCustom(
+                                        txt: AppLocalizations.of(context)
+                                            .tr('signUp')),
+                                  ),
+                                ),
+
                                 Padding(padding: EdgeInsets.only(top: 15.0)),
                                 Center(
                                   child: Row(
@@ -203,7 +150,7 @@ class _ChoseLoginState extends State<ChoseLogin> with TickerProviderStateMixin {
                                         padding: EdgeInsets.only(
                                             left: 10.0, right: 10.0),
 
-                                        /// navigation to home screen if user click "OR SKIP" (Click to open code)
+                                        /// navigation to home screen if user click "OR SKIP" (Click to open code) si se desea saltar el login
                                         child: InkWell(
                                           onTap: () {
                                             // Navigator.of(context).pushReplacement(
@@ -237,29 +184,18 @@ class _ChoseLoginState extends State<ChoseLogin> with TickerProviderStateMixin {
                             ),
 
                             /// To create animation if user tap == animation play (Click to open code)
-                            tapSignup == 0
-                                ? Material(
-                                    color: Colors.transparent,
-                                    borderRadius: BorderRadius.circular(30),
-                                    child: InkWell(
-                                      borderRadius: BorderRadius.circular(30),
-                                      splashColor: Colors.white10,
-                                      onTap: () {
-                                        setState(() {
-                                          tapSignup = 1;
-                                        });
-                                        _playAnimation();
-                                        return tapSignup;
-                                      },
-                                      child: ButtonCustom(
-                                          txt: AppLocalizations.of(context)
-                                              .tr('login')),
-                                    ),
-                                  )
-                                : AnimationSplashLogin(
-                                    animationController:
-                                        animationController.view,
-                                  ),
+                            Material(
+                              color: Colors.transparent,
+                              borderRadius: BorderRadius.circular(30),
+                              child: InkWell(
+                                borderRadius: BorderRadius.circular(30),
+                                splashColor: Colors.white10,
+                                onTap: () {},
+                                child: ButtonCustom(
+                                    txt: AppLocalizations.of(context)
+                                        .tr('login')),
+                              ),
+                            )
                           ],
                         ),
                       ],
@@ -308,102 +244,6 @@ class ButtonCustom extends StatelessWidget {
           );
         }),
       ),
-    );
-  }
-}
-
-/// Set Animation Login if user click button login
-class AnimationSplashLogin extends StatefulWidget {
-  AnimationSplashLogin({Key key, this.animationController})
-      : animation = new Tween(
-          end: 900.0,
-          begin: 70.0,
-        ).animate(CurvedAnimation(
-            parent: animationController, curve: Curves.fastOutSlowIn)),
-        super(key: key);
-
-  final AnimationController animationController;
-  final Animation animation;
-
-  Widget _buildAnimation(BuildContext context, Widget child) {
-    return Padding(
-      padding: EdgeInsets.only(bottom: 60.0),
-      child: Container(
-        height: animation.value,
-        width: animation.value,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          shape: animation.value < 600 ? BoxShape.circle : BoxShape.rectangle,
-        ),
-      ),
-    );
-  }
-
-  @override
-  _AnimationSplashLoginState createState() => _AnimationSplashLoginState();
-}
-
-/// Set Animation Login if user click button login
-class _AnimationSplashLoginState extends State<AnimationSplashLogin> {
-  @override
-  Widget build(BuildContext context) {
-    widget.animationController.addListener(() {
-      if (widget.animation.isCompleted) {
-        // Navigator.of(context).pushReplacement(MaterialPageRoute(
-        //     builder: (BuildContext context) => new loginScreen()));
-      }
-    });
-    return AnimatedBuilder(
-      animation: widget.animationController,
-      builder: widget._buildAnimation,
-    );
-  }
-}
-
-/// Set Animation signup if user click button signup
-class AnimationSplashSignup extends StatefulWidget {
-  AnimationSplashSignup({Key key, this.animationController})
-      : animation = new Tween(
-          end: 900.0,
-          begin: 70.0,
-        ).animate(CurvedAnimation(
-            parent: animationController, curve: Curves.fastOutSlowIn)),
-        super(key: key);
-
-  final AnimationController animationController;
-  final Animation animation;
-
-  Widget _buildAnimation(BuildContext context, Widget child) {
-    return Padding(
-      padding: EdgeInsets.only(bottom: 60.0),
-      child: Container(
-        height: animation.value,
-        width: animation.value,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          shape: animation.value < 600 ? BoxShape.circle : BoxShape.rectangle,
-        ),
-      ),
-    );
-  }
-
-  @override
-  _AnimationSplashSignupState createState() => _AnimationSplashSignupState();
-}
-
-/// Set Animation signup if user click button signup
-class _AnimationSplashSignupState extends State<AnimationSplashSignup> {
-  @override
-  Widget build(BuildContext context) {
-    widget.animationController.addListener(() {
-      if (widget.animation.isCompleted) {
-        // Navigator.of(context).pushReplacement(
-        //     MaterialPageRoute(builder: (BuildContext context) => new Signup()));
-      }
-    });
-    return AnimatedBuilder(
-      animation: widget.animationController,
-      builder: widget._buildAnimation,
     );
   }
 }
