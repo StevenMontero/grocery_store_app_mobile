@@ -6,6 +6,7 @@ import 'package:authentication_repository/authentication_repository.dart';
 import 'package:lamanda_petshopcr/blocs/signupCubit/sign_up_cubit.dart';
 import 'package:lamanda_petshopcr/library/language_library/easy_localization.dart';
 import 'package:lamanda_petshopcr/pages/LoginAndSignUp/Login/login_page.dart';
+import 'package:lamanda_petshopcr/widgets/textfield.dart';
 
 class Signup extends StatefulWidget {
   @override
@@ -100,7 +101,7 @@ class BodyWidget extends StatelessWidget {
                               /// padding logo
                               Padding(
                                   padding: EdgeInsets.only(
-                                      top: mediaQueryData.padding.top + 40.0)),
+                                      top: mediaQueryData.padding.top + 10.0)),
                               Center(
                                 /// Animation text treva shop accept from splashscreen layout (Click to open code)
                                 child: Hero(
@@ -118,24 +119,24 @@ class BodyWidget extends StatelessWidget {
                               Padding(
                                   padding:
                                       EdgeInsets.symmetric(vertical: 20.0)),
-                              //TODO: Preguntar que datos se ocupan de los clientes para ver si se ocupan validar
-                              //Estan comentados para saber si se ocupan o no validar
-                              // TextFromField(
-                              //   icon: Icons.account_circle,
-                              //   password: false,
-                              //   lavel: AppLocalizations.of(context).tr('email'),
-                              //   inputType: TextInputType.text,
-                              // ),
-                              // Padding(
-                              //     padding: EdgeInsets.symmetric(vertical: 5.0)),
-                              // TextFromField(
-                              //   icon: Icons.phone_iphone,
-                              //   password: false,
-                              //   lavel: AppLocalizations.of(context).tr('email'),
-                              //   inputType: TextInputType.number,
-                              // ),
-                              // Padding(
-                              //     padding: EdgeInsets.symmetric(vertical: 5.0)),
+                              TextFromField(
+                                icon: Icons.account_circle,
+                                password: false,
+                                lavel: AppLocalizations.of(context).tr('email'),
+                                inputType: TextInputType.text,
+                                onChanged: (value) {},
+                              ),
+                              Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 5.0)),
+                              TextFromField(
+                                icon: Icons.phone_iphone,
+                                password: false,
+                                lavel: AppLocalizations.of(context).tr('email'),
+                                inputType: TextInputType.number,
+                                onChanged: (value) {},
+                              ),
+                              Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 5.0)),
 
                               /// TextFromField Email
                               BlocBuilder<SignUpCubit, SignUpState>(
@@ -143,12 +144,16 @@ class BodyWidget extends StatelessWidget {
                                     previous.email != current.email,
                                 builder: (context, state) {
                                   return TextFromField(
-                                    state: state,
+                                    errorOccurred: state.email.invalid,
+                                    erroMessage: 'El email no es valido',
                                     icon: Icons.email,
                                     password: false,
                                     lavel: AppLocalizations.of(context)
                                         .tr('email'),
                                     inputType: TextInputType.emailAddress,
+                                    onChanged: (value) => context
+                                        .bloc<SignUpCubit>()
+                                        .emailChanged(value),
                                   );
                                 },
                               ),
@@ -161,12 +166,16 @@ class BodyWidget extends StatelessWidget {
                                     previous.password != current.password,
                                 builder: (context, state) {
                                   return TextFromField(
-                                    state: state,
+                                    errorOccurred: state.email.invalid,
+                                    erroMessage: 'La contraseña no es valida',
                                     icon: Icons.vpn_key,
                                     password: true,
                                     lavel: AppLocalizations.of(context)
                                         .tr('password'),
-                                    inputType: TextInputType.text,
+                                    inputType: TextInputType.emailAddress,
+                                    onChanged: (value) => context
+                                        .bloc<SignUpCubit>()
+                                        .passwordChanged(value),
                                   );
                                 },
                               ),
@@ -200,29 +209,33 @@ class BodyWidget extends StatelessWidget {
                         ),
                       ],
                     ),
-                    MaterialButton(
-                      onPressed: () {
-                        //TODO: Validar el usuario con firebase
-                        print('valiadar');
-                      },
-                      minWidth: mediaQueryData.size.width * 0.85,
-                      height: mediaQueryData.size.height * 0.065,
-                      color: Color(0xFF825BC6),
-                      elevation: 1.0,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30.0)),
-                      child: Text(
-                        AppLocalizations.of(context).tr('signUp'),
-                        style: TextStyle(
-                            color: Colors.white,
-                            letterSpacing: 0.2,
-                            fontFamily: "Sans",
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.w800),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 30.0, vertical: 10),
+                      child: MaterialButton(
+                        onPressed: () {
+                          //TODO: Validar el usuario con firebase
+                          print('valiadar');
+                        },
+                        minWidth: mediaQueryData.size.width * 0.85,
+                        height: mediaQueryData.size.height * 0.065,
+                        color: Color(0xFF825BC6),
+                        elevation: 1.0,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.0)),
+                        child: Text(
+                          AppLocalizations.of(context).tr('signUp'),
+                          style: TextStyle(
+                              color: Colors.white,
+                              letterSpacing: 0.2,
+                              fontFamily: "Sans",
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.w800),
+                        ),
                       ),
                     ),
                     SizedBox(
-                      height: 10.0,
+                      height: 20.0,
                     )
                   ],
                 ),
@@ -231,61 +244,6 @@ class BodyWidget extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-}
-
-/// textfromfield custom class
-class TextFromField extends StatelessWidget {
-  final bool password;
-  final String lavel;
-  final IconData icon;
-  final TextInputType inputType;
-  final SignUpState state;
-
-  TextFromField(
-      {this.lavel, this.icon, this.inputType, this.password, this.state});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 30.0),
-      child: Container(
-        height: 75.0,
-        alignment: AlignmentDirectional.center,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(14.0),
-            color: Colors.white,
-            boxShadow: [BoxShadow(blurRadius: 10.0, color: Colors.black12)]),
-        padding:
-            EdgeInsets.only(left: 20.0, right: 30.0, top: 0.0, bottom: 0.0),
-        child: Theme(
-          data: ThemeData(
-            hintColor: Colors.transparent,
-          ),
-          child: TextField(
-            onChanged: !password
-                ? (value) => context.bloc<SignUpCubit>().emailChanged(value)
-                : (value) => context.bloc<SignUpCubit>().passwordChanged(value),
-            obscureText: password,
-            decoration: InputDecoration(
-                //TODO: agregar el mensaje de error al indioma y al SingSate
-                errorText: state.email.invalid ? 'Email no valido' : null,
-                labelText: lavel,
-                icon: Icon(
-                  icon,
-                  color: Colors.black38,
-                ),
-                labelStyle: TextStyle(
-                    fontSize: 13.0,
-                    fontFamily: 'Sans',
-                    letterSpacing: 0.3,
-                    color: Colors.black38,
-                    fontWeight: FontWeight.w600)),
-            keyboardType: inputType,
-          ),
-        ),
-      ),
     );
   }
 }

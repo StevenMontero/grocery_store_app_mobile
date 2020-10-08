@@ -29,25 +29,13 @@ class _ChoseLoginState extends State<ChoseLogin> with TickerProviderStateMixin {
         backgroundColor: Colors.white,
         body: Stack(
           children: <Widget>[
-            ///
-            /// Set background image slider
-            ///
             Container(
-              height: double.infinity,
-              width: mediaQuery.size.width,
-              alignment: Alignment.bottomCenter,
-              child: Image.asset(
-                'assets/images/dog.jpg',
-                fit: BoxFit.cover,
-                height: mediaQuery.size.height,
-              ),
-            ),
-            Container(
-              /// Set Background image in layout (Click to open code)
+              /// Set Background image in layout
               decoration: BoxDecoration(
-//              image: DecorationImage(
-//                  image: AssetImage('assets/img/girl.png'), fit: BoxFit.cover)
-                  ),
+                  image: DecorationImage(
+                image: AssetImage("assets/images/dog.jpg"),
+                fit: BoxFit.cover,
+              )),
               child: Container(
                 /// Set gradient color in image (Click to open code)
                 decoration: BoxDecoration(
