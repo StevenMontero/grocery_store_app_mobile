@@ -177,8 +177,6 @@ class _ChoseLoginState extends State<ChoseLogin> with TickerProviderStateMixin {
                                 Padding(padding: EdgeInsets.only(top: 70.0)),
                               ],
                             ),
-
-                            /// To create animation if user tap == animation play (Click to open code)
                             Material(
                               color: Colors.transparent,
                               borderRadius: BorderRadius.circular(30),
