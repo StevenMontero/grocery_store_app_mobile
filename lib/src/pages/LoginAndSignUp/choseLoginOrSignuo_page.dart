@@ -2,10 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:lamanda_petshopcr/library/language_library/easy_localization_delegate.dart';
-import 'package:lamanda_petshopcr/library/language_library/easy_localization_provider.dart';
-import 'package:lamanda_petshopcr/pages/LoginAndSignUp/Login/login_page.dart';
-import 'package:lamanda_petshopcr/pages/LoginAndSignUp/Signup/signup_page.dart';
+import 'package:lamanda_petshopcr/src/library/language_library/easy_localization_delegate.dart';
+import 'package:lamanda_petshopcr/src/library/language_library/easy_localization_provider.dart';
+import 'package:lamanda_petshopcr/src/pages/LoginAndSignUp/Login/login_page.dart';
+import 'package:lamanda_petshopcr/src/pages/LoginAndSignUp/Signup/signup_page.dart';
 
 class ChoseLogin extends StatefulWidget {
   @override
@@ -101,7 +101,6 @@ class _ChoseLoginState extends State<ChoseLogin> with TickerProviderStateMixin {
                                         color: Colors.white,
                                         fontSize: 17.0,
                                         fontWeight: FontWeight.w400,
-                                        fontFamily: "Sans",
                                         letterSpacing: 1.3),
                                   ),
                                   Padding(padding: EdgeInsets.only(top: 250.0)),
@@ -122,7 +121,7 @@ class _ChoseLoginState extends State<ChoseLogin> with TickerProviderStateMixin {
                                       Navigator.of(context).pushReplacement(
                                           PageRouteBuilder(
                                               pageBuilder: (_, __, ___) =>
-                                                  Signup()));
+                                                  SignupScreen()));
                                     },
                                     child: ButtonCustom(
                                         txt: AppLocalizations.of(context)
@@ -159,7 +158,6 @@ class _ChoseLoginState extends State<ChoseLogin> with TickerProviderStateMixin {
                                             style: TextStyle(
                                                 color: Colors.white,
                                                 fontWeight: FontWeight.w300,
-                                                fontFamily: "Sans",
                                                 fontSize: 15.0),
                                           ),
                                         ),
@@ -236,7 +234,6 @@ class ButtonCustom extends StatelessWidget {
                   color: Colors.white,
                   fontSize: 19.0,
                   fontWeight: FontWeight.w600,
-                  fontFamily: "Sans",
                   letterSpacing: 0.5),
             )),
           );

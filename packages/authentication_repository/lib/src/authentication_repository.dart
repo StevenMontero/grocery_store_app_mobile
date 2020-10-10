@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:meta/meta.dart';
 
@@ -16,6 +17,9 @@ class LogInWithEmailAndPasswordFailure implements Exception {}
 /// Thrown during the sign in with google process if a failure occurs.
 class LogInWithGoogleFailure implements Exception {}
 
+/// Thrown during the sign in with Facebook process if a failure occurs.
+class LogInWithFacebookFailure implements Exception {}
+
 /// Thrown during the logout process if a failure occurs.
 class LogOutFailure implements Exception {}
 
@@ -27,15 +31,17 @@ class AuthenticationRepository {
   AuthenticationRepository({
     FirebaseAuth firebaseAuth,
     GoogleSignIn googleSignIn,
+    FacebookAuth facebookAuth,
   })  : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance,
-        _googleSignIn = googleSignIn ?? GoogleSignIn.standard();
+        _googleSignIn = googleSignIn ?? GoogleSignIn.standard(),
+        _facebookAuth = facebookAuth ?? FacebookAuth.instance;
 
   final FirebaseAuth _firebaseAuth;
   final GoogleSignIn _googleSignIn;
-
+  final FacebookAuth _facebookAuth;
 
   void initializeApp() async {
-    await Firebase.initializeApp(name:'login');
+    await Firebase.initializeApp(name: 'login');
   }
 
   /// Stream of [model.User] which will emit the current user when
@@ -83,6 +89,22 @@ class AuthenticationRepository {
     }
   }
 
+  /// Starts the Sign In with Facebook Flow.
+  ///
+  /// Throws a [LogInWithEmailAndPasswordFailure] if an exception occurs.
+  Future<void> logInWithFacebook() async {
+    try {
+      // Trigger the sign-in flow
+      final facebookUser = await _facebookAuth.login();
+      // Create a credential from the access token
+      final facebookAuthCredential =
+          FacebookAuthProvider.credential(facebookUser.accessToken.token);
+      await _firebaseAuth.signInWithCredential(facebookAuthCredential);
+    } on Exception {
+      throw LogInWithFacebookFailure();
+    }
+  }
+
   /// Signs in with the provided [email] and [password].
   ///
   /// Throws a [LogInWithEmailAndPasswordFailure] if an exception occurs.
@@ -120,6 +142,10 @@ class AuthenticationRepository {
 extension on User {
   model.User get toUser {
     return model.User(
-        id: uid, email: email, name: displayName, photo: photoURL);
+      id: uid,
+      email: email,
+      name: displayName,
+      photo: photoURL,
+    );
   }
 }

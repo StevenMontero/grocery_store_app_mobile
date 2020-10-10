@@ -48,7 +48,6 @@ class TextFromField extends StatelessWidget {
                 ),
                 labelStyle: TextStyle(
                     fontSize: 13.0,
-                    fontFamily: 'Sans',
                     letterSpacing: 0.3,
                     color: Colors.black38,
                     fontWeight: FontWeight.w600)),

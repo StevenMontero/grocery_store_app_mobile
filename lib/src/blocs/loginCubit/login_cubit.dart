@@ -2,7 +2,7 @@ import 'package:authentication_repository/authentication_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
-import 'package:lamanda_petshopcr/utils/utils.dart';
+import 'package:lamanda_petshopcr/src/utils/utils.dart';
 
 part 'login_state.dart';
 
@@ -53,5 +53,16 @@ class LoginCubit extends Cubit<LoginState> {
       emit(state.copyWith(status: FormzStatus.pure));
     }
   }
-  //TODO: Implementar login con facebook
+
+  Future<void> logInWithFacebook() async {
+    emit(state.copyWith(status: FormzStatus.submissionInProgress));
+    try {
+      await _authenticationRepository.logInWithFacebook();
+      emit(state.copyWith(status: FormzStatus.submissionSuccess));
+    } on Exception {
+      emit(state.copyWith(status: FormzStatus.submissionFailure));
+    } on NoSuchMethodError {
+      emit(state.copyWith(status: FormzStatus.pure));
+    }
+  }
 }

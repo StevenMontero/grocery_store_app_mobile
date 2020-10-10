@@ -3,17 +3,19 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:authentication_repository/authentication_repository.dart';
-import 'package:lamanda_petshopcr/blocs/signupCubit/sign_up_cubit.dart';
-import 'package:lamanda_petshopcr/library/language_library/easy_localization.dart';
-import 'package:lamanda_petshopcr/pages/LoginAndSignUp/Login/login_page.dart';
-import 'package:lamanda_petshopcr/widgets/textfield.dart';
+import 'package:lamanda_petshopcr/src/blocs/signupCubit/sign_up_cubit.dart';
+import 'package:lamanda_petshopcr/src/library/language_library/easy_localization.dart';
+import 'package:lamanda_petshopcr/src/pages/LoginAndSignUp/Login/login_page.dart';
+import 'package:lamanda_petshopcr/src/theme/colors.dart';
+import 'package:lamanda_petshopcr/src/widgets/textfield.dart';
 
-class Signup extends StatefulWidget {
+class SignupScreen extends StatefulWidget {
   @override
-  _SignupState createState() => _SignupState();
+  _SignupScreenState createState() => _SignupScreenState();
 }
 
-class _SignupState extends State<Signup> with TickerProviderStateMixin {
+class _SignupScreenState extends State<SignupScreen>
+    with TickerProviderStateMixin {
   //Animation Declaration
 
   AnimationController animationControllerScreen;
@@ -193,15 +195,15 @@ class BodyWidget extends StatelessWidget {
                                     AppLocalizations.of(context)
                                         .tr('notHaveLogin'),
                                     style: TextStyle(
-                                        decoration: TextDecoration.underline,
-                                        color: Colors.white,
-                                        fontSize: 15.0,
-                                        fontWeight: FontWeight.w600,
-                                        fontFamily: "Sans"),
+                                      decoration: TextDecoration.underline,
+                                      color: Colors.white,
+                                      fontSize: 15.0,
+                                      fontWeight: FontWeight.w600,
+                                    ),
                                   )),
                               Padding(
                                 padding: EdgeInsets.only(
-                                    top: mediaQueryData.padding.top + 40.0,
+                                    top: mediaQueryData.padding.top + 45.0,
                                     bottom: 0.0),
                               )
                             ],
@@ -219,7 +221,7 @@ class BodyWidget extends StatelessWidget {
                         },
                         minWidth: mediaQueryData.size.width * 0.85,
                         height: mediaQueryData.size.height * 0.065,
-                        color: Color(0xFF825BC6),
+                        color: ColorsApp.primaryColorBlue,
                         elevation: 1.0,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30.0)),
@@ -228,7 +230,6 @@ class BodyWidget extends StatelessWidget {
                           style: TextStyle(
                               color: Colors.white,
                               letterSpacing: 0.2,
-                              fontFamily: "Sans",
                               fontSize: 18.0,
                               fontWeight: FontWeight.w800),
                         ),

@@ -2,7 +2,7 @@ import 'package:authentication_repository/authentication_repository.dart';
 import 'package:formz/formz.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:lamanda_petshopcr/utils/utils.dart';
+import 'package:lamanda_petshopcr/src/utils/utils.dart';
 
 part 'sign_up_state.dart';
 
