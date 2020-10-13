@@ -118,7 +118,7 @@ class BodyWidget extends StatelessWidget {
                           ButtonCustomSocialLogin(
                             colorBackground: Color.fromRGBO(107, 112, 248, 1.0),
                             textColor: Colors.white,
-                            text: 'loginGoogle',
+                            text: 'loginFacebook',
                             icon: 'assets/images/icon_facebook.png',
                             onPressed: () =>
                                 context.bloc<LoginCubit>().logInWithFacebook(),

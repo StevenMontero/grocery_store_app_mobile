@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "354564504086-vgs4rhu1kfu7c2o6lsttho6nka5a4nkc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.lamanda_petshopcr",
+            "certificate_hash": "8b4e2d0839b7a3b33b35c96c3084eee1d4eeb499"
+          }
+        },
+        {
           "client_id": "354564504086-bfa5d1g102d97vf3u8heckt700g5m026.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
