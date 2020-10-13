@@ -1,6 +1,9 @@
+import 'package:authentication_repository/src/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lamanda_petshopcr/src/blocs/AuthenticationBloc/authentication_bloc.dart';
+import 'package:lamanda_petshopcr/src/widgets/BottomNavBar/bottom_navbar.dart';
+import 'package:lamanda_petshopcr/src/widgets/BottomNavBar/cubit/navbar_cubit.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key key}) : super(key: key);
@@ -9,6 +12,23 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final user = BlocProvider.of<AuthenticationBloc>(context).state.user;
     print(user.photo);
+    return BlocProvider(
+      create: (context) => NavbarCubit(),
+      child: Body(user: user),
+    );
+  }
+}
+
+class Body extends StatelessWidget {
+  const Body({
+    Key key,
+    @required this.user,
+  }) : super(key: key);
+
+  final User user;
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Home'),
@@ -22,6 +42,14 @@ class HomeScreen extends StatelessWidget {
           )
         ],
       ),
+      bottomNavigationBar: BlocProvider.value(
+        value: context.bloc<NavbarCubit>(),
+        child: BottomNavBar(
+          onTap: (index) => context.bloc<NavbarCubit>().indexChange(index),
+        ),
+      ),
+      // floatingActionButton: FloatingActionButton(
+      //     onPressed: () => context.bloc<NavbarCubit>().indexChange(2)),
       body: Align(
         alignment: const Alignment(0, -1 / 3),
         child: Column(
