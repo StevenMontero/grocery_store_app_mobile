@@ -16,7 +16,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 80.0,
+      height: 60.0,
       child: BlocBuilder<NavbarCubit, NavbarState>(
         buildWhen: (previous, current) =>
             current.currenIndex != previous.currenIndex,
@@ -38,7 +38,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
     BottomNavigationBarItem(
         icon: Icon(
           FontAwesomeIcons.store,
-          size: 27,
+          size: 20,
         ),
         title: Padding(
           padding: const EdgeInsets.only(top: 8),
@@ -50,7 +50,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
     BottomNavigationBarItem(
         icon: Icon(
           FontAwesomeIcons.search,
-          size: 27,
+          size: 20,
         ),
         title: Padding(
           padding: const EdgeInsets.only(top: 8),
@@ -60,7 +60,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
           ),
         )),
     BottomNavigationBarItem(
-        icon: Icon(FontAwesomeIcons.solidCalendarPlus, size: 27),
+        icon: Icon(FontAwesomeIcons.solidCalendarPlus, size: 20),
         title: Padding(
           padding: const EdgeInsets.only(top: 8),
           child: Text(
@@ -69,7 +69,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
           ),
         )),
     BottomNavigationBarItem(
-        icon: Icon(FontAwesomeIcons.shoppingCart, size: 27),
+        icon: Icon(FontAwesomeIcons.shoppingCart, size: 20),
         title: Padding(
           padding: const EdgeInsets.only(top: 8),
           child: Text(
@@ -78,7 +78,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
           ),
         )),
     BottomNavigationBarItem(
-        icon: Icon(FontAwesomeIcons.solidUser, size: 27),
+        icon: Icon(FontAwesomeIcons.solidUser, size: 20),
         title: Padding(
           padding: const EdgeInsets.only(top: 8),
           child: Text(
