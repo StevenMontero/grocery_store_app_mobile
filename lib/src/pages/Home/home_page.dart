@@ -4,10 +4,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lamanda_petshopcr/src/blocs/AuthenticationBloc/authentication_bloc.dart';
 import 'package:lamanda_petshopcr/src/library/language_library/easy_localization.dart';
+import 'package:lamanda_petshopcr/src/models/product.dart';
 import 'package:lamanda_petshopcr/src/theme/colors.dart';
 import 'package:lamanda_petshopcr/src/widgets/BottomNavBar/bottom_navbar.dart';
 import 'package:lamanda_petshopcr/src/widgets/BottomNavBar/cubit/navbar_cubit.dart';
 import 'package:lamanda_petshopcr/src/widgets/Category/category.dart';
+import 'package:lamanda_petshopcr/src/widgets/product_card.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key key}) : super(key: key);
@@ -39,10 +41,25 @@ class Body extends StatelessWidget {
       // floatingActionButton: FloatingActionButton(
       //     onPressed: () => context.bloc<NavbarCubit>().indexChange(2)),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SafeArea(child: buildAppBar(context, user.photo)),
           searchBar(),
-          buildMenuCategory(context)
+          buildMenuCategory(context),
+          Container(
+            child: Padding(
+              padding:
+                  const EdgeInsets.only(left: 20.0, top: 20.0, right: 20.0),
+              child: Text(
+                AppLocalizations.of(context).tr('recomended'),
+                style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 17.0,
+                ),
+              ),
+            ),
+          ),
+          getGridProducs(context),
         ],
       ),
     );
@@ -144,6 +161,59 @@ class Body extends StatelessWidget {
             )
           ],
         ),
+      ),
+    );
+  }
+
+  Widget getGridProducs(BuildContext context) {
+    return Expanded(
+      child: SingleChildScrollView(
+        child: GridView.count(
+            shrinkWrap: true,
+            padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
+            crossAxisSpacing: 8.0,
+            mainAxisSpacing: 1.0,
+            childAspectRatio: 0.650,
+            crossAxisCount: 2,
+            primary: false,
+            children: [
+              ProductCard(new Product(
+                  'Alimento',
+                  'Hola',
+                  1000000,
+                  'https://www.alimentoraza.com/wp-content/uploads/2019/12/Perrosadultos-PolloCarneCerealesyArroz.jpg',
+                  'codeProduct', [])),
+              ProductCard(new Product(
+                  'Alimento',
+                  'Hola',
+                  100,
+                  'https://www.alimentoraza.com/wp-content/uploads/2019/12/Perrosadultos-PolloCarneCerealesyArroz.jpg',
+                  'codeProduct', [])),
+              ProductCard(new Product(
+                  'Alimento',
+                  'Hola',
+                  100,
+                  'https://www.alimentoraza.com/wp-content/uploads/2019/12/Perrosadultos-PolloCarneCerealesyArroz.jpg',
+                  'codeProduct', [])),
+              ProductCard(new Product(
+                  'Alimento',
+                  'Hola',
+                  100,
+                  'https://www.alimentoraza.com/wp-content/uploads/2019/12/Perrosadultos-PolloCarneCerealesyArroz.jpg',
+                  'codeProduct', [])),
+              ProductCard(new Product(
+                  'Alimento',
+                  'Hola',
+                  100,
+                  'https://www.alimentoraza.com/wp-content/uploads/2019/12/Perrosadultos-PolloCarneCerealesyArroz.jpg',
+                  'codeProduct', [])),
+              ProductCard(new Product(
+                  'Alimento',
+                  'Hola',
+                  100,
+                  'https://www.alimentoraza.com/wp-content/uploads/2019/12/Perrosadultos-PolloCarneCerealesyArroz.jpg',
+                  'codeProduct', []))
+            ]),
       ),
     );
   }
