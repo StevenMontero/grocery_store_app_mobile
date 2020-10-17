@@ -5,18 +5,21 @@ import 'package:lamanda_petshopcr/src/theme/colors.dart';
 
 class ProductCard extends StatelessWidget {
   final Product item;
-
-  ProductCard(this.item);
+  final Function onTab;
+  ProductCard({this.item, this.onTab});
 
   @override
   Widget build(BuildContext context) {
+    var networkImage = FadeInImage.assetNetwork(
+      image: item.photoUrl,
+      placeholder: 'assets/images/Dual Ball-1s-200px.gif',
+      fit: BoxFit.cover,
+    );
     return Padding(
       padding: const EdgeInsets.only(
           top: 20.0, left: 10.0, bottom: 10.0, right: 0.0),
       child: InkWell(
-        onTap: () {
-          print('Hola');
-        },
+        onTap: onTab,
         child: Container(
           decoration: BoxDecoration(
               color: Colors.white,
@@ -40,16 +43,18 @@ class ProductCard extends StatelessWidget {
                   children: <Widget>[
                     Stack(
                       children: <Widget>[
-                        Container(
-                          height: 185.0,
-                          width: 160.0,
-                          decoration: BoxDecoration(
+                        Hero(
+                          tag: item.codeProduct,
+                          child: Container(
+                            height: 185.0,
+                            width: 160.0,
+                            decoration: BoxDecoration(
                               borderRadius: BorderRadius.only(
                                   topLeft: Radius.circular(7.0),
                                   topRight: Radius.circular(7.0)),
-                              image: DecorationImage(
-                                  image: NetworkImage(item.photoUrl),
-                                  fit: BoxFit.cover)),
+                            ),
+                            child: networkImage,
+                          ),
                         ),
                         Container(
                           height: 35.5,

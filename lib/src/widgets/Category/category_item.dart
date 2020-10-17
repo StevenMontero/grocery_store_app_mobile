@@ -12,7 +12,7 @@ class ItemCategory extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 55.0,
-      width: 85.0,
+      width: 90.0,
       child: RaisedButton(
         color: Colors.white,
         onPressed: onTap,

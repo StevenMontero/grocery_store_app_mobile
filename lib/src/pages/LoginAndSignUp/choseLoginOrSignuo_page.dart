@@ -72,7 +72,7 @@ class _ChoseLoginState extends State<ChoseLogin> with TickerProviderStateMixin {
                                       tag: "Treva",
                                       child: Container(
                                         height: mediaQuery.size.height * 0.2,
-                                        width: mediaQuery.size.width * 0.45,
+                                        width: mediaQuery.size.width * 0.55,
                                         child: SvgPicture.asset(
                                           'assets/images/Logo_COLOR.svg',
                                           fit: BoxFit.cover,

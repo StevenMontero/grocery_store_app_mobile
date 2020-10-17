@@ -110,7 +110,7 @@ class BodyWidget extends StatelessWidget {
                                   tag: "Treva",
                                   child: Container(
                                     height: mediaQueryData.size.height * 0.2,
-                                    width: mediaQueryData.size.width * 0.45,
+                                    width: mediaQueryData.size.width * 0.55,
                                     child: SvgPicture.asset(
                                       'assets/images/Logo_COLOR.svg',
                                       fit: BoxFit.cover,
