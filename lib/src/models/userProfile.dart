@@ -1,5 +1,5 @@
 
-import 'pet.dart';
+//import 'pet.dart';
 
 class UserProfile {
 
@@ -10,28 +10,34 @@ class UserProfile {
   String photoUri;
   String lastName;
   String address;
-  List<Pet> petList;
+  //List<Pet> petList;
   String phone; 
 
   UserProfile({
+    this.id,
     this.userName,
     this.email,
     this.password,
+    this.photoUri,
+    this.lastName,
+    this.address,
+    //this.petList,
     this.phone
   });
 
-  UserProfile.fromJson(Map<String, dynamic> json){
-    this.id = json['id'];
-    this.userName = json['userName'];
-    this.email = json['email'];
-    this.password = json['password'];
-    this.photoUri = json['photoUri'];
-    this.lastName = json['lastName'];
-    this.address = json['address'];
-    //this.petList = json['id'];
-    this.phone = json['phone'];
-  }
-
+  factory UserProfile.fromJson(Map<String, dynamic> json) =>
+    UserProfile (
+      id: json['id'],
+      userName: json['userName'],
+      email: json['email'],
+      password: json['password'],
+      photoUri: json['photoUri'],
+      lastName: json['lastName'],
+      address: json['address'],
+      //petList: json['id'];
+      phone: json['phone']
+      );
+  
   Map<String, dynamic> toJson(){
     return {
       'id': this.id,
