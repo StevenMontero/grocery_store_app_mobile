@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:lamanda_petshopcr/src/blocs/AuthenticationBloc/authentication_bloc.dart';
 import 'package:lamanda_petshopcr/src/library/language_library/easy_localization.dart';
-import 'package:lamanda_petshopcr/src/pages/Home/home_page.dart';
+import 'package:lamanda_petshopcr/src/pages/mainpage.dart';
 import 'package:lamanda_petshopcr/src/routes/routes.dart';
 import 'package:lamanda_petshopcr/src/theme/theme.dart';
 
@@ -94,7 +94,7 @@ class _AppViewState extends State<AppView> {
         );
       },
       onGenerateRoute: (settings) =>
-          MaterialPageRoute(builder: (context) => HomeScreen()),
+          MaterialPageRoute(builder: (context) => MainScreen()),
       localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,

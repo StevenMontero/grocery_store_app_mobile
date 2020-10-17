@@ -15,6 +15,30 @@
       },
       "oauth_client": [
         {
+          "client_id": "354564504086-o3ojbqksclqbd1tk3rho0sujcbjf02ha.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.lamanda_petshopcr",
+            "certificate_hash": "1dec4ada2788088d37e70684371223fb23e3b1fe"
+          }
+        },
+        {
+          "client_id": "354564504086-8vv5keatg3g20krrdej89h6e64008kv2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.lamanda_petshopcr",
+            "certificate_hash": "245466ae57d9161c78714596d1ea7f97368d3ac4"
+          }
+        },
+        {
+          "client_id": "354564504086-p469salpvsnecog81bsp8r5fmnnn1vis.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.lamanda_petshopcr",
+            "certificate_hash": "1ce8ee5820d210defd241c00553b8ed7e133f72f"
+          }
+        },
+        {
           "client_id": "354564504086-vgs4rhu1kfu7c2o6lsttho6nka5a4nkc.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
