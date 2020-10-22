@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:lamanda_petshopcr/src/pages/Home/home_page.dart';
+import 'package:lamanda_petshopcr/src/pages/Quotes/quotes_page.dart';
 import 'package:lamanda_petshopcr/src/pages/Search/search_page.dart';
 part 'mainpage_state.dart';
 
@@ -22,7 +23,7 @@ class MainPageCubit extends Cubit<MainPageState> {
         return SearchPage();
         break;
       case 2:
-        return HomePage();
+        return QuotesPage();
         break;
       default:
         return HomePage();
