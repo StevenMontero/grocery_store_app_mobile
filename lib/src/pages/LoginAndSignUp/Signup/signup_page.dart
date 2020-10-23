@@ -130,8 +130,7 @@ class BodyWidget extends StatelessWidget {
                                 builder: (context, state) {
                                   return TextFromField(
                                     errorOccurred: state.userName.invalid,
-                                    erroMessage:
-                                        'El nombre de usuario no es valido',
+                                    erroMessage:'El nombre de usuario no es valido',
                                     icon: Icons.account_circle,
                                     password: false,
                                     lavel: AppLocalizations.of(context)
