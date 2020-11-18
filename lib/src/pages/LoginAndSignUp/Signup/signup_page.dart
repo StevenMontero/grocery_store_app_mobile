@@ -130,7 +130,7 @@ class BodyWidget extends StatelessWidget {
                                 builder: (context, state) {
                                   return TextFromField(
                                     errorOccurred: state.userName.invalid,
-                                    erroMessage:'El nombre de usuario no es valido',
+                                    errorMessage:"Nombre de usuario no valido",
                                     icon: Icons.account_circle,
                                     password: false,
                                     lavel: AppLocalizations.of(context)
@@ -152,9 +152,9 @@ class BodyWidget extends StatelessWidget {
                                     previous.phone != current.phone,
                                 builder: (context, state) {
                                   return TextFromField(
-                                    errorOccurred: state.email.invalid,
-                                    erroMessage:
-                                        'El número de telefono no es valido',
+                                    errorOccurred: state.phone.invalid,
+                                    errorMessage:
+                                        'Número de telefono no valido',
                                     icon: Icons.phone_iphone,
                                     password: false,
                                     lavel: AppLocalizations.of(context)
@@ -176,7 +176,7 @@ class BodyWidget extends StatelessWidget {
                                 builder: (context, state) {
                                   return TextFromField(
                                     errorOccurred: state.email.invalid,
-                                    erroMessage: 'El email no es valido',
+                                    errorMessage: 'El email no es valido',
                                     icon: Icons.email,
                                     password: false,
                                     lavel: AppLocalizations.of(context)
@@ -197,8 +197,8 @@ class BodyWidget extends StatelessWidget {
                                     previous.password != current.password,
                                 builder: (context, state) {
                                   return TextFromField(
-                                    errorOccurred: state.email.invalid,
-                                    erroMessage: 'La contraseña no es valida',
+                                    errorOccurred: state.password.invalid,
+                                    errorMessage: 'La contraseña no es valida',
                                     icon: Icons.vpn_key,
                                     password: true,
                                     lavel: AppLocalizations.of(context)

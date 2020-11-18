@@ -155,7 +155,7 @@ class BodyWidget extends StatelessWidget {
                                 previous.email != current.email,
                             builder: (context, state) {
                               return TextFromField(
-                                erroMessage: 'Email no es valido',
+                                errorMessage: 'Email no es valido',
                                 errorOccurred: state.email.invalid,
                                 onChanged: (value) => context
                                     .bloc<LoginCubit>()
