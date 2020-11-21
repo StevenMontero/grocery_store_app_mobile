@@ -43,6 +43,14 @@ class Body extends StatelessWidget {
           return state.bodyPage;
         },
       ),
+
+      floatingActionButton: FlatButton(
+                    onPressed: () => BlocProvider.of<AuthenticationBloc>(context)
+                    .add(AuthenticationLogoutRequested()) , 
+                    child: Container(
+                      color: Colors.black,
+                      child: Text('data'),
+                    )),
     );
   }
 }

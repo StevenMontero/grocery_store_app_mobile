@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:lamanda_petshopcr/src/blocs/AuthenticationBloc/authentication_bloc.dart';
 import 'package:lamanda_petshopcr/src/library/language_library/easy_localization.dart';
 import 'package:lamanda_petshopcr/src/models/product.dart';
 import 'package:lamanda_petshopcr/src/pages/Search/search_delegate.dart';
@@ -140,7 +142,7 @@ class HomePage extends StatelessWidget {
                     child: photo == null
                         ? const Icon(Icons.person_outline, size: 20)
                         : null,
-                  )
+                  ),
                 ],
               ),
             )

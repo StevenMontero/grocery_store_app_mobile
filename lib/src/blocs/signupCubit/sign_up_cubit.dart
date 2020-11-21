@@ -5,6 +5,10 @@ import 'package:equatable/equatable.dart';
 import 'package:lamanda_petshopcr/src/utils/regularExpressions/numberPhone.dart';
 import 'package:lamanda_petshopcr/src/utils/regularExpressions/userName.dart';
 import 'package:lamanda_petshopcr/src/utils/utils.dart';
+import 'package:lamanda_petshopcr/src/repository/user_repository.dart';
+import 'package:lamanda_petshopcr/src/models/userProfile.dart';
+
+import 'package:firebase_auth/firebase_auth.dart';
 
 part 'sign_up_state.dart';
 
@@ -14,6 +18,7 @@ class SignUpCubit extends Cubit<SignUpState> {
         super(const SignUpState());
 
   final AuthenticationRepository _authenticationRepository;
+  final UserRepository repository = new UserRepository();
 
   void emailChanged(String value) {
     final email = Email.dirty(value);
@@ -48,17 +53,24 @@ class SignUpCubit extends Cubit<SignUpState> {
   }
 
   Future<void> signUpFormSubmitted() async {
-    if (state.status.isValidated) return;
+    if (!state.status.isValidated) return;
     emit(state.copyWith(status: FormzStatus.submissionInProgress));
-    try {
-      await _authenticationRepository.signUp(
-        email: state.email.value,
-        password: state.password.value,
-      );
+
+  try {
+    await _authenticationRepository.signUp(
+      email: state.email.value,
+      password: state.password.value,
+    );
+      repository.addNewUser(new UserProfile(
+          userName: state.userName.value,
+          email: state.email.value,
+          password: state.password.value,
+          phone: state.phone.value));
+
       emit(state.copyWith(status: FormzStatus.submissionSuccess));
-    } on Exception {
-      emit(state.copyWith(status: FormzStatus.submissionFailure));
+    } on SignUpFailure catch (e) {
+        emit(state.copyWith(status: FormzStatus.submissionFailure,
+        message: e.getErrorMessage()));
     }
   }
-
 }

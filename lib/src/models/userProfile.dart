@@ -48,7 +48,7 @@ class UserProfile {
       'lastName': this.lastName,
       'address': this.address,
       //'petList' : this.petList,
-      'phone': this.photoUri
+      'phone': this.phone
     };
   }
 

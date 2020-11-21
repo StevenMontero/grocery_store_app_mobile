@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:math';
 
+//import 'package:authentication_repository/authentication_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
@@ -9,7 +11,14 @@ import 'package:meta/meta.dart';
 import 'models/models.dart' as model;
 
 /// Thrown if during the sign up process if a failure occurs.
-class SignUpFailure implements Exception {}
+class SignUpFailure implements Exception {
+  SignUpFailure({this.message});
+  final String message;
+
+  String getErrorMessage(){
+    return message;
+  }
+}
 
 /// Thrown during the login process if a failure occurs.
 class LogInWithEmailAndPasswordFailure implements Exception {}
@@ -67,8 +76,8 @@ class AuthenticationRepository {
         email: email,
         password: password,
       );
-    } on Exception {
-      throw SignUpFailure();
+    } on FirebaseAuthException catch (e){
+      throw SignUpFailure(message: e.message);
     }
   }
 
