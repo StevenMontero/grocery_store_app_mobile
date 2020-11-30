@@ -9,11 +9,11 @@ class QuotesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Stack(
-      children: [backgraund(), optionsQuotes()],
+      children: [backgraund(), optionsQuotes(context)],
     );
   }
 
-  Widget optionsQuotes() {
+  Widget optionsQuotes(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -27,7 +27,7 @@ class QuotesPage extends StatelessWidget {
                 itemTextColor: Colors.white,
                 itemTitle: 'Estetica',
                 onPress: () {
-                  print('object');
+                  Navigator.of(context).pushNamed('grooming');
                 },
               ),
               SizedBox(
@@ -38,9 +38,7 @@ class QuotesPage extends StatelessWidget {
                 itemImg: 'assets/icons/012-kennel.svg',
                 itemTextColor: Colors.white,
                 itemTitle: 'Hotel',
-                onPress: () {
-                  print('object');
-                },
+                onPress: () {},
               )
             ],
           ),
@@ -55,7 +53,7 @@ class QuotesPage extends StatelessWidget {
                 itemTextColor: Colors.white,
                 itemTitle: 'Veterinaria',
                 onPress: () {
-                  print('object');
+                  Navigator.of(context).pushNamed('nursery');
                 },
               ),
               SizedBox(
@@ -67,7 +65,7 @@ class QuotesPage extends StatelessWidget {
                 itemTextColor: Colors.white,
                 itemTitle: 'Guardería',
                 onPress: () {
-                  print('object');
+                  Navigator.of(context).pushNamed('nursery');
                 },
               )
             ],
