@@ -155,7 +155,7 @@ class BodyWidget extends StatelessWidget {
                                 previous.email != current.email,
                             builder: (context, state) {
                               return TextFromField(
-                                erroMessage: 'Email no es valido',
+                                errorMessage: 'Email no es valido',
                                 errorOccurred: state.email.invalid,
                                 onChanged: (value) => context
                                     .bloc<LoginCubit>()
@@ -167,14 +167,25 @@ class BodyWidget extends StatelessWidget {
                               );
                             },
                           ),
-
                           /// TextFromField Password
                           Padding(padding: EdgeInsets.symmetric(vertical: 5.0)),
-                          TextFromField(
-                            icon: Icons.vpn_key,
-                            password: true,
-                            lavel: AppLocalizations.of(context).tr('password'),
-                            inputType: TextInputType.text,
+                          BlocBuilder<LoginCubit, LoginState>(
+                            buildWhen: (previous, current) =>
+                            previous.password != current.password,
+                            builder: (context, state) {
+                              return TextFromField(
+                                errorMessage: 'Contraseña no valida',
+                                errorOccurred: state.password.invalid,
+                                onChanged: (value) => context
+                                .bloc<LoginCubit>()
+                                .passwordChanged(value),
+                                icon: Icons.vpn_key,
+                                password: true,
+                                lavel:
+                                    AppLocalizations.of(context).tr('password'),
+                                inputType: TextInputType.text,
+                              );
+                            },
                           ),
 
                           /// Button Signup
