@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:lamanda_petshopcr/src/theme/colors.dart';
 
 class CustomButton extends StatelessWidget {
-  const CustomButton({Key key, this.text, this.press, this.color})
+  const CustomButton(
+      {Key key, this.text, this.press, this.color = ColorsApp.primaryColorBlue})
       : super(key: key);
   final String text;
   final Function press;
-  final ColorsApp color;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +16,7 @@ class CustomButton extends StatelessWidget {
       height: 56,
       child: FlatButton(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        color: ColorsApp.primaryColorBlue,
+        color: color,
         onPressed: press,
         child: Text(
           text,

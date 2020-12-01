@@ -53,7 +53,7 @@ class QuotesPage extends StatelessWidget {
                 itemTextColor: Colors.white,
                 itemTitle: 'Veterinaria',
                 onPress: () {
-                  Navigator.of(context).pushNamed('nursery');
+                  Navigator.of(context).pushNamed('');
                 },
               ),
               SizedBox(
@@ -65,7 +65,7 @@ class QuotesPage extends StatelessWidget {
                 itemTextColor: Colors.white,
                 itemTitle: 'Guardería',
                 onPress: () {
-                  Navigator.of(context).pushNamed('nursery');
+                  Navigator.of(context).pushNamed('kinder');
                 },
               )
             ],
