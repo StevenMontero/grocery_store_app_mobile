@@ -1,12 +1,40 @@
-import 'package:lamanda_petshopcr/src/models/category.dart';
-
 class Product {
-  final String name;
-  final String description;
-  final double price;
-  final String photoUrl;
-  final String codeProduct;
-  final List<Category> categories;
-  Product(this.name, this.description, this.price, this.photoUrl,
-      this.codeProduct, this.categories);
+  String codeProduct;
+  String name;
+  String description;
+  double price;
+  String photoUrl;
+  int stock;
+  String category;
+
+  Product(
+    this.name,
+    this.description,
+    this.price, 
+    this.photoUrl,
+    this.codeProduct,
+    this.stock, 
+    this.category);
+
+    Product.fromJson(Map<String, dynamic> json){
+      this.codeProduct = json['code'];
+      this.name = json['name'];
+      this.description = json['description'];
+      this.price = json['price'];
+      this.photoUrl = json['photoUrl'];
+      this.stock = json['stock'];
+      this.category = json['category'];    
+  }
+  
+  Map<String, dynamic> toJson(){
+    return {
+      'code': this.codeProduct,
+      'name': this.name,
+      'description': this.description,
+      'price': this.price,
+      'photoUrl': this.photoUrl,
+      'stock': this.stock,
+      'category': this.category,
+    };
+  }
 }

@@ -17,7 +17,9 @@ class DetailsProductScreen extends StatelessWidget {
               'El rico sabor de los cereales complementa la dieta a base de carne de tu perro, proporcionándole todos los beneficios que necesita gracias a su complejo vitamínico mineral con Omega 3 y 6. Es el alimento balanceado para perros que ayuda a tu mascota a tener huesos sanos y fuertes, excelente visión, pelaje brillante y mayor vitalidad.',
               1000000,
               'https://www.alimentoraza.com/wp-content/uploads/2019/12/Perrosadultos-PolloCarneCerealesyArroz.jpg',
-              'codeProduct1', [])),
+              'codeProduct1',
+              12,
+              'Caninos')),
     );
   }
 }

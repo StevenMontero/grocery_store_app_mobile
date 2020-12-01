@@ -7,9 +7,9 @@ import 'package:formz/formz.dart';
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:lamanda_petshopcr/src/blocs/signupCubit/sign_up_cubit.dart';
 import 'package:lamanda_petshopcr/src/library/language_library/easy_localization.dart';
-import 'package:lamanda_petshopcr/src/models/userProfile.dart';
+//import 'package:lamanda_petshopcr/src/models/userProfile.dart';
 import 'package:lamanda_petshopcr/src/pages/LoginAndSignUp/Login/login_page.dart';
-import 'package:lamanda_petshopcr/src/repository/user_repository.dart';
+//import 'package:lamanda_petshopcr/src/repository/user_repository.dart';
 import 'package:lamanda_petshopcr/src/theme/colors.dart';
 //import 'package:lamanda_petshopcr/src/utils/regularExpressions/email.dart';
 import 'package:lamanda_petshopcr/src/widgets/textfield.dart';
@@ -135,7 +135,7 @@ class BodyWidget extends StatelessWidget {
                                 builder: (context, state) {
                                   return TextFromField(
                                     errorOccurred: state.userName.invalid,
-                                    errorMessage: "Nombre de usuario no valido",
+                                    errorMessage: "No puede contener espacios ni símbolos",
                                     icon: Icons.account_circle,
                                     password: false,
                                     lavel: AppLocalizations.of(context)
@@ -203,7 +203,7 @@ class BodyWidget extends StatelessWidget {
                                 builder: (context, state) {
                                   return TextFromField(
                                     errorOccurred: state.password.invalid,
-                                    errorMessage: 'La contraseña no es valida',
+                                    errorMessage: 'La contraseña debe contener al menos 6 dígitos',
                                     icon: Icons.vpn_key,
                                     password: true,
                                     lavel: AppLocalizations.of(context)
