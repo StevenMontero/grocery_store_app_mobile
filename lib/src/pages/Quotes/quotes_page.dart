@@ -38,7 +38,9 @@ class QuotesPage extends StatelessWidget {
                 itemImg: 'assets/icons/012-kennel.svg',
                 itemTextColor: Colors.white,
                 itemTitle: 'Hotel',
-                onPress: () {},
+                onPress: () {
+                  Navigator.of(context).pushNamed('hotel');
+                },
               )
             ],
           ),
@@ -53,7 +55,7 @@ class QuotesPage extends StatelessWidget {
                 itemTextColor: Colors.white,
                 itemTitle: 'Veterinaria',
                 onPress: () {
-                  Navigator.of(context).pushNamed('');
+                  Navigator.of(context).pushNamed('nursey');
                 },
               ),
               SizedBox(

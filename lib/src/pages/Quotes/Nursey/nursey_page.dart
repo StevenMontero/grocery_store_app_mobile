@@ -4,15 +4,16 @@ import 'package:lamanda_petshopcr/src/theme/colors.dart';
 import 'package:lamanda_petshopcr/src/widgets/custom_button.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-class GroomingScreen extends StatefulWidget {
+class NurseyScreen extends StatefulWidget {
   @override
-  _GroomingScreenState createState() => _GroomingScreenState();
+  _NurseyScreenState createState() => _NurseyScreenState();
 }
 
-class _GroomingScreenState extends State<GroomingScreen> {
+class _NurseyScreenState extends State<NurseyScreen> {
   CalendarController _calendarController;
   int _valueM = 1;
   int _valueL = 1;
+  int edad = 1;
   String _valueTypeFur = "1";
   @override
   void initState() {
@@ -31,7 +32,7 @@ class _GroomingScreenState extends State<GroomingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ColorsApp.primaryColorBlue,
+      backgroundColor: ColorsApp.primaryColorOrange,
       appBar: AppBar(
         leading: IconButton(
             icon: Icon(
@@ -130,10 +131,14 @@ class _GroomingScreenState extends State<GroomingScreen> {
                 SizedBox(
                   height: 5.0,
                 ),
+                buildAgeDog(),
+                SizedBox(
+                  height: 5.0,
+                ),
                 Container(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    'Que necesita su mascota?',
+                    'Que malestar presenta su macosta?',
                     style:
                         TextStyle(fontSize: 20.0, color: Colors.blueGrey[700]),
                   ),
@@ -143,7 +148,7 @@ class _GroomingScreenState extends State<GroomingScreen> {
                   height: 10.0,
                 ),
                 CustomButton(
-                  color: ColorsApp.primaryColorBlue,
+                  color: ColorsApp.primaryColorOrange,
                   press: () {},
                   text: 'Reservar',
                 )
@@ -152,6 +157,44 @@ class _GroomingScreenState extends State<GroomingScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget buildAgeDog() {
+    return Row(
+      children: [
+        Container(
+          alignment: Alignment.topLeft,
+          child: Text(
+            'Edad',
+            style: TextStyle(fontSize: 15.0, color: Colors.blueGrey[700]),
+          ),
+        ),
+        Expanded(
+          child: Container(
+            alignment: Alignment.center,
+            child: DropdownButtonHideUnderline(
+              child: ButtonTheme(
+                alignedDropdown: true,
+                child: DropdownButton(
+                  items: List.generate(
+                      20,
+                      (index) => DropdownMenuItem(
+                            child: Text('$index'),
+                            value: index,
+                          )),
+                  value: edad,
+                  onChanged: (value) {
+                    setState(() {
+                      edad = value;
+                    });
+                  },
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -170,8 +213,8 @@ class _GroomingScreenState extends State<GroomingScreen> {
                 style: TextStyle(color: Colors.white, fontSize: 12.0),
               ),
               selected: _valueM == index,
-              selectedColor: ColorsApp.primaryColorBlue,
-              backgroundColor: ColorsApp.secondaryColorlightBlue,
+              selectedColor: ColorsApp.primaryColorOrange,
+              backgroundColor: Colors.blueGrey[300],
               avatar: Icon(
                 FontAwesomeIcons.clock,
                 color: Colors.white,
@@ -194,7 +237,7 @@ class _GroomingScreenState extends State<GroomingScreen> {
         Container(
           alignment: Alignment.topLeft,
           child: Text(
-            'Tipo de pelaje',
+            'Raza',
             style: TextStyle(fontSize: 20.0, color: Colors.blueGrey[700]),
           ),
         ),
@@ -207,11 +250,11 @@ class _GroomingScreenState extends State<GroomingScreen> {
                 child: DropdownButton(
                   items: [
                     DropdownMenuItem(
-                      child: Text('Liso'),
+                      child: Text('Labrador'),
                       value: '1',
                     ),
                     DropdownMenuItem(
-                      child: Text('Colocho'),
+                      child: Text('Salchicha'),
                       value: '2',
                     )
                   ],
