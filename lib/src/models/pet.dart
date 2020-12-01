@@ -1,6 +1,8 @@
 class Pet{
 
-  String petName;
+  String petId;
+  String userId;
+  String name;
   double size;
   String breed;
   String age;
@@ -12,7 +14,9 @@ class Pet{
   bool castrated;
 
   Pet({
-    this.petName,
+    this.petId,
+    this.userId,
+    this.name,
     this.size,
     this.breed,
     this.age,
@@ -25,7 +29,9 @@ class Pet{
   });
 
    Pet.fromJson(Map<String, dynamic> json){
-    this.petName = json['petName'];
+    this.petId = json['idPet'];
+    this.userId = json['idUser'];
+    this.name = json['petName'];
     this.size = json['size'];
     this.breed = json['breed'];
     this.age = json['age'];
@@ -39,7 +45,9 @@ class Pet{
 
   Map<String, dynamic> toJson(){
     return {
-      'petName': this.petName,
+      'idPet': this.petId,
+      'idUser': this.userId,
+      'petName': this.name,
       'size': this.size,
       'breed': this.breed,
       'age': this.age,

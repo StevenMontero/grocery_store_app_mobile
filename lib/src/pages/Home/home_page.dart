@@ -168,7 +168,9 @@ class HomePage extends StatelessWidget {
               'Hola',
               1000000,
               'https://www.alimentoraza.com/wp-content/uploads/2019/12/Perrosadultos-PolloCarneCerealesyArroz.jpg',
-              'codeProduct1', []),
+              'codeProduct1', 
+              12,
+              'Canino'),
           onTab: () => Navigator.of(context).pushNamed('detail'),
         ),
         ProductCard(
@@ -177,35 +179,45 @@ class HomePage extends StatelessWidget {
                 'Hola',
                 100,
                 'https://www.alimentoraza.com/wp-content/uploads/2019/12/Perrosadultos-PolloCarneCerealesyArroz.jpg',
-                'codeProduct2', [])),
+                'codeProduct2',
+                 12,
+                'Alimento Canino')),
         ProductCard(
             item: new Product(
                 'Alimento',
                 'Hola',
                 100,
                 'https://www.alimentoraza.com/wp-content/uploads/2019/12/Perrosadultos-PolloCarneCerealesyArroz.jpg',
-                'codeProduct3', [])),
+                'codeProduct3',
+                12,
+                'Alimento Canino')),
         ProductCard(
             item: new Product(
                 'Alimento',
                 'Hola',
                 100,
                 'https://www.alimentoraza.com/wp-content/uploads/2019/12/Perrosadultos-PolloCarneCerealesyArroz.jpg',
-                'codeProduct4', [])),
+                'codeProduct4',
+                12,
+                'Alimento Canino')),
         ProductCard(
             item: new Product(
                 'Alimento',
                 'Hola',
                 100,
                 'https://www.alimentoraza.com/wp-content/uploads/2019/12/Perrosadultos-PolloCarneCerealesyArroz.jpg',
-                'codeProduct5', [])),
+                'codeProduct5',
+                12,
+                'Alimento Canino')),
         ProductCard(
             item: new Product(
                 'Alimento',
                 'Hola',
                 100,
                 'https://www.alimentoraza.com/wp-content/uploads/2019/12/Perrosadultos-PolloCarneCerealesyArroz.jpg',
-                'codeProduct6', []))
+                'codeProduct6',
+                12,
+                'Alimento Canino'))
       ],
     );
   }
