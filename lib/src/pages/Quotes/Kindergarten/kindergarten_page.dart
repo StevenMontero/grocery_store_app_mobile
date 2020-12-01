@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lamanda_petshopcr/src/theme/colors.dart';
 import 'package:lamanda_petshopcr/src/widgets/custom_button.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-class NurseryScreen extends StatefulWidget {
+class KindergartenScreen extends StatefulWidget {
   @override
-  _NurseryScreenState createState() => _NurseryScreenState();
+  _KindergartenScreenState createState() => _KindergartenScreenState();
 }
 
-class _NurseryScreenState extends State<NurseryScreen> {
+class _KindergartenScreenState extends State<KindergartenScreen> {
   CalendarController _calendarController;
   String _valueTypeFur = "1";
   int edad = 0;
