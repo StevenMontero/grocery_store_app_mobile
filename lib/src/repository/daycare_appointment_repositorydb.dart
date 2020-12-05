@@ -1,22 +1,24 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:lamanda_petshopcr/src/models/daycare_appointment.dart';
 
-class DaycareAppointmentRepository{
-  final CollectionReference _ref = FirebaseFirestore.instance.collection('daycareAppointment');
+class DaycareAppointmentRepository {
+  final CollectionReference _ref =
+      FirebaseFirestore.instance.collection('daycareAppointment');
 
-  Future<void> addNewAppointment(DaycareAppointment appointment){
-    return _ref.add(appointment.toJson())
-    .then((value) => print('Appointment Added'))
-    .catchError((error) => print('Failed to add Appointment: $error'));
+  Future<void> addNewAppointment(DaycareAppointment appointment) {
+    return _ref
+        .add(appointment.toJson())
+        .then((value) => print('Appointment Added'))
+        .catchError((error) => print('Failed to add Appointment: $error'));
   }
 
-  Future<DaycareAppointment> getUserAppointment(String appointmentId) async{
+  Future<DaycareAppointment> getUserAppointment(String appointmentId) async {
     DaycareAppointment appointment;
     DocumentSnapshot snapshot;
     snapshot = await _ref.doc(appointmentId).get();
-    if(snapshot.exists){
+    if (snapshot.exists) {
       return appointment = DaycareAppointment.fromJson(snapshot.data());
-    }else{
+    } else {
       return null;
     }
   }
@@ -24,12 +26,12 @@ class DaycareAppointmentRepository{
   Future<List<DaycareAppointment>> getListAppointmets(String userID) async {
     List<DaycareAppointment> daycareAppointmentList = new List();
     QuerySnapshot snapshot = await _ref.get();
-    final result = snapshot.docs.where((DocumentSnapshot document) => 
-          document.data()['entryUser']['id'].contains(userID));
+    final result = snapshot.docs.where((DocumentSnapshot document) =>
+        document.data()['entryUser']['id'].contains(userID));
     result.forEach((element) {
       daycareAppointmentList.add(DaycareAppointment.fromJson(element.data()));
     });
-  
+
     return daycareAppointmentList;
   }
 

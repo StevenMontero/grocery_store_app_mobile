@@ -17,6 +17,7 @@ class CustomButton extends StatelessWidget {
       child: FlatButton(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         color: color,
+        disabledColor: Colors.grey,
         onPressed: press,
         child: Text(
           text,

@@ -101,7 +101,10 @@ class _AppViewState extends State<AppView> {
         EasylocaLizationDelegate(
             locale: widget.data.locale, path: 'assets/language')
       ],
-      supportedLocales: [Locale('en', 'US')],
+      supportedLocales: [
+        Locale('es', 'ES'),
+        Locale('en', 'US'),
+      ],
       locale: widget.data.savedLocale,
     );
   }

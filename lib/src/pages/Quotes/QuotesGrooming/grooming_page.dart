@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:formz/formz.dart';
+import 'package:intl/intl.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:lamanda_petshopcr/src/blocs/GroomingCubit/grooming_cubit.dart';
+import 'package:lamanda_petshopcr/src/repository/sthetic_appointment_repositorydb.dart';
 import 'package:lamanda_petshopcr/src/theme/colors.dart';
 import 'package:lamanda_petshopcr/src/widgets/custom_button.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -10,82 +15,101 @@ class GroomingScreen extends StatefulWidget {
 }
 
 class _GroomingScreenState extends State<GroomingScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => GroomingCubit(StheticAppointmentRepository())
+        ..dateInCalendarChanged(DateTime.now()),
+      child: Scaffold(
+          backgroundColor: ColorsApp.primaryColorBlue,
+          appBar: AppBar(
+            leading: IconButton(
+                icon: Icon(
+                  Icons.arrow_back_ios,
+                  color: Colors.white,
+                  size: 25.0,
+                ),
+                onPressed: () => Navigator.of(context).pop()),
+            centerTitle: true,
+            elevation: 0,
+            backgroundColor: Colors.transparent,
+            title: Text(
+              "Seleccione una fecha",
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+          body: Body()),
+    );
+  }
+}
+
+class Body extends StatefulWidget {
+  Body({Key key}) : super(key: key);
+
+  @override
+  _BodyState createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
   CalendarController _calendarController;
-  int _valueM = 1;
-  int _valueL = 1;
-  String _valueTypeFur = "1";
+  int _valueM = 0;
+  String _valueTypeFur = "Liso";
+  bool _transfer = false;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _calendarController = CalendarController();
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     _calendarController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: ColorsApp.primaryColorBlue,
-      appBar: AppBar(
-        leading: IconButton(
-            icon: Icon(
+    return Column(
+      children: [
+        TableCalendar(
+          onDaySelected: (day, events, holidays) =>
+              BlocProvider.of<GroomingCubit>(context)
+                  .dateInCalendarChanged(day),
+          calendarController: _calendarController,
+          startDay: DateTime.now(),
+          initialCalendarFormat: CalendarFormat.week,
+          startingDayOfWeek: StartingDayOfWeek.monday,
+          formatAnimation: FormatAnimation.slide,
+          headerStyle: HeaderStyle(
+            centerHeaderTitle: true,
+            formatButtonVisible: false,
+            titleTextStyle: TextStyle(color: Colors.white, fontSize: 16),
+            leftChevronIcon: Icon(
               Icons.arrow_back_ios,
               color: Colors.white,
-              size: 25.0,
+              size: 15,
             ),
-            onPressed: () => Navigator.of(context).pop()),
-        centerTitle: true,
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        title: Text(
-          "Seleccione una fecha",
-          style: TextStyle(color: Colors.white),
+            rightChevronIcon: Icon(
+              Icons.arrow_forward_ios,
+              color: Colors.white,
+              size: 15,
+            ),
+            leftChevronMargin: EdgeInsets.only(left: 70),
+            rightChevronMargin: EdgeInsets.only(right: 70),
+          ),
+          calendarStyle: CalendarStyle(
+              selectedColor: ColorsApp.primaryColorOrange,
+              weekendStyle: TextStyle(color: Colors.white),
+              weekdayStyle: TextStyle(color: Colors.white)),
+          daysOfWeekStyle: DaysOfWeekStyle(
+              weekendStyle: TextStyle(color: Colors.white),
+              weekdayStyle: TextStyle(color: Colors.white)),
         ),
-      ),
-      body: Column(
-        children: [
-          TableCalendar(
-            calendarController: _calendarController,
-            initialCalendarFormat: CalendarFormat.week,
-            startingDayOfWeek: StartingDayOfWeek.monday,
-            formatAnimation: FormatAnimation.slide,
-            headerStyle: HeaderStyle(
-              centerHeaderTitle: true,
-              formatButtonVisible: false,
-              titleTextStyle: TextStyle(color: Colors.white, fontSize: 16),
-              leftChevronIcon: Icon(
-                Icons.arrow_back_ios,
-                color: Colors.white,
-                size: 15,
-              ),
-              rightChevronIcon: Icon(
-                Icons.arrow_forward_ios,
-                color: Colors.white,
-                size: 15,
-              ),
-              leftChevronMargin: EdgeInsets.only(left: 70),
-              rightChevronMargin: EdgeInsets.only(right: 70),
-            ),
-            calendarStyle: CalendarStyle(
-                selectedColor: ColorsApp.primaryColorOrange,
-                weekendStyle: TextStyle(color: Colors.white),
-                weekdayStyle: TextStyle(color: Colors.white)),
-            daysOfWeekStyle: DaysOfWeekStyle(
-                weekendStyle: TextStyle(color: Colors.white),
-                weekdayStyle: TextStyle(color: Colors.white)),
-          ),
-          SizedBox(
-            height: 5,
-          ),
-          buildForm()
-        ],
-      ),
+        SizedBox(
+          height: 5,
+        ),
+        buildForm()
+      ],
     );
   }
 
@@ -105,24 +129,19 @@ class _GroomingScreenState extends State<GroomingScreen> {
                 Container(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    'Mañana',
+                    'Horaio',
                     style:
                         TextStyle(fontSize: 20.0, color: Colors.blueGrey[700]),
                   ),
                 ),
-                buildTimeTable(),
-                SizedBox(
-                  height: 5.0,
-                ),
-                Container(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    'Tarde',
-                    style:
-                        TextStyle(fontSize: 20.0, color: Colors.blueGrey[700]),
-                  ),
-                ),
-                buildTimeTable(),
+                BlocBuilder<GroomingCubit, GroomingFormState>(
+                    buildWhen: (previous, current) =>
+                        previous.schedule != current.schedule,
+                    builder: (context, state) {
+                      return state.status != FormzStatus.submissionInProgress
+                          ? buildTimeTable(state.schedule)
+                          : CircularProgressIndicator();
+                    }),
                 SizedBox(
                   height: 5.0,
                 ),
@@ -130,6 +149,22 @@ class _GroomingScreenState extends State<GroomingScreen> {
                 SizedBox(
                   height: 5.0,
                 ),
+                SwitchListTile(
+                  value: _transfer,
+                  onChanged: (value) {
+                    setState(() {
+                      _transfer = value;
+                      context.bloc<GroomingCubit>().transferChanged(value);
+                    });
+                  },
+                  activeColor: ColorsApp.primaryColorBlue,
+                  title: Text('Necesita trasnporte'),
+                ),
+                _transfer
+                    ? buildTextFieldDirection()
+                    : SizedBox(
+                        height: 5.0,
+                      ),
                 Container(
                   alignment: Alignment.topLeft,
                   child: Text(
@@ -142,10 +177,17 @@ class _GroomingScreenState extends State<GroomingScreen> {
                 SizedBox(
                   height: 10.0,
                 ),
-                CustomButton(
-                  color: ColorsApp.primaryColorBlue,
-                  press: () {},
-                  text: 'Reservar',
+                BlocBuilder<GroomingCubit, GroomingFormState>(
+                  builder: (context, state) {
+                    return CustomButton(
+                      color: ColorsApp.primaryColorBlue,
+                      press: state.description != '' &&
+                              state.hourRerservation != null
+                          ? () {}
+                          : null,
+                      text: 'Reservar',
+                    );
+                  },
                 )
               ],
             ),
@@ -155,18 +197,18 @@ class _GroomingScreenState extends State<GroomingScreen> {
     );
   }
 
-  Widget buildTimeTable() {
+  Widget buildTimeTable(List<DateTime> list) {
     return Container(
       alignment: Alignment.center,
       width: double.infinity,
       child: Wrap(
         spacing: 15.0,
         children: List<Widget>.generate(
-          6,
+          list.length,
           (int index) {
             return ChoiceChip(
               label: Text(
-                '4:00' + ' a.m',
+                DateFormat.jm().format(list[index]),
                 style: TextStyle(color: Colors.white, fontSize: 12.0),
               ),
               selected: _valueM == index,
@@ -179,6 +221,7 @@ class _GroomingScreenState extends State<GroomingScreen> {
               onSelected: (bool selected) {
                 setState(() {
                   _valueM = selected ? index : null;
+                  context.bloc<GroomingCubit>().hourChanged(list[index]);
                 });
               },
             );
@@ -208,17 +251,18 @@ class _GroomingScreenState extends State<GroomingScreen> {
                   items: [
                     DropdownMenuItem(
                       child: Text('Liso'),
-                      value: '1',
+                      value: 'Liso',
                     ),
                     DropdownMenuItem(
                       child: Text('Colocho'),
-                      value: '2',
+                      value: 'Colocho',
                     )
                   ],
                   value: _valueTypeFur,
                   onChanged: (value) {
                     setState(() {
                       _valueTypeFur = value;
+                      context.bloc<GroomingCubit>().typeFurChanged(value);
                     });
                   },
                 ),
@@ -235,6 +279,8 @@ class _GroomingScreenState extends State<GroomingScreen> {
       padding: EdgeInsets.only(top: 8.0),
       child: TextField(
           maxLines: 10,
+          onChanged: (value) =>
+              context.bloc<GroomingCubit>().descriptionChanged(value),
           decoration: InputDecoration(
             hintText: 'Escriba aqui',
             filled: true,
@@ -248,6 +294,32 @@ class _GroomingScreenState extends State<GroomingScreen> {
               borderSide: BorderSide(color: Colors.grey),
             ),
           )),
+    );
+  }
+
+  Widget buildTextFieldDirection() {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 5.0),
+      child: Container(
+        padding: EdgeInsets.only(top: 8.0),
+        child: TextField(
+            maxLines: 3,
+            onChanged: (value) =>
+                context.bloc<GroomingCubit>().direccionChanged(value),
+            decoration: InputDecoration(
+              hintText: 'Escriba aqui la dirección',
+              filled: true,
+              fillColor: Color(0xFFDBEDFF),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                borderSide: BorderSide(color: Colors.grey),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                borderSide: BorderSide(color: Colors.grey),
+              ),
+            )),
+      ),
     );
   }
 }

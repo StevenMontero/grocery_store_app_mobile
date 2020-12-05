@@ -55,7 +55,7 @@ class _EasyLocalizationState extends State<EasyLocalization> {
     var _codeCoun = _preferences.getString('codeC');
     if (_codeLang != null || _codeCoun != null) {
       setState(() {
-        _savedLocale = Locale('en', 'US');
+        _savedLocale = Locale('es', 'ES');
         //    _savedLocale = Locale(_codeLang, _codeCoun);
       });
     }
