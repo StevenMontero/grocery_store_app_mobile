@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:formz/formz.dart';
+import 'package:lamanda_petshopcr/src/blocs/VeterinaryCubit/veterinary_cubit.dart';
+import 'package:lamanda_petshopcr/src/repository/veterinary_appointment_repositorydb.dart';
 import 'package:lamanda_petshopcr/src/theme/colors.dart';
 import 'package:lamanda_petshopcr/src/widgets/custom_button.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -10,83 +15,102 @@ class NurseyScreen extends StatefulWidget {
 }
 
 class _NurseyScreenState extends State<NurseyScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => VeterinaryCubit(VeterinaryAppointmentRepository())
+        ..dateInCalendarChanged(DateTime.now()),
+      child: Scaffold(
+          backgroundColor: ColorsApp.primaryColorOrange,
+          appBar: AppBar(
+            leading: IconButton(
+                icon: Icon(
+                  Icons.arrow_back_ios,
+                  color: Colors.white,
+                  size: 25.0,
+                ),
+                onPressed: () => Navigator.of(context).pop()),
+            centerTitle: true,
+            elevation: 0,
+            backgroundColor: Colors.transparent,
+            title: Text(
+              "Seleccione una fecha",
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+          body: Body()),
+    );
+  }
+}
+
+class Body extends StatefulWidget {
+  Body({Key key}) : super(key: key);
+
+  @override
+  _BodyState createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
   CalendarController _calendarController;
-  int _valueM = 1;
-  int _valueL = 1;
+  int _valueM = 0;
+  String _valueTypeFur = "Labrador";
+  bool _transfer = false;
   int edad = 1;
-  String _valueTypeFur = "1";
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _calendarController = CalendarController();
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     _calendarController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: ColorsApp.primaryColorOrange,
-      appBar: AppBar(
-        leading: IconButton(
-            icon: Icon(
+    return Column(
+      children: [
+        TableCalendar(
+          onDaySelected: (day, events, holidays) =>
+              BlocProvider.of<VeterinaryCubit>(context)
+                  .dateInCalendarChanged(day),
+          calendarController: _calendarController,
+          startDay: DateTime.now(),
+          initialCalendarFormat: CalendarFormat.week,
+          startingDayOfWeek: StartingDayOfWeek.monday,
+          formatAnimation: FormatAnimation.slide,
+          headerStyle: HeaderStyle(
+            centerHeaderTitle: true,
+            formatButtonVisible: false,
+            titleTextStyle: TextStyle(color: Colors.white, fontSize: 16),
+            leftChevronIcon: Icon(
               Icons.arrow_back_ios,
               color: Colors.white,
-              size: 25.0,
+              size: 15,
             ),
-            onPressed: () => Navigator.of(context).pop()),
-        centerTitle: true,
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        title: Text(
-          "Seleccione una fecha",
-          style: TextStyle(color: Colors.white),
+            rightChevronIcon: Icon(
+              Icons.arrow_forward_ios,
+              color: Colors.white,
+              size: 15,
+            ),
+            leftChevronMargin: EdgeInsets.only(left: 70),
+            rightChevronMargin: EdgeInsets.only(right: 70),
+          ),
+          calendarStyle: CalendarStyle(
+              selectedColor: ColorsApp.primaryColorOrange,
+              weekendStyle: TextStyle(color: Colors.white),
+              weekdayStyle: TextStyle(color: Colors.white)),
+          daysOfWeekStyle: DaysOfWeekStyle(
+              weekendStyle: TextStyle(color: Colors.white),
+              weekdayStyle: TextStyle(color: Colors.white)),
         ),
-      ),
-      body: Column(
-        children: [
-          TableCalendar(
-            calendarController: _calendarController,
-            initialCalendarFormat: CalendarFormat.week,
-            startingDayOfWeek: StartingDayOfWeek.monday,
-            formatAnimation: FormatAnimation.slide,
-            headerStyle: HeaderStyle(
-              centerHeaderTitle: true,
-              formatButtonVisible: false,
-              titleTextStyle: TextStyle(color: Colors.white, fontSize: 16),
-              leftChevronIcon: Icon(
-                Icons.arrow_back_ios,
-                color: Colors.white,
-                size: 15,
-              ),
-              rightChevronIcon: Icon(
-                Icons.arrow_forward_ios,
-                color: Colors.white,
-                size: 15,
-              ),
-              leftChevronMargin: EdgeInsets.only(left: 70),
-              rightChevronMargin: EdgeInsets.only(right: 70),
-            ),
-            calendarStyle: CalendarStyle(
-                selectedColor: ColorsApp.primaryColorOrange,
-                weekendStyle: TextStyle(color: Colors.white),
-                weekdayStyle: TextStyle(color: Colors.white)),
-            daysOfWeekStyle: DaysOfWeekStyle(
-                weekendStyle: TextStyle(color: Colors.white),
-                weekdayStyle: TextStyle(color: Colors.white)),
-          ),
-          SizedBox(
-            height: 5,
-          ),
-          buildForm()
-        ],
-      ),
+        SizedBox(
+          height: 5,
+        ),
+        buildForm()
+      ],
     );
   }
 
@@ -106,28 +130,23 @@ class _NurseyScreenState extends State<NurseyScreen> {
                 Container(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    'Mañana',
+                    'Horaio',
                     style:
                         TextStyle(fontSize: 20.0, color: Colors.blueGrey[700]),
                   ),
                 ),
-                buildTimeTable(),
+                BlocBuilder<VeterinaryCubit, VeterinaryFormState>(
+                    buildWhen: (previous, current) =>
+                        previous.schedule != current.schedule,
+                    builder: (context, state) {
+                      return state.status != FormzStatus.submissionInProgress
+                          ? buildTimeTable(state.schedule)
+                          : CircularProgressIndicator();
+                    }),
                 SizedBox(
                   height: 5.0,
                 ),
-                Container(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    'Tarde',
-                    style:
-                        TextStyle(fontSize: 20.0, color: Colors.blueGrey[700]),
-                  ),
-                ),
-                buildTimeTable(),
-                SizedBox(
-                  height: 5.0,
-                ),
-                buildTypeFur(),
+                buildTypeRace(),
                 SizedBox(
                   height: 5.0,
                 ),
@@ -135,10 +154,26 @@ class _NurseyScreenState extends State<NurseyScreen> {
                 SizedBox(
                   height: 5.0,
                 ),
+                SwitchListTile(
+                  value: _transfer,
+                  onChanged: (value) {
+                    setState(() {
+                      _transfer = value;
+                      context.bloc<VeterinaryCubit>().transferChanged(value);
+                    });
+                  },
+                  activeColor: ColorsApp.primaryColorBlue,
+                  title: Text('Necesita trasnporte'),
+                ),
+                _transfer
+                    ? buildTextFieldDirection()
+                    : SizedBox(
+                        height: 5.0,
+                      ),
                 Container(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    'Que malestar presenta su macosta?',
+                    'Que malestar precenta su mascota?',
                     style:
                         TextStyle(fontSize: 20.0, color: Colors.blueGrey[700]),
                   ),
@@ -147,10 +182,17 @@ class _NurseyScreenState extends State<NurseyScreen> {
                 SizedBox(
                   height: 10.0,
                 ),
-                CustomButton(
-                  color: ColorsApp.primaryColorOrange,
-                  press: () {},
-                  text: 'Reservar',
+                BlocBuilder<VeterinaryCubit, VeterinaryFormState>(
+                  builder: (context, state) {
+                    return CustomButton(
+                      color: ColorsApp.primaryColorBlue,
+                      press: state.description != '' &&
+                              state.hourRerservation != null
+                          ? () {}
+                          : null,
+                      text: 'Reservar',
+                    );
+                  },
                 )
               ],
             ),
@@ -160,61 +202,23 @@ class _NurseyScreenState extends State<NurseyScreen> {
     );
   }
 
-  Widget buildAgeDog() {
-    return Row(
-      children: [
-        Container(
-          alignment: Alignment.topLeft,
-          child: Text(
-            'Edad',
-            style: TextStyle(fontSize: 15.0, color: Colors.blueGrey[700]),
-          ),
-        ),
-        Expanded(
-          child: Container(
-            alignment: Alignment.center,
-            child: DropdownButtonHideUnderline(
-              child: ButtonTheme(
-                alignedDropdown: true,
-                child: DropdownButton(
-                  items: List.generate(
-                      20,
-                      (index) => DropdownMenuItem(
-                            child: Text('$index'),
-                            value: index,
-                          )),
-                  value: edad,
-                  onChanged: (value) {
-                    setState(() {
-                      edad = value;
-                    });
-                  },
-                ),
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget buildTimeTable() {
+  Widget buildTimeTable(List<DateTime> list) {
     return Container(
       alignment: Alignment.center,
       width: double.infinity,
       child: Wrap(
         spacing: 15.0,
         children: List<Widget>.generate(
-          6,
+          list.length,
           (int index) {
             return ChoiceChip(
               label: Text(
-                '4:00' + ' a.m',
+                DateFormat.jm().format(list[index]),
                 style: TextStyle(color: Colors.white, fontSize: 12.0),
               ),
               selected: _valueM == index,
               selectedColor: ColorsApp.primaryColorOrange,
-              backgroundColor: Colors.blueGrey[300],
+              backgroundColor: ColorsApp.secondaryColorlightBlue,
               avatar: Icon(
                 FontAwesomeIcons.clock,
                 color: Colors.white,
@@ -222,6 +226,7 @@ class _NurseyScreenState extends State<NurseyScreen> {
               onSelected: (bool selected) {
                 setState(() {
                   _valueM = selected ? index : null;
+                  context.bloc<VeterinaryCubit>().hourChanged(list[index]);
                 });
               },
             );
@@ -231,7 +236,7 @@ class _NurseyScreenState extends State<NurseyScreen> {
     );
   }
 
-  Widget buildTypeFur() {
+  Widget buildTypeRace() {
     return Row(
       children: [
         Container(
@@ -251,17 +256,18 @@ class _NurseyScreenState extends State<NurseyScreen> {
                   items: [
                     DropdownMenuItem(
                       child: Text('Labrador'),
-                      value: '1',
+                      value: 'Labrador',
                     ),
                     DropdownMenuItem(
-                      child: Text('Salchicha'),
-                      value: '2',
+                      child: Text('Pastor Aleman'),
+                      value: 'Pastor Aleman',
                     )
                   ],
                   value: _valueTypeFur,
                   onChanged: (value) {
                     setState(() {
                       _valueTypeFur = value;
+                      context.bloc<VeterinaryCubit>().typeRaceChanged(value);
                     });
                   },
                 ),
@@ -278,6 +284,8 @@ class _NurseyScreenState extends State<NurseyScreen> {
       padding: EdgeInsets.only(top: 8.0),
       child: TextField(
           maxLines: 10,
+          onChanged: (value) =>
+              context.bloc<VeterinaryCubit>().descriptionChanged(value),
           decoration: InputDecoration(
             hintText: 'Escriba aqui',
             filled: true,
@@ -291,6 +299,71 @@ class _NurseyScreenState extends State<NurseyScreen> {
               borderSide: BorderSide(color: Colors.grey),
             ),
           )),
+    );
+  }
+
+  Widget buildTextFieldDirection() {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 5.0),
+      child: Container(
+        padding: EdgeInsets.only(top: 8.0),
+        child: TextField(
+            maxLines: 3,
+            onChanged: (value) =>
+                context.bloc<VeterinaryCubit>().direccionChanged(value),
+            decoration: InputDecoration(
+              hintText: 'Escriba aqui la dirección',
+              filled: true,
+              fillColor: Color(0xFFDBEDFF),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                borderSide: BorderSide(color: Colors.grey),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                borderSide: BorderSide(color: Colors.grey),
+              ),
+            )),
+      ),
+    );
+  }
+
+  Widget buildAgeDog() {
+    return Row(
+      children: [
+        Container(
+          alignment: Alignment.topLeft,
+          child: Text(
+            'Edad',
+            style: TextStyle(fontSize: 20.0, color: Colors.blueGrey[700]),
+          ),
+        ),
+        Expanded(
+          child: Container(
+            alignment: Alignment.center,
+            child: DropdownButtonHideUnderline(
+              child: ButtonTheme(
+                alignedDropdown: true,
+                child: DropdownButton(
+                  items: List.generate(
+                      20,
+                      (index) => DropdownMenuItem(
+                            child: Text('$index'),
+                            value: index,
+                          )),
+                  value: edad,
+                  onChanged: (value) {
+                    setState(() {
+                      edad = value;
+                      context.bloc<VeterinaryCubit>().ageChanged(value);
+                    });
+                  },
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
