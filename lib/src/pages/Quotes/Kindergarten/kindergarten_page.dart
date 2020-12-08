@@ -72,6 +72,7 @@ class _BodyState extends State<Body> {
     // TODO: implement initState
     super.initState();
     _calendarController = CalendarController();
+    context.bloc<KinderCubit>().dateInCalendarChanged(DateTime.now());
   }
 
   @override
@@ -85,8 +86,38 @@ class _BodyState extends State<Body> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(
-          height: 5,
+        TableCalendar(
+          onDaySelected: (day, events, holidays) =>
+              BlocProvider.of<KinderCubit>(context).dateInCalendarChanged(day),
+          calendarController: _calendarController,
+          startDay: DateTime.now(),
+          initialCalendarFormat: CalendarFormat.week,
+          startingDayOfWeek: StartingDayOfWeek.monday,
+          formatAnimation: FormatAnimation.slide,
+          headerStyle: HeaderStyle(
+            centerHeaderTitle: true,
+            formatButtonVisible: false,
+            titleTextStyle: TextStyle(color: Colors.white, fontSize: 16),
+            leftChevronIcon: Icon(
+              Icons.arrow_back_ios,
+              color: Colors.white,
+              size: 15,
+            ),
+            rightChevronIcon: Icon(
+              Icons.arrow_forward_ios,
+              color: Colors.white,
+              size: 15,
+            ),
+            leftChevronMargin: EdgeInsets.only(left: 70),
+            rightChevronMargin: EdgeInsets.only(right: 70),
+          ),
+          calendarStyle: CalendarStyle(
+              selectedColor: ColorsApp.primaryColorOrange,
+              weekendStyle: TextStyle(color: Colors.white),
+              weekdayStyle: TextStyle(color: Colors.white)),
+          daysOfWeekStyle: DaysOfWeekStyle(
+              weekendStyle: TextStyle(color: Colors.white),
+              weekdayStyle: TextStyle(color: Colors.white)),
         ),
         buildForm()
       ],
@@ -114,12 +145,12 @@ class _BodyState extends State<Body> {
                       children: [
                         BlocBuilder<KinderCubit, KinderState>(
                           buildWhen: (previous, current) =>
-                              previous.entryDate != current.entryDate,
+                              previous.entryHour != current.entryHour,
                           builder: (context, state) {
                             return buildLastHourOf(
                                 'Hora de entrada',
                                 DateFormat.jm()
-                                    .format(state.entryDate ?? DateTime.now()),
+                                    .format(state.entryHour ?? DateTime.now()),
                                 'entry');
                           },
                         ),
@@ -128,12 +159,12 @@ class _BodyState extends State<Body> {
                         ),
                         BlocBuilder<KinderCubit, KinderState>(
                           buildWhen: (previous, current) =>
-                              previous.departureDate != current.departureDate,
+                              previous.departureHour != current.departureHour,
                           builder: (context, state) {
                             return buildLastHourOf(
                                 'Fecha de salida',
                                 DateFormat.jm().format(
-                                    state.departureDate ?? DateTime.now()),
+                                    state.departureHour ?? DateTime.now()),
                                 'out');
                           },
                         ),
@@ -384,7 +415,7 @@ class _BodyState extends State<Body> {
       padding: EdgeInsets.only(top: 8.0),
       child: TextField(
           onChanged: (value) =>
-              context.bloc<HotelCubit>().userPickupChanged(value),
+              context.bloc<KinderCubit>().userPickupChanged(value),
           maxLines: 1,
           decoration: InputDecoration(
             hintText: 'Escriba aqui',

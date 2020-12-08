@@ -2,6 +2,7 @@ part of 'kinder_cubit.dart';
 
 class KinderState extends Equatable {
   const KinderState({
+    this.date,
     this.quotas,
     this.race = 'Labrador',
     this.age = 1,
@@ -14,11 +15,12 @@ class KinderState extends Equatable {
     this.isVaccinationUpDate = false,
     this.isCastrated = false,
     this.isSociable = false,
-    this.entryDate,
-    this.departureDate,
+    this.entryHour,
+    this.departureHour,
   });
-  final DateTime entryDate;
-  final DateTime departureDate;
+  final DateTime date;
+  final DateTime entryHour;
+  final DateTime departureHour;
   final int quotas;
   final String race;
   final int age;
@@ -33,8 +35,9 @@ class KinderState extends Equatable {
   final bool isSociable;
 
   KinderState copyWith({
-    DateTime entryDate,
-    DateTime departureDate,
+    DateTime date,
+    DateTime entryHour,
+    DateTime departureHour,
     int quotas,
     String race,
     int age,
@@ -49,8 +52,9 @@ class KinderState extends Equatable {
     bool isSociable,
   }) {
     return KinderState(
-        entryDate: entryDate ?? this.entryDate,
-        departureDate: departureDate ?? this.departureDate,
+        date: date ?? this.date,
+        entryHour: entryHour ?? this.entryHour,
+        departureHour: departureHour ?? this.departureHour,
         quotas: quotas ?? this.quotas,
         race: race ?? this.race,
         age: age ?? this.age,
@@ -67,8 +71,8 @@ class KinderState extends Equatable {
 
   @override
   List<Object> get props => [
-        entryDate,
-        departureDate,
+        entryHour,
+        departureHour,
         quotas,
         race,
         age,

@@ -8,11 +8,11 @@ class KinderCubit extends Cubit<KinderState> {
   KinderCubit() : super(KinderState());
 
   void entryHourChanged(DateTime date) {
-    emit(state.copyWith(entryDate: date));
+    emit(state.copyWith(entryHour: date));
   }
 
   void departureHourChanged(DateTime date) {
-    emit(state.copyWith(departureDate: date));
+    emit(state.copyWith(departureHour: date));
   }
 
   void raceChanged(String race) {
@@ -58,5 +58,9 @@ class KinderCubit extends Cubit<KinderState> {
 
   void isSociableChanged(bool value) {
     emit(state.copyWith(isSociable: value));
+  }
+
+  void dateInCalendarChanged(DateTime date) {
+    emit(state.copyWith(date: date));
   }
 }
