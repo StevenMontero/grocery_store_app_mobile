@@ -5,10 +5,11 @@ import 'package:lamanda_petshopcr/src/models/userProfile.dart';
 class StheticAppointment {
   String appointmentId;
   DateTime entrytDate;
+  DateTime entrytHour;
   UserProfile client;
   //List<Pet> petList;
   bool isConfirmed;
-  bool transfer; 
+  bool transfer;
   String address;
   String fur;
 
@@ -18,6 +19,7 @@ class StheticAppointment {
       this.client,
       //this.petList,
       this.isConfirmed,
+      this.entrytHour,
       this.address,
       this.transfer,
       this.fur});
@@ -29,6 +31,7 @@ class StheticAppointment {
     this.entrytDate = json['entrytDate'].toDate();
     this.client = json['entryUser'];
     this.appointmentId = json['id'];
+    this.entrytHour = json['entrytHour'].toDate();
     //this.petList = getPetList.getPetList();
     this.isConfirmed = json['isConfirmed'];
     this.transfer = json['transfer'];
@@ -38,7 +41,8 @@ class StheticAppointment {
   Map<String, dynamic> toJson() {
     return {
       'direction': this.address,
-      'entryDate': this.entrytDate,
+      'entrytDate': this.entrytDate,
+      'entrytHour': this.entrytHour,
       'entryUser': this.client.toJson(),
       'id': this.appointmentId,
       //'petList': this.petList,

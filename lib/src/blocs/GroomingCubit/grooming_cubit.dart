@@ -4,8 +4,6 @@ import 'package:formz/formz.dart';
 import 'package:lamanda_petshopcr/src/models/sthetic_appointment.dart';
 import 'package:lamanda_petshopcr/src/models/userProfile.dart';
 import 'package:lamanda_petshopcr/src/repository/sthetic_appointment_repositorydb.dart';
-//import 'package:lamanda_petshopcr/src/utils/regularExpressions/text_noempty.dart';
-
 part 'grooming_state.dart';
 
 class GroomingCubit extends Cubit<GroomingFormState> {
@@ -13,17 +11,22 @@ class GroomingCubit extends Cubit<GroomingFormState> {
   final StheticAppointmentRepository _appointmentRepository;
   StheticAppointment stheticAppointment;
 
-  void dateInCalendarChanged(DateTime date) async {
+  void scheduleLoad(DateTime date) async {
     try {
       emit(state.copyWith(status: FormzStatus.submissionInProgress));
       final list = await _appointmentRepository.getListAppointmetsFree(date);
       emit(state.copyWith(
           schedule: list,
+          date: DateTime.now(),
           status: FormzStatus.submissionSuccess,
           hourRerservation: list[0]));
     } catch (e) {
       emit(state.copyWith(status: FormzStatus.submissionFailure));
     }
+  }
+
+  void dateInCalendarChanged(DateTime date) async {
+    emit(state.copyWith(date: date));
   }
 
   void hourChanged(DateTime date) async {
@@ -39,28 +42,26 @@ class GroomingCubit extends Cubit<GroomingFormState> {
   }
 
   void transferChanged(bool transfer) async {
-    emit(state.copyWith(
-        transporte: transfer, direccion: transfer ? state.address : ''));
+    emit(state.copyWith(transfer: transfer));
   }
 
   void direccionChanged(String dir) async {
-    emit(state.copyWith(direccion: dir));
+    emit(state.copyWith(address: dir));
   }
 
-  Future<void> addAppointmentGroomingForm (UserProfile user) async{
-    emit(state.copyWith(status: FormzStatus.submissionSuccess));
-    try{
+  Future<void> addAppointmentGroomingForm(UserProfile user) async {
+    try {
+      final a = state.address;
       stheticAppointment = new StheticAppointment(
-        entrytDate: state.hourRerservation,
-        client: user,
-        isConfirmed: false,
-        transfer: state.transfer,
-        address: state.address,
-        fur: state.typeFur
-      );
+          entrytDate: state.date,
+          entrytHour: state.hourRerservation,
+          client: user,
+          isConfirmed: false,
+          transfer: state.transfer,
+          address: state.transfer ? state.address : '',
+          fur: state.typeFur);
       _appointmentRepository.addNewAppointment(stheticAppointment);
-
-    }catch (error){
+    } catch (error) {
       emit(state.copyWith(status: FormzStatus.submissionFailure));
     }
   }

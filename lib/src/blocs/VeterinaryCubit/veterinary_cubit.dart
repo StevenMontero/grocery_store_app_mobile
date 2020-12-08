@@ -9,12 +9,13 @@ class VeterinaryCubit extends Cubit<VeterinaryFormState> {
   VeterinaryCubit(this._appointmentRepository) : super(VeterinaryFormState());
   final VeterinaryAppointmentRepository _appointmentRepository;
 
-  void dateInCalendarChanged(DateTime date) async {
+  void scheduleLoad(DateTime date) async {
     try {
       emit(state.copyWith(status: FormzStatus.submissionInProgress));
       final list = await _appointmentRepository.getListAppointmetsFree(date);
       emit(state.copyWith(
           schedule: list,
+          date: DateTime.now(),
           status: FormzStatus.submissionSuccess,
           hourRerservation: list[0]));
     } catch (e) {
@@ -23,6 +24,10 @@ class VeterinaryCubit extends Cubit<VeterinaryFormState> {
   }
 
   void hourChanged(DateTime date) async {
+    emit(state.copyWith(hourRerservation: date));
+  }
+
+  void dateChanged(DateTime date) async {
     emit(state.copyWith(hourRerservation: date));
   }
 

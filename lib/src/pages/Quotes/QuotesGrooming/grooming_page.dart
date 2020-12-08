@@ -21,7 +21,7 @@ class _GroomingScreenState extends State<GroomingScreen> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => GroomingCubit(StheticAppointmentRepository())
-        ..dateInCalendarChanged(DateTime.now()),
+        ..scheduleLoad(DateTime.now()),
       child: Scaffold(
           backgroundColor: ColorsApp.primaryColorBlue,
           appBar: AppBar(
@@ -140,6 +140,7 @@ class _BodyState extends State<Body> {
                     buildWhen: (previous, current) =>
                         previous.schedule != current.schedule,
                     builder: (context, state) {
+                      print('aaaaaaaaaaaaaaaa' + state.description);
                       return state.status != FormzStatus.submissionInProgress
                           ? buildTimeTable(state.schedule)
                           : CircularProgressIndicator();
@@ -186,7 +187,10 @@ class _BodyState extends State<Body> {
                       press: () {
                         if (state.description != '' &&
                             state.hourRerservation != null) {
-                          final user = BlocProvider.of<AuthenticationBloc>(context).state.user;
+                          final user =
+                              BlocProvider.of<AuthenticationBloc>(context)
+                                  .state
+                                  .user;
                           context
                               .bloc<GroomingCubit>()
                               .addAppointmentGroomingForm(new UserProfile(
