@@ -18,13 +18,14 @@ class SignUpCubit extends Cubit<SignUpState> {
 
   final AuthenticationRepository _authenticationRepository;
   final UserRepository repository = new UserRepository();
-   FirebaseAuth auth = FirebaseAuth.instance;
+  FirebaseAuth auth = FirebaseAuth.instance;
 
   void emailChanged(String value) {
     final email = Email.dirty(value);
     emit(state.copyWith(
       email: email,
-      status: Formz.validate([email, state.password, state.userName, state.phone]),
+      status:
+          Formz.validate([email, state.password, state.userName, state.phone]),
     ));
   }
 
@@ -32,23 +33,28 @@ class SignUpCubit extends Cubit<SignUpState> {
     final password = Password.dirty(value);
     emit(state.copyWith(
       password: password,
-      status: Formz.validate([state.email, password, state.userName, state.phone]),
+      status:
+          Formz.validate([state.email, password, state.userName, state.phone]),
     ));
   }
+
   //valida el campo de texto del nombre de usuario.
   void userNameChanged(String value) {
     final userName = UserName.dirty(value);
     emit(state.copyWith(
       userName: userName,
-      status: Formz.validate([state.email, state.password, userName, state.phone]),
+      status:
+          Formz.validate([state.email, state.password, userName, state.phone]),
     ));
   }
-  //validad el campo de texto del telefono 
+
+  //validad el campo de texto del telefono
   void phoneChanged(String value) {
     final phone = NumberPhone.dirty(value);
     emit(state.copyWith(
       phone: phone,
-      status: Formz.validate([state.email, state.password, state.userName, phone]),
+      status:
+          Formz.validate([state.email, state.password, state.userName, phone]),
     ));
   }
 
@@ -56,20 +62,21 @@ class SignUpCubit extends Cubit<SignUpState> {
     if (!state.status.isValidated) return;
     emit(state.copyWith(status: FormzStatus.submissionInProgress));
 
-  try {
-    await _authenticationRepository.signUp(
-      email: state.email.value,
-      password: state.password.value,
-    );
+    try {
+      await _authenticationRepository.signUp(
+        email: state.email.value,
+        password: state.password.value,
+      );
       repository.addNewUser(new UserProfile(
           userName: state.userName.value,
-          email: state.email.value,
-          phone: state.phone.value ));
+          email: auth.currentUser.email,
+          phone: state.phone.value,
+          id: auth.currentUser.uid));
 
       emit(state.copyWith(status: FormzStatus.submissionSuccess));
     } on SignUpFailure catch (e) {
-        emit(state.copyWith(status: FormzStatus.submissionFailure,
-        message: e.getErrorMessage()));
+      emit(state.copyWith(
+          status: FormzStatus.submissionFailure, message: e.getErrorMessage()));
     }
   }
 }

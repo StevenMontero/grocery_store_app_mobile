@@ -2,8 +2,8 @@ part of 'grooming_cubit.dart';
 
 class GroomingFormState extends Equatable {
   const GroomingFormState(
-      {this.transporte = false,
-      this.direccion = '',
+      {this.transfer = false,
+      this.address = '',
       this.hourRerservation,
       this.typeFur = 'Liso',
       this.description = '',
@@ -14,8 +14,8 @@ class GroomingFormState extends Equatable {
   final String typeFur;
   final String description;
   final FormzStatus status;
-  final bool transporte;
-  final String direccion;
+  final bool transfer;
+  final String address;
 
   GroomingFormState copyWith({
     DateTime hourRerservation,
@@ -31,8 +31,8 @@ class GroomingFormState extends Equatable {
         typeFur: typeFur ?? this.typeFur,
         description: description ?? this.description,
         schedule: schedule ?? this.schedule,
-        direccion: direccion ?? this.direccion,
-        transporte: transporte ?? this.transporte,
+        address: direccion ?? this.address,
+        transfer: transporte ?? this.transfer,
         status: status ?? this.status);
   }
 
