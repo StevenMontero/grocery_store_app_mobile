@@ -38,7 +38,7 @@ class StheticAppointment {
   Map<String, dynamic> toJson() {
     return {
       'direction': this.address,
-      'entrytDate': this.entrytDate,
+      'entryDate': this.entrytDate,
       'entryUser': this.client.toJson(),
       'id': this.appointmentId,
       //'petList': this.petList,

@@ -17,7 +17,7 @@ class VeterinaryAppointment{
   });
 
   VeterinaryAppointment.fromJson(Map<String, dynamic> json){
-      this.date = json['entrytDate'];
+      this.date = json['entryDate'];
       this.symptoms = json['symptoms'];
       this.isConfirmed = json['isConfirmed'];
   }
@@ -25,7 +25,7 @@ class VeterinaryAppointment{
   Map<String, dynamic> toJson(){
     return {
       'id': this.appointmentId,
-      'entrytDate': this.date,
+      'entryDate': this.date,
       'entryUser': this.client,
       'symptoms': this.symptoms,
       'isConfirmed': this.isConfirmed,
