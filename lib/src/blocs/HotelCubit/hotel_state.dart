@@ -2,7 +2,7 @@ part of 'hotel_cubit.dart';
 
 class HotelState extends Equatable {
   const HotelState({
-    this.quotas,
+
     this.race = 'Labrador',
     this.age = 1,
     this.userDeliver,
@@ -16,10 +16,11 @@ class HotelState extends Equatable {
     this.isSociable = false,
     this.entryDate,
     this.departureDate,
+    this.status
   });
   final DateTime entryDate;
   final DateTime departureDate;
-  final int quotas;
+  final FormzStatus status;
   final String race;
   final int age;
   final UserProfile userDeliver;
@@ -35,7 +36,6 @@ class HotelState extends Equatable {
   HotelState copyWith({
     DateTime entryDate,
     DateTime departureDate,
-    int quotas,
     String race,
     int age,
     UserProfile userDeliver,
@@ -47,11 +47,12 @@ class HotelState extends Equatable {
     bool isVaccinationUpDate,
     bool isCastrated,
     bool isSociable,
+    FormzStatus status,
   }) {
     return HotelState(
         entryDate: entryDate ?? this.entryDate,
         departureDate: departureDate ?? this.departureDate,
-        quotas: quotas ?? this.quotas,
+        status: status ?? this.status,
         race: race ?? this.race,
         age: age ?? this.age,
         userDeliver: userDeliver ?? this.userDeliver,
@@ -69,7 +70,7 @@ class HotelState extends Equatable {
   List<Object> get props => [
         entryDate,
         departureDate,
-        quotas,
+        status,
         race,
         age,
         userDeliver,

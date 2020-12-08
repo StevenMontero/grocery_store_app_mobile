@@ -1,11 +1,16 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:formz/formz.dart';
+import 'package:lamanda_petshopcr/src/models/hotel_appointment.dart';
 import 'package:lamanda_petshopcr/src/models/userProfile.dart';
+import 'package:lamanda_petshopcr/src/repository/hotel_appointment_repositorydb.dart';
 
 part 'hotel_state.dart';
 
 class HotelCubit extends Cubit<HotelState> {
-  HotelCubit() : super(HotelState());
+  HotelCubit(this.hotelAppointmentRepository) : super(HotelState(entryDate: DateTime.now()));
+  final HotelAppointmentRepository hotelAppointmentRepository;
+  HotelAppointment hotelAppointment;
 
   void entryDateChanged(DateTime date) {
     emit(state.copyWith(entryDate: date));
@@ -58,5 +63,31 @@ class HotelCubit extends Cubit<HotelState> {
 
   void isSociableChanged(bool value) {
     emit(state.copyWith(isSociable: value));
+  }
+
+  Future<void> addAppointmentHotelForm (UserProfile user) async{
+    emit(state.copyWith(status: FormzStatus.submissionSuccess));
+    try{
+      hotelAppointment = new HotelAppointment(
+        age: state.age,
+        endDate: state.departureDate,
+        personPicksUp: state.userPickup,
+        addres: state.direccion,
+        startDate: state.entryDate,
+        client: user,
+        castrated: state.isCastrated,
+        isConfirmed: false,
+        sociable: state.isSociable,
+        vaccine: state.isVaccinationUpDate,
+        lastdeworming: state.lastDeworming,
+        pestProtection: state.lastProtectionFleas,
+        race: state.race,
+        transfer: state.transporte,
+      );      
+      hotelAppointmentRepository.addNewAppointment(hotelAppointment);
+
+    }catch (error){
+      emit(state.copyWith(status: FormzStatus.submissionFailure));
+    }
   }
 }

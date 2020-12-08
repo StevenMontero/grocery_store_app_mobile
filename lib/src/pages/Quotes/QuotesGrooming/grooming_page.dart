@@ -198,7 +198,7 @@ class _BodyState extends State<Body> {
                                   email: user.email,
                                   id: user.id,
                                   photoUri: user.photo));
-                        }
+                          Navigator.of(context).pop();}
                       },
                       text: 'Reservar',
                     );

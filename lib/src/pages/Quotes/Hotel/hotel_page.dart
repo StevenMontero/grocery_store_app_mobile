@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lamanda_petshopcr/src/blocs/AuthenticationBloc/authentication_bloc.dart';
 import 'package:lamanda_petshopcr/src/blocs/HotelCubit/hotel_cubit.dart';
 import 'package:lamanda_petshopcr/src/models/userProfile.dart';
+import 'package:lamanda_petshopcr/src/repository/hotel_appointment_repositorydb.dart';
 import 'package:lamanda_petshopcr/src/theme/colors.dart';
 import 'package:lamanda_petshopcr/src/widgets/custom_button.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -18,7 +19,7 @@ class _HotelScreenState extends State<HotelScreen> {
   Widget build(BuildContext context) {
     final user = BlocProvider.of<AuthenticationBloc>(context).state.user;
     return BlocProvider(
-        create: (context) => HotelCubit()
+        create: (context) => HotelCubit(HotelAppointmentRepository())
           ..userDeliverChanged(
               UserProfile(id: user.id, userName: user.name, email: user.email)),
         child: Scaffold(
@@ -210,7 +211,16 @@ class _BodyState extends State<Body> {
                     return CustomButton(
                       color: ColorsApp.primaryColorTurquoise,
                       press: state.userPickup != '' && state.userDeliver != null
-                          ? () {}
+                          ? () {
+                            final user = BlocProvider.of<AuthenticationBloc>(context).state.user;
+                            context
+                              .bloc<HotelCubit>()
+                              .addAppointmentHotelForm(new UserProfile(
+                                  userName: user.name,
+                                  email: user.email,
+                                  id: user.id,
+                                  photoUri: user.photo));
+                                  Navigator.of(context).pop();}
                           : null,
                       text: 'Reservar',
                     );

@@ -7,6 +7,7 @@ import 'package:lamanda_petshopcr/src/blocs/AuthenticationBloc/authentication_bl
 import 'package:lamanda_petshopcr/src/blocs/HotelCubit/hotel_cubit.dart';
 import 'package:lamanda_petshopcr/src/blocs/KinderCubit/kinder_cubit.dart';
 import 'package:lamanda_petshopcr/src/models/userProfile.dart';
+import 'package:lamanda_petshopcr/src/repository/daycare_appointment_repositorydb.dart';
 import 'package:lamanda_petshopcr/src/theme/colors.dart';
 import 'package:lamanda_petshopcr/src/widgets/custom_button.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -21,7 +22,7 @@ class _KindergartenScreenState extends State<KindergartenScreen> {
   Widget build(BuildContext context) {
     final user = BlocProvider.of<AuthenticationBloc>(context).state.user;
     return BlocProvider(
-        create: (context) => KinderCubit()
+        create: (context) => KinderCubit(DaycareAppointmentRepository())
           ..userDeliverChanged(
               UserProfile(id: user.id, userName: user.name, email: user.email)),
         child: Scaffold(
@@ -244,7 +245,17 @@ class _BodyState extends State<Body> {
                     return CustomButton(
                       color: ColorsApp.primaryColorPink,
                       press: state.userPickup != '' && state.userDeliver != null
-                          ? () {}
+                          ? () {
+                             final user = BlocProvider.of<AuthenticationBloc>(context).state.user;
+                              context
+                              .bloc<KinderCubit>()
+                              .addAppointmentDaycareForm(new UserProfile(
+                                  userName: user.name,
+                                  email: user.email,
+                                  id: user.id,
+                                  photoUri: user.photo));
+                                  Navigator.of(context).pop();
+                          }
                           : null,
                       text: 'Reservar',
                     );
