@@ -6,7 +6,6 @@ class UserProfile {
   String id;
   String userName;
   String email;
-  String password;
   String photoUri;
   String lastName;
   String address;
@@ -17,7 +16,6 @@ class UserProfile {
     this.id,
     this.userName,
     this.email,
-    this.password,
     this.photoUri,
     this.lastName,
     this.address,
@@ -31,7 +29,6 @@ class UserProfile {
       this.id = json['id'];
       this.userName = json['userName'];
       this.email = json['email'];
-      this.password = json['password'];
       this.photoUri = json['photoUri'];
       this.lastName = json['lastName'];
       this.address = json['address'];
@@ -44,7 +41,6 @@ class UserProfile {
       'id': this.id,
       'userName': this.userName,
       'email': this.email,
-      'password': this.password,
       'photoUri': this.photoUri,
       'lastName': this.lastName,
       'address': this.address,

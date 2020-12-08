@@ -5,7 +5,9 @@ class UserRepository{
   final CollectionReference _ref = FirebaseFirestore.instance.collection('users');
 
   Future<void> addNewUser(UserProfile user){
-    return _ref.add(user.toJson())
+    return _ref
+    .doc(user.id)
+    .set(user.toJson(), SetOptions(merge: true))
     .then((value) => print('User Added'))
     .catchError((error) => print('Failed to add user: $error'));
   }

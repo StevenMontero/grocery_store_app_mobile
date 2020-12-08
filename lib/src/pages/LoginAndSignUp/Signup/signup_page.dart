@@ -135,7 +135,7 @@ class BodyWidget extends StatelessWidget {
                                 builder: (context, state) {
                                   return TextFromField(
                                     errorOccurred: state.userName.invalid,
-                                    errorMessage: "No puede contener espacios ni símbolos",
+                                    errorMessage: "No debe ingresar caracteres especiales",
                                     icon: Icons.account_circle,
                                     password: false,
                                     lavel: AppLocalizations.of(context)
