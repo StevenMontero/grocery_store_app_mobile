@@ -262,7 +262,7 @@ class _BodyState extends State<Body> {
 
   Widget buildDatePiker(String date, String type) {
     return Container(
-      width: 160,
+      width: 170,
       child: OutlineButton(
         borderSide: BorderSide(color: ColorsApp.primaryColorTurquoise),
         highlightedBorderColor: ColorsApp.primaryColorTurquoise,
