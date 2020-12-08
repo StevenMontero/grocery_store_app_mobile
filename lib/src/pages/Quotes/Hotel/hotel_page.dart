@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lamanda_petshopcr/src/blocs/AuthenticationBloc/authentication_bloc.dart';
+import 'package:lamanda_petshopcr/src/blocs/HotelCubit/hotel_cubit.dart';
+import 'package:lamanda_petshopcr/src/models/userProfile.dart';
 import 'package:lamanda_petshopcr/src/theme/colors.dart';
 import 'package:lamanda_petshopcr/src/widgets/custom_button.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -9,9 +14,56 @@ class HotelScreen extends StatefulWidget {
 }
 
 class _HotelScreenState extends State<HotelScreen> {
+  @override
+  Widget build(BuildContext context) {
+    final user = BlocProvider.of<AuthenticationBloc>(context).state.user;
+    return BlocProvider(
+        create: (context) => HotelCubit()
+          ..userDeliverChanged(
+              UserProfile(id: user.id, userName: user.name, email: user.email)),
+        child: Scaffold(
+          backgroundColor: ColorsApp.primaryColorTurquoise,
+          appBar: AppBar(
+            leading: IconButton(
+                icon: Icon(
+                  Icons.arrow_back_ios,
+                  color: Colors.white,
+                  size: 25.0,
+                ),
+                onPressed: () => Navigator.of(context).pop()),
+            centerTitle: true,
+            elevation: 0,
+            backgroundColor: Colors.transparent,
+            title: Text(
+              "Hotel",
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+          body: Body(),
+        ));
+  }
+}
+
+class Body extends StatefulWidget {
+  const Body({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  _BodyState createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
   CalendarController _calendarController;
-  String _valueTypeFur = "1";
+
+  String _valueTypeRace = "Labrador";
   int edad = 0;
+
+  bool _isCastrated = false;
+  bool _isSociable = false;
+  bool _isVacunas = false;
+  bool _traslado = false;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -28,32 +80,13 @@ class _HotelScreenState extends State<HotelScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: ColorsApp.primaryColorTurquoise,
-      appBar: AppBar(
-        leading: IconButton(
-            icon: Icon(
-              Icons.arrow_back_ios,
-              color: Colors.white,
-              size: 25.0,
-            ),
-            onPressed: () => Navigator.of(context).pop()),
-        centerTitle: true,
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        title: Text(
-          "Hotel",
-          style: TextStyle(color: Colors.white),
+    return Column(
+      children: [
+        SizedBox(
+          height: 5,
         ),
-      ),
-      body: Column(
-        children: [
-          SizedBox(
-            height: 5,
-          ),
-          buildForm()
-        ],
-      ),
+        buildForm()
+      ],
     );
   }
 
@@ -76,11 +109,31 @@ class _HotelScreenState extends State<HotelScreen> {
                   children: [
                     Column(
                       children: [
-                        buildLastDateOf('Fecha de entrada'),
+                        BlocBuilder<HotelCubit, HotelState>(
+                          buildWhen: (previous, current) =>
+                              previous.entryDate != current.entryDate,
+                          builder: (context, state) {
+                            return buildLastDateOf(
+                                'Fecha de entrada',
+                                DateFormat.yMMMd()
+                                    .format(state.entryDate ?? DateTime.now()),
+                                'entry');
+                          },
+                        ),
                         SizedBox(
                           height: 10,
                         ),
-                        buildLastDateOf('Fecha de salida'),
+                        BlocBuilder<HotelCubit, HotelState>(
+                          buildWhen: (previous, current) =>
+                              previous.departureDate != current.departureDate,
+                          builder: (context, state) {
+                            return buildLastDateOf(
+                                'Fecha de salida',
+                                DateFormat.yMMMd().format(
+                                    state.departureDate ?? DateTime.now()),
+                                'departure');
+                          },
+                        ),
                         SizedBox(
                           height: 10,
                         ),
@@ -103,11 +156,6 @@ class _HotelScreenState extends State<HotelScreen> {
                 SizedBox(
                   height: 10,
                 ),
-                Text(
-                  'Encargado de entrega',
-                  style: TextStyle(fontSize: 15.0, color: Colors.blueGrey[700]),
-                ),
-                buildTextField(),
                 SizedBox(
                   height: 10,
                 ),
@@ -119,22 +167,54 @@ class _HotelScreenState extends State<HotelScreen> {
                 SizedBox(
                   height: 10,
                 ),
-                buildLastDateOf('Última fecha de desparasitación'),
+                BlocBuilder<HotelCubit, HotelState>(
+                  buildWhen: (previous, current) =>
+                      previous.lastDeworming != current.lastDeworming,
+                  builder: (context, state) {
+                    return buildLastDateOf(
+                        'Última fecha de desparasitación',
+                        DateFormat.yMMMd()
+                            .format(state.lastDeworming ?? DateTime.now()),
+                        'deworming');
+                  },
+                ),
                 SizedBox(
                   height: 10,
                 ),
-                buildLastDateOf('Ultima protección contra pulgas y garrapatas'),
+                BlocBuilder<HotelCubit, HotelState>(
+                  buildWhen: (previous, current) =>
+                      previous.lastProtectionFleas !=
+                      current.lastProtectionFleas,
+                  builder: (context, state) {
+                    return buildLastDateOf(
+                        'Ultima protección contra pulgas y garrapatas',
+                        DateFormat.yMMMd().format(
+                            state.lastProtectionFleas ?? DateTime.now()),
+                        'fleas');
+                  },
+                ),
                 SizedBox(
                   height: 10,
                 ),
                 buildOptionsLsit(),
+                _traslado
+                    ? buildTextFieldDirection()
+                    : SizedBox(
+                        height: 5.0,
+                      ),
                 SizedBox(
                   height: 10,
                 ),
-                CustomButton(
-                  color: ColorsApp.primaryColorTurquoise,
-                  press: () {},
-                  text: 'Reservar',
+                BlocBuilder<HotelCubit, HotelState>(
+                  builder: (context, state) {
+                    return CustomButton(
+                      color: ColorsApp.primaryColorTurquoise,
+                      press: state.userPickup != '' && state.userDeliver != null
+                          ? () {}
+                          : null,
+                      text: 'Reservar',
+                    );
+                  },
                 )
               ],
             ),
@@ -144,29 +224,33 @@ class _HotelScreenState extends State<HotelScreen> {
     );
   }
 
-  Container buildTimePiker(String type) {
-    return Container(
-      width: 160,
-      child: OutlineButton(
-        borderSide: BorderSide(color: ColorsApp.primaryColorPink),
-        highlightedBorderColor: ColorsApp.primaryColorPink,
-        highlightColor: ColorsApp.primaryColorPink,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-        onPressed: () => _selectTime(type),
-        child: Row(
-          children: [
-            Icon(Icons.access_time),
-            SizedBox(
-              width: 10,
-            ),
-            Text('10:00 a.m'),
-          ],
-        ),
+  Widget buildTextFieldDirection() {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 5.0),
+      child: Container(
+        padding: EdgeInsets.only(top: 8.0),
+        child: TextField(
+            maxLines: 3,
+            onChanged: (value) =>
+                context.bloc<HotelCubit>().direccionChanged(value),
+            decoration: InputDecoration(
+              hintText: 'Escriba aqui la dirección',
+              filled: true,
+              fillColor: Color(0xFFDBEDFF),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                borderSide: BorderSide(color: Colors.grey),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                borderSide: BorderSide(color: Colors.grey),
+              ),
+            )),
       ),
     );
   }
 
-  Widget buildDatePiker(String type) {
+  Widget buildDatePiker(String date, String type) {
     return Container(
       width: 160,
       child: OutlineButton(
@@ -174,37 +258,18 @@ class _HotelScreenState extends State<HotelScreen> {
         highlightedBorderColor: ColorsApp.primaryColorTurquoise,
         highlightColor: ColorsApp.primaryColorTurquoise,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-        onPressed: () => _presentDatePicker(),
+        onPressed: () => _presentDatePicker(type),
         child: Row(
           children: [
             Icon(Icons.calendar_today),
             SizedBox(
               width: 10,
             ),
-            Text('22/03/2020'),
+            Text(date),
           ],
         ),
       ),
     );
-  }
-
-  void _selectTime(String typeTime) async {
-    // final date = context.read<ReservationCubit>().state.date.value;
-    final date = DateTime.now();
-    if (date != null) {
-      TimeOfDay selectedTime = await showTimePicker(
-        context: context,
-        initialTime: TimeOfDay.now(),
-      );
-
-      final dateWithTime = DateTime(date.year, date.month, date.day,
-          selectedTime.hour, selectedTime.minute);
-      if (typeTime == 'CheckIn') {
-        // context.read<ReservationCubit>().dateCheckInChanged(dateWithTime);
-      } else {
-        // context.read<ReservationCubit>().dateCheckOutChanged(dateWithTime);
-      }
-    }
   }
 
   Widget buildTypeDog() {
@@ -226,18 +291,19 @@ class _HotelScreenState extends State<HotelScreen> {
                 child: DropdownButton(
                   items: [
                     DropdownMenuItem(
-                      child: Text('Liso'),
-                      value: '1',
+                      child: Text('Labrador'),
+                      value: 'Labrador',
                     ),
                     DropdownMenuItem(
-                      child: Text('Colocho'),
-                      value: '2',
+                      child: Text('Pastator Aleman'),
+                      value: 'Pastator Aleman',
                     )
                   ],
-                  value: _valueTypeFur,
+                  value: _valueTypeRace,
                   onChanged: (value) {
                     setState(() {
-                      _valueTypeFur = value;
+                      _valueTypeRace = value;
+                      context.bloc<HotelCubit>().raceChanged(value);
                     });
                   },
                 ),
@@ -276,6 +342,7 @@ class _HotelScreenState extends State<HotelScreen> {
                   onChanged: (value) {
                     setState(() {
                       edad = value;
+                      context.bloc<HotelCubit>().ageChanged(value);
                     });
                   },
                 ),
@@ -291,6 +358,8 @@ class _HotelScreenState extends State<HotelScreen> {
     return Container(
       padding: EdgeInsets.only(top: 8.0),
       child: TextField(
+          onChanged: (value) =>
+              context.bloc<HotelCubit>().userPickupChanged(value),
           maxLines: 1,
           decoration: InputDecoration(
             hintText: 'Escriba aqui',
@@ -308,7 +377,7 @@ class _HotelScreenState extends State<HotelScreen> {
     );
   }
 
-  Widget buildLastDateOf(String mensaje) {
+  Widget buildLastDateOf(String mensaje, String date, String type) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -316,12 +385,12 @@ class _HotelScreenState extends State<HotelScreen> {
           mensaje,
           style: TextStyle(fontSize: 15.0, color: Colors.blueGrey[700]),
         ),
-        buildDatePiker('')
+        buildDatePiker(date, type)
       ],
     );
   }
 
-  _presentDatePicker() async {
+  _presentDatePicker(String type) async {
     final refDate = DateTime.now();
     final picked = await showDatePicker(
         context: context,
@@ -329,7 +398,21 @@ class _HotelScreenState extends State<HotelScreen> {
         firstDate: refDate,
         lastDate: DateTime(refDate.year + 1, refDate.month, refDate.day));
 
-    // context.read<ReservationCubit>().dateReservationChange(picked);
+    switch (type) {
+      case 'entry':
+        context.bloc<HotelCubit>().entryDateChanged(picked);
+        break;
+      case 'departure':
+        context.bloc<HotelCubit>().departureDateChanged(picked);
+        break;
+      case 'deworming':
+        context.bloc<HotelCubit>().lastDewormingChanged(picked);
+        break;
+      case 'fleas':
+        context.bloc<HotelCubit>().lastProtectionFleasChanged(picked);
+        break;
+      default:
+    }
   }
 
   Widget buildOptionsLsit() {
@@ -338,26 +421,46 @@ class _HotelScreenState extends State<HotelScreen> {
         SwitchListTile(
           title: Text('Vacunas al dia'),
           activeColor: ColorsApp.primaryColorTurquoise,
-          value: true,
-          onChanged: (value) {},
+          value: _isVacunas,
+          onChanged: (value) {
+            setState(() {
+              _isVacunas = value;
+              context.bloc<HotelCubit>().isVaccinationUpDateChanged(value);
+            });
+          },
         ),
         SwitchListTile(
           title: Text('Castrado'),
           activeColor: ColorsApp.primaryColorTurquoise,
-          value: true,
-          onChanged: (value) {},
+          value: _isCastrated,
+          onChanged: (value) {
+            setState(() {
+              _isCastrated = value;
+              context.bloc<HotelCubit>().isCastratedDateChanged(value);
+            });
+          },
         ),
         SwitchListTile(
           title: Text('Sociable'),
           activeColor: ColorsApp.primaryColorTurquoise,
-          value: true,
-          onChanged: (value) {},
+          value: _isSociable,
+          onChanged: (value) {
+            setState(() {
+              _isSociable = value;
+              context.bloc<HotelCubit>().isSociableChanged(value);
+            });
+          },
         ),
         SwitchListTile(
           title: Text('Traslado'),
           activeColor: ColorsApp.primaryColorTurquoise,
-          value: true,
-          onChanged: (value) {},
+          value: _traslado,
+          onChanged: (value) {
+            setState(() {
+              _traslado = value;
+              context.bloc<HotelCubit>().transporteChanged(value);
+            });
+          },
         ),
       ],
     );

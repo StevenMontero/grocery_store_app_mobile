@@ -1,4 +1,12 @@
+//KindergartenScreen
+
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lamanda_petshopcr/src/blocs/AuthenticationBloc/authentication_bloc.dart';
+import 'package:lamanda_petshopcr/src/blocs/HotelCubit/hotel_cubit.dart';
+import 'package:lamanda_petshopcr/src/blocs/KinderCubit/kinder_cubit.dart';
+import 'package:lamanda_petshopcr/src/models/userProfile.dart';
 import 'package:lamanda_petshopcr/src/theme/colors.dart';
 import 'package:lamanda_petshopcr/src/widgets/custom_button.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -9,9 +17,56 @@ class KindergartenScreen extends StatefulWidget {
 }
 
 class _KindergartenScreenState extends State<KindergartenScreen> {
+  @override
+  Widget build(BuildContext context) {
+    final user = BlocProvider.of<AuthenticationBloc>(context).state.user;
+    return BlocProvider(
+        create: (context) => KinderCubit()
+          ..userDeliverChanged(
+              UserProfile(id: user.id, userName: user.name, email: user.email)),
+        child: Scaffold(
+          backgroundColor: ColorsApp.primaryColorPink,
+          appBar: AppBar(
+            leading: IconButton(
+                icon: Icon(
+                  Icons.arrow_back_ios,
+                  color: Colors.white,
+                  size: 25.0,
+                ),
+                onPressed: () => Navigator.of(context).pop()),
+            centerTitle: true,
+            elevation: 0,
+            backgroundColor: Colors.transparent,
+            title: Text(
+              "Guarderia",
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+          body: Body(),
+        ));
+  }
+}
+
+class Body extends StatefulWidget {
+  const Body({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  _BodyState createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
   CalendarController _calendarController;
-  String _valueTypeFur = "1";
+
+  String _valueTypeRace = "Labrador";
   int edad = 0;
+
+  bool _isCastrated = false;
+  bool _isSociable = false;
+  bool _isVacunas = false;
+  bool _traslado = false;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -28,62 +83,13 @@ class _KindergartenScreenState extends State<KindergartenScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: ColorsApp.primaryColorPink,
-      appBar: AppBar(
-        leading: IconButton(
-            icon: Icon(
-              Icons.arrow_back_ios,
-              color: Colors.white,
-              size: 25.0,
-            ),
-            onPressed: () => Navigator.of(context).pop()),
-        centerTitle: true,
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        title: Text(
-          "Seleccione una fecha",
-          style: TextStyle(color: Colors.white),
+    return Column(
+      children: [
+        SizedBox(
+          height: 5,
         ),
-      ),
-      body: Column(
-        children: [
-          TableCalendar(
-            calendarController: _calendarController,
-            initialCalendarFormat: CalendarFormat.week,
-            startingDayOfWeek: StartingDayOfWeek.monday,
-            formatAnimation: FormatAnimation.slide,
-            headerStyle: HeaderStyle(
-              centerHeaderTitle: true,
-              formatButtonVisible: false,
-              titleTextStyle: TextStyle(color: Colors.white, fontSize: 16),
-              leftChevronIcon: Icon(
-                Icons.arrow_back_ios,
-                color: Colors.white,
-                size: 15,
-              ),
-              rightChevronIcon: Icon(
-                Icons.arrow_forward_ios,
-                color: Colors.white,
-                size: 15,
-              ),
-              leftChevronMargin: EdgeInsets.only(left: 70),
-              rightChevronMargin: EdgeInsets.only(right: 70),
-            ),
-            calendarStyle: CalendarStyle(
-                selectedColor: ColorsApp.primaryColorOrange,
-                weekendStyle: TextStyle(color: Colors.white),
-                weekdayStyle: TextStyle(color: Colors.white)),
-            daysOfWeekStyle: DaysOfWeekStyle(
-                weekendStyle: TextStyle(color: Colors.white),
-                weekdayStyle: TextStyle(color: Colors.white)),
-          ),
-          SizedBox(
-            height: 5,
-          ),
-          buildForm()
-        ],
-      ),
+        buildForm()
+      ],
     );
   }
 
@@ -106,21 +112,34 @@ class _KindergartenScreenState extends State<KindergartenScreen> {
                   children: [
                     Column(
                       children: [
-                        Text(
-                          'Hora de entrada',
-                          style: TextStyle(
-                              fontSize: 15.0, color: Colors.blueGrey[700]),
+                        BlocBuilder<KinderCubit, KinderState>(
+                          buildWhen: (previous, current) =>
+                              previous.entryDate != current.entryDate,
+                          builder: (context, state) {
+                            return buildLastHourOf(
+                                'Hora de entrada',
+                                DateFormat.jm()
+                                    .format(state.entryDate ?? DateTime.now()),
+                                'entry');
+                          },
                         ),
-                        buildTimePiker(''),
                         SizedBox(
                           height: 10,
                         ),
-                        Text(
-                          'Hora de salida',
-                          style: TextStyle(
-                              fontSize: 15.0, color: Colors.blueGrey[700]),
+                        BlocBuilder<KinderCubit, KinderState>(
+                          buildWhen: (previous, current) =>
+                              previous.departureDate != current.departureDate,
+                          builder: (context, state) {
+                            return buildLastHourOf(
+                                'Fecha de salida',
+                                DateFormat.jm().format(
+                                    state.departureDate ?? DateTime.now()),
+                                'out');
+                          },
                         ),
-                        buildTimePiker(''),
+                        SizedBox(
+                          height: 10,
+                        ),
                       ],
                     ),
                     Expanded(
@@ -140,11 +159,6 @@ class _KindergartenScreenState extends State<KindergartenScreen> {
                 SizedBox(
                   height: 10,
                 ),
-                Text(
-                  'Encargado de entrega',
-                  style: TextStyle(fontSize: 15.0, color: Colors.blueGrey[700]),
-                ),
-                buildTextField(),
                 SizedBox(
                   height: 10,
                 ),
@@ -156,22 +170,54 @@ class _KindergartenScreenState extends State<KindergartenScreen> {
                 SizedBox(
                   height: 10,
                 ),
-                buildLastDateOf('Última fecha de desparasitación'),
+                BlocBuilder<KinderCubit, KinderState>(
+                  buildWhen: (previous, current) =>
+                      previous.lastDeworming != current.lastDeworming,
+                  builder: (context, state) {
+                    return buildLastDateOf(
+                        'Última fecha de desparasitación',
+                        DateFormat.yMMMd()
+                            .format(state.lastDeworming ?? DateTime.now()),
+                        'deworming');
+                  },
+                ),
                 SizedBox(
                   height: 10,
                 ),
-                buildLastDateOf('Ultima protección contra pulgas y garrapatas'),
+                BlocBuilder<KinderCubit, KinderState>(
+                  buildWhen: (previous, current) =>
+                      previous.lastProtectionFleas !=
+                      current.lastProtectionFleas,
+                  builder: (context, state) {
+                    return buildLastDateOf(
+                        'Ultima protección contra pulgas y garrapatas',
+                        DateFormat.yMMMd().format(
+                            state.lastProtectionFleas ?? DateTime.now()),
+                        'fleas');
+                  },
+                ),
                 SizedBox(
                   height: 10,
                 ),
                 buildOptionsLsit(),
+                _traslado
+                    ? buildTextFieldDirection()
+                    : SizedBox(
+                        height: 5.0,
+                      ),
                 SizedBox(
                   height: 10,
                 ),
-                CustomButton(
-                  color: ColorsApp.primaryColorPink,
-                  press: () {},
-                  text: 'Reservar',
+                BlocBuilder<KinderCubit, KinderState>(
+                  builder: (context, state) {
+                    return CustomButton(
+                      color: ColorsApp.primaryColorPink,
+                      press: state.userPickup != '' && state.userDeliver != null
+                          ? () {}
+                          : null,
+                      text: 'Reservar',
+                    );
+                  },
                 )
               ],
             ),
@@ -181,29 +227,33 @@ class _KindergartenScreenState extends State<KindergartenScreen> {
     );
   }
 
-  Container buildTimePiker(String type) {
-    return Container(
-      width: 160,
-      child: OutlineButton(
-        borderSide: BorderSide(color: ColorsApp.primaryColorPink),
-        highlightedBorderColor: ColorsApp.primaryColorPink,
-        highlightColor: ColorsApp.primaryColorPink,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-        onPressed: () => _selectTime(type),
-        child: Row(
-          children: [
-            Icon(Icons.access_time),
-            SizedBox(
-              width: 10,
-            ),
-            Text('10:00 a.m'),
-          ],
-        ),
+  Widget buildTextFieldDirection() {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 5.0),
+      child: Container(
+        padding: EdgeInsets.only(top: 8.0),
+        child: TextField(
+            maxLines: 3,
+            onChanged: (value) =>
+                context.bloc<HotelCubit>().direccionChanged(value),
+            decoration: InputDecoration(
+              hintText: 'Escriba aqui la dirección',
+              filled: true,
+              fillColor: Color(0xFFDBEDFF),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                borderSide: BorderSide(color: Colors.grey),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                borderSide: BorderSide(color: Colors.grey),
+              ),
+            )),
       ),
     );
   }
 
-  Widget buildDatePiker(String type) {
+  Widget buildDatePiker(String date, String type) {
     return Container(
       width: 160,
       child: OutlineButton(
@@ -211,37 +261,40 @@ class _KindergartenScreenState extends State<KindergartenScreen> {
         highlightedBorderColor: ColorsApp.primaryColorPink,
         highlightColor: ColorsApp.primaryColorPink,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-        onPressed: () => _presentDatePicker(),
+        onPressed: () => _presentDatePicker(type),
         child: Row(
           children: [
             Icon(Icons.calendar_today),
             SizedBox(
               width: 10,
             ),
-            Text('22/03/2020'),
+            Text(date),
           ],
         ),
       ),
     );
   }
 
-  void _selectTime(String typeTime) async {
-    // final date = context.read<ReservationCubit>().state.date.value;
-    final date = DateTime.now();
-    if (date != null) {
-      TimeOfDay selectedTime = await showTimePicker(
-        context: context,
-        initialTime: TimeOfDay.now(),
-      );
-
-      final dateWithTime = DateTime(date.year, date.month, date.day,
-          selectedTime.hour, selectedTime.minute);
-      if (typeTime == 'CheckIn') {
-        // context.read<ReservationCubit>().dateCheckInChanged(dateWithTime);
-      } else {
-        // context.read<ReservationCubit>().dateCheckOutChanged(dateWithTime);
-      }
-    }
+  Widget builHourPiker(String date, String type) {
+    return Container(
+      width: 160,
+      child: OutlineButton(
+        borderSide: BorderSide(color: ColorsApp.primaryColorPink),
+        highlightedBorderColor: ColorsApp.primaryColorPink,
+        highlightColor: ColorsApp.primaryColorPink,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+        onPressed: () => _timePiker(type),
+        child: Row(
+          children: [
+            Icon(Icons.calendar_today),
+            SizedBox(
+              width: 10,
+            ),
+            Text(date),
+          ],
+        ),
+      ),
+    );
   }
 
   Widget buildTypeDog() {
@@ -263,18 +316,19 @@ class _KindergartenScreenState extends State<KindergartenScreen> {
                 child: DropdownButton(
                   items: [
                     DropdownMenuItem(
-                      child: Text('Liso'),
-                      value: '1',
+                      child: Text('Labrador'),
+                      value: 'Labrador',
                     ),
                     DropdownMenuItem(
-                      child: Text('Colocho'),
-                      value: '2',
+                      child: Text('Pastator Aleman'),
+                      value: 'Pastator Aleman',
                     )
                   ],
-                  value: _valueTypeFur,
+                  value: _valueTypeRace,
                   onChanged: (value) {
                     setState(() {
-                      _valueTypeFur = value;
+                      _valueTypeRace = value;
+                      context.bloc<HotelCubit>().raceChanged(value);
                     });
                   },
                 ),
@@ -313,6 +367,7 @@ class _KindergartenScreenState extends State<KindergartenScreen> {
                   onChanged: (value) {
                     setState(() {
                       edad = value;
+                      context.bloc<HotelCubit>().ageChanged(value);
                     });
                   },
                 ),
@@ -328,6 +383,8 @@ class _KindergartenScreenState extends State<KindergartenScreen> {
     return Container(
       padding: EdgeInsets.only(top: 8.0),
       child: TextField(
+          onChanged: (value) =>
+              context.bloc<HotelCubit>().userPickupChanged(value),
           maxLines: 1,
           decoration: InputDecoration(
             hintText: 'Escriba aqui',
@@ -345,7 +402,7 @@ class _KindergartenScreenState extends State<KindergartenScreen> {
     );
   }
 
-  Widget buildLastDateOf(String mensaje) {
+  Widget buildLastDateOf(String mensaje, String date, String type) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -353,12 +410,44 @@ class _KindergartenScreenState extends State<KindergartenScreen> {
           mensaje,
           style: TextStyle(fontSize: 15.0, color: Colors.blueGrey[700]),
         ),
-        buildDatePiker('')
+        buildDatePiker(date, type)
       ],
     );
   }
 
-  _presentDatePicker() async {
+  Widget buildLastHourOf(String mensaje, String date, String type) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          mensaje,
+          style: TextStyle(fontSize: 15.0, color: Colors.blueGrey[700]),
+        ),
+        builHourPiker(date, type)
+      ],
+    );
+  }
+
+  void _timePiker(String type) async {
+    TimeOfDay selectedTime = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    );
+    final date = DateTime.now();
+    final dateWithTime = DateTime(date.year, date.month, date.day,
+        selectedTime.hour, selectedTime.minute);
+    switch (type) {
+      case 'entry':
+        context.bloc<KinderCubit>().entryHourChanged(dateWithTime);
+        break;
+      case 'out':
+        context.bloc<KinderCubit>().departureHourChanged(dateWithTime);
+        break;
+      default:
+    }
+  }
+
+  _presentDatePicker(String type) async {
     final refDate = DateTime.now();
     final picked = await showDatePicker(
         context: context,
@@ -366,7 +455,15 @@ class _KindergartenScreenState extends State<KindergartenScreen> {
         firstDate: refDate,
         lastDate: DateTime(refDate.year + 1, refDate.month, refDate.day));
 
-    // context.read<ReservationCubit>().dateReservationChange(picked);
+    switch (type) {
+      case 'deworming':
+        context.bloc<KinderCubit>().lastDewormingChanged(picked);
+        break;
+      case 'fleas':
+        context.bloc<KinderCubit>().lastProtectionFleasChanged(picked);
+        break;
+      default:
+    }
   }
 
   Widget buildOptionsLsit() {
@@ -375,26 +472,46 @@ class _KindergartenScreenState extends State<KindergartenScreen> {
         SwitchListTile(
           title: Text('Vacunas al dia'),
           activeColor: ColorsApp.primaryColorPink,
-          value: true,
-          onChanged: (value) {},
+          value: _isVacunas,
+          onChanged: (value) {
+            setState(() {
+              _isVacunas = value;
+              context.bloc<KinderCubit>().isVaccinationUpDateChanged(value);
+            });
+          },
         ),
         SwitchListTile(
           title: Text('Castrado'),
           activeColor: ColorsApp.primaryColorPink,
-          value: true,
-          onChanged: (value) {},
+          value: _isCastrated,
+          onChanged: (value) {
+            setState(() {
+              _isCastrated = value;
+              context.bloc<KinderCubit>().isCastratedDateChanged(value);
+            });
+          },
         ),
         SwitchListTile(
           title: Text('Sociable'),
           activeColor: ColorsApp.primaryColorPink,
-          value: true,
-          onChanged: (value) {},
+          value: _isSociable,
+          onChanged: (value) {
+            setState(() {
+              _isSociable = value;
+              context.bloc<KinderCubit>().isSociableChanged(value);
+            });
+          },
         ),
         SwitchListTile(
           title: Text('Traslado'),
           activeColor: ColorsApp.primaryColorPink,
-          value: true,
-          onChanged: (value) {},
+          value: _traslado,
+          onChanged: (value) {
+            setState(() {
+              _traslado = value;
+              context.bloc<KinderCubit>().transporteChanged(value);
+            });
+          },
         ),
       ],
     );
