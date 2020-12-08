@@ -1,76 +1,54 @@
-import 'package:lamanda_petshopcr/src/models/pet.dart';
-import 'package:lamanda_petshopcr/src/models/pet_list.dart';
+//import 'package:lamanda_petshopcr/src/models/pet.dart';
+//import 'package:lamanda_petshopcr/src/models/pet_list.dart';
 import 'package:lamanda_petshopcr/src/models/userProfile.dart';
 
 class StheticAppointment {
   String appointmentId;
   DateTime entrytDate;
+  DateTime entrytHour;
   UserProfile client;
-  List<Pet> petList;
+  //List<Pet> petList;
   bool isConfirmed;
+  bool transfer;
+  String address;
+  String fur;
 
   StheticAppointment(
       {this.appointmentId,
       this.entrytDate,
       this.client,
-      this.petList,
-      this.isConfirmed});
+      //this.petList,
+      this.isConfirmed,
+      this.entrytHour,
+      this.address,
+      this.transfer,
+      this.fur});
 
   StheticAppointment.fromJson(Map<String, dynamic> json) {
-    PetList getPetList = new PetList.fromJsonList(json['petList']);
+    //PetList getPetList = new PetList.fromJsonList(json['petList']);
+
+    this.address = json['direction']; // cambiar a addres
     this.entrytDate = json['entrytDate'].toDate();
-    this.petList = getPetList.getPetList();
+    this.client = json['entryUser'];
+    this.appointmentId = json['id'];
+    this.entrytHour = json['entrytHour'].toDate();
+    //this.petList = getPetList.getPetList();
     this.isConfirmed = json['isConfirmed'];
+    this.transfer = json['transfer'];
+    this.fur = json['fur'];
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'id': this.appointmentId,
+      'direction': this.address,
       'entrytDate': this.entrytDate,
-      'user': this.client,
-      'petList': this.petList,
+      'entrytHour': this.entrytHour,
+      'entryUser': this.client.toJson(),
+      'id': this.appointmentId,
+      //'petList': this.petList,
       'isConfirmed': this.isConfirmed,
+      'transfer': this.transfer,
+      'fur': this.fur
     };
   }
 }
-
-// class EstheticAppt {
-//   EstheticAppt(
-//       String id,
-//       Timestamp entryDate,
-//       DocumentReference entryUser,
-//       bool isConfirmed,
-//       bool transfer,
-//       bool declined,
-//       String direction) {
-//     this.id = id;
-//     this.entryDate = entryDate;
-//     this.entryUser = entryUser;
-//     this.isConfirmed = isConfirmed;
-//     this.transfer = transfer;
-//     this.declined = declined;
-//     this.direction = direction;
-//   }
-
-//   EstheticAppt.fromJson(Map<String, dynamic> json) {
-//     this.id = json['id'];
-//     this.entryDate = json['entryDate'];
-//     this.entryUser = json['entryUser'];
-//     this.isConfirmed = json['isConfirmed'];
-//     this.transfer = json['transfer'];
-//     this.declined = json["declined"];
-//     this.direction = json["direction"];
-//   }
-
-//   Map<String, dynamic> toJson() {
-//     return {
-//       'id': this.id,
-//       'entryDate': this.entryDate,
-//       'entryUser': this.entryUser,
-//       'isConfirmed': this.isConfirmed,
-//       'transfer': this.transfer,
-//       'declined': this.declined,
-//       'direction': this.direction
-//     };
-//   }
-// }

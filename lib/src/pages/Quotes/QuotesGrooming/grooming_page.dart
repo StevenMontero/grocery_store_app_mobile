@@ -3,7 +3,9 @@ import 'package:formz/formz.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:lamanda_petshopcr/src/blocs/AuthenticationBloc/authentication_bloc.dart';
 import 'package:lamanda_petshopcr/src/blocs/GroomingCubit/grooming_cubit.dart';
+import 'package:lamanda_petshopcr/src/models/userProfile.dart';
 import 'package:lamanda_petshopcr/src/repository/sthetic_appointment_repositorydb.dart';
 import 'package:lamanda_petshopcr/src/theme/colors.dart';
 import 'package:lamanda_petshopcr/src/widgets/custom_button.dart';
@@ -19,7 +21,7 @@ class _GroomingScreenState extends State<GroomingScreen> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => GroomingCubit(StheticAppointmentRepository())
-        ..dateInCalendarChanged(DateTime.now()),
+        ..scheduleLoad(DateTime.now()),
       child: Scaffold(
           backgroundColor: ColorsApp.primaryColorBlue,
           appBar: AppBar(
@@ -138,6 +140,7 @@ class _BodyState extends State<Body> {
                     buildWhen: (previous, current) =>
                         previous.schedule != current.schedule,
                     builder: (context, state) {
+                      print('aaaaaaaaaaaaaaaa' + state.description);
                       return state.status != FormzStatus.submissionInProgress
                           ? buildTimeTable(state.schedule)
                           : CircularProgressIndicator();
@@ -181,10 +184,22 @@ class _BodyState extends State<Body> {
                   builder: (context, state) {
                     return CustomButton(
                       color: ColorsApp.primaryColorBlue,
-                      press: state.description != '' &&
-                              state.hourRerservation != null
-                          ? () {}
-                          : null,
+                      press: () {
+                        if (state.description != '' &&
+                            state.hourRerservation != null) {
+                          final user =
+                              BlocProvider.of<AuthenticationBloc>(context)
+                                  .state
+                                  .user;
+                          context
+                              .bloc<GroomingCubit>()
+                              .addAppointmentGroomingForm(new UserProfile(
+                                  userName: user.name,
+                                  email: user.email,
+                                  id: user.id,
+                                  photoUri: user.photo));
+                        }
+                      },
                       text: 'Reservar',
                     );
                   },

@@ -55,7 +55,8 @@ class LoginCubit extends Cubit<LoginState> {
       _userRepository.addNewUser(new UserProfile(
           userName: auth.currentUser.displayName,
           email: auth.currentUser.email,
-          photoUri: auth.currentUser.photoURL));
+          photoUri: auth.currentUser.photoURL,
+          id: auth.currentUser.uid));
     } on Exception {
       emit(state.copyWith(status: FormzStatus.submissionFailure));
     } on NoSuchMethodError {
@@ -71,7 +72,8 @@ class LoginCubit extends Cubit<LoginState> {
       _userRepository.addNewUser(new UserProfile(
           userName: auth.currentUser.displayName,
           email: auth.currentUser.email,
-          photoUri: auth.currentUser.photoURL));
+          photoUri: auth.currentUser.photoURL,
+          id: auth.currentUser.uid));
     } on Exception {
       emit(state.copyWith(status: FormzStatus.submissionFailure));
     } on NoSuchMethodError {

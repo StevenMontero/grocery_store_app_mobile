@@ -2,28 +2,31 @@ part of 'grooming_cubit.dart';
 
 class GroomingFormState extends Equatable {
   const GroomingFormState(
-      {this.transporte = false,
-      this.direccion = '',
+      {this.transfer,
+      this.date,
+      this.address,
       this.hourRerservation,
       this.typeFur = 'Liso',
       this.description = '',
       this.schedule,
       this.status});
   final DateTime hourRerservation;
+  final DateTime date;
   final List<DateTime> schedule;
   final String typeFur;
   final String description;
   final FormzStatus status;
-  final bool transporte;
-  final String direccion;
+  final bool transfer;
+  final String address;
 
   GroomingFormState copyWith({
     DateTime hourRerservation,
     String typeFur,
+    DateTime date,
     String description,
     List<DateTime> schedule,
-    bool transporte,
-    String direccion,
+    bool transfer,
+    String address,
     FormzStatus status,
   }) {
     return GroomingFormState(
@@ -31,12 +34,21 @@ class GroomingFormState extends Equatable {
         typeFur: typeFur ?? this.typeFur,
         description: description ?? this.description,
         schedule: schedule ?? this.schedule,
-        direccion: direccion ?? this.direccion,
-        transporte: transporte ?? this.transporte,
+        address: address ?? this.address,
+        transfer: transfer ?? this.transfer,
+        date: date ?? this.date,
         status: status ?? this.status);
   }
 
   @override
-  List<Object> get props =>
-      [hourRerservation, typeFur, description, description, schedule, status];
+  List<Object> get props => [
+        hourRerservation,
+        typeFur,
+        description,
+        address,
+        schedule,
+        status,
+        transfer,
+        date
+      ];
 }

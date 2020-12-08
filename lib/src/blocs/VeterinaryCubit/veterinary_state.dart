@@ -2,6 +2,7 @@ part of 'veterinary_cubit.dart';
 
 class VeterinaryFormState extends Equatable {
   const VeterinaryFormState({
+    this.date,
     this.transporte = false,
     this.direccion = '',
     this.hourRerservation,
@@ -12,6 +13,7 @@ class VeterinaryFormState extends Equatable {
     this.age,
   });
   final DateTime hourRerservation;
+  final DateTime date;
   final List<DateTime> schedule;
   final String race;
   final String description;
@@ -22,6 +24,7 @@ class VeterinaryFormState extends Equatable {
 
   VeterinaryFormState copyWith(
       {DateTime hourRerservation,
+      DateTime date,
       String race,
       String description,
       List<DateTime> schedule,
@@ -37,10 +40,20 @@ class VeterinaryFormState extends Equatable {
         direccion: direccion ?? this.direccion,
         transporte: transporte ?? this.transporte,
         age: age ?? this.age,
+        date: date ?? this.date,
         status: status ?? this.status);
   }
 
   @override
-  List<Object> get props =>
-      [hourRerservation, race, description, description, schedule, status];
+  List<Object> get props => [
+        hourRerservation,
+        race,
+        description,
+        direccion,
+        schedule,
+        status,
+        transporte,
+        age,
+        date
+      ];
 }

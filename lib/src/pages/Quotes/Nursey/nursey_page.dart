@@ -19,7 +19,7 @@ class _NurseyScreenState extends State<NurseyScreen> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => VeterinaryCubit(VeterinaryAppointmentRepository())
-        ..dateInCalendarChanged(DateTime.now()),
+        ..scheduleLoad(DateTime.now()),
       child: Scaffold(
           backgroundColor: ColorsApp.primaryColorOrange,
           appBar: AppBar(
@@ -74,8 +74,7 @@ class _BodyState extends State<Body> {
       children: [
         TableCalendar(
           onDaySelected: (day, events, holidays) =>
-              BlocProvider.of<VeterinaryCubit>(context)
-                  .dateInCalendarChanged(day),
+              BlocProvider.of<VeterinaryCubit>(context).dateChanged(day),
           calendarController: _calendarController,
           startDay: DateTime.now(),
           initialCalendarFormat: CalendarFormat.week,
