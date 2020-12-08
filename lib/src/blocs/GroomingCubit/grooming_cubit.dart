@@ -26,7 +26,8 @@ class GroomingCubit extends Cubit<GroomingFormState> {
   }
 
   void dateInCalendarChanged(DateTime date) async {
-    emit(state.copyWith(date: date));
+    final list = await _appointmentRepository.getListAppointmetsFree(date);
+    emit(state.copyWith(date: date, schedule: list));
   }
 
   void hourChanged(DateTime date) async {

@@ -3,7 +3,9 @@ import 'package:intl/intl.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:formz/formz.dart';
+import 'package:lamanda_petshopcr/src/blocs/AuthenticationBloc/authentication_bloc.dart';
 import 'package:lamanda_petshopcr/src/blocs/VeterinaryCubit/veterinary_cubit.dart';
+import 'package:lamanda_petshopcr/src/models/userProfile.dart';
 import 'package:lamanda_petshopcr/src/repository/veterinary_appointment_repositorydb.dart';
 import 'package:lamanda_petshopcr/src/theme/colors.dart';
 import 'package:lamanda_petshopcr/src/widgets/custom_button.dart';
@@ -98,7 +100,7 @@ class _BodyState extends State<Body> {
             rightChevronMargin: EdgeInsets.only(right: 70),
           ),
           calendarStyle: CalendarStyle(
-              selectedColor: ColorsApp.primaryColorOrange,
+              selectedColor: ColorsApp.primaryColorBlue,
               weekendStyle: TextStyle(color: Colors.white),
               weekdayStyle: TextStyle(color: Colors.white)),
           daysOfWeekStyle: DaysOfWeekStyle(
@@ -187,7 +189,19 @@ class _BodyState extends State<Body> {
                       color: ColorsApp.primaryColorBlue,
                       press: state.description != '' &&
                               state.hourRerservation != null
-                          ? () {}
+                          ? () {
+                              final user =
+                                  BlocProvider.of<AuthenticationBloc>(context)
+                                      .state
+                                      .user;
+                              context
+                                  .bloc<VeterinaryCubit>()
+                                  .addAppointmentVeterinaryForm(UserProfile(
+                                      userName: user.name,
+                                      email: user.email,
+                                      id: user.id,
+                                      photoUri: user.photo));
+                            }
                           : null,
                       text: 'Reservar',
                     );
@@ -284,7 +298,7 @@ class _BodyState extends State<Body> {
       child: TextField(
           maxLines: 10,
           onChanged: (value) =>
-              context.bloc<VeterinaryCubit>().descriptionChanged(value),
+              context.bloc<VeterinaryCubit>().descriptionSymptomsChanged(value),
           decoration: InputDecoration(
             hintText: 'Escriba aqui',
             filled: true,

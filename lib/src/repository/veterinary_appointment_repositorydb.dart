@@ -58,13 +58,15 @@ class VeterinaryAppointmentRepository {
     QuerySnapshot snapshot =
         await _ref.where('entryDate', isGreaterThanOrEqualTo: date).get();
     DateTime _auxDaate;
+    DateTime _auxHour;
     final result = snapshot.docs;
     result.forEach((element) {
       _auxDaate = element.data()['entryDate'].toDate();
+      _auxHour = element.data()['entryHour'].toDate();
       if (_auxDaate.day == date.day &&
           _auxDaate.month == date.month &&
           _auxDaate.year == date.year) {
-        _schedule.removeWhere((a) => a.hour == _auxDaate.hour);
+        _schedule.removeWhere((a) => a.hour == _auxHour.hour);
       }
     });
 
