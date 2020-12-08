@@ -8,7 +8,11 @@ import 'package:lamanda_petshopcr/src/repository/daycare_appointment_repositoryd
 part 'kinder_state.dart';
 
 class KinderCubit extends Cubit<KinderState> {
-  KinderCubit(this.daycareAppointmentRepository) : super(KinderState(date: DateTime.now()));
+  KinderCubit(this.daycareAppointmentRepository)
+      : super(KinderState(
+            date: DateTime.now(),
+            entryHour: DateTime.now(),
+            departureHour: DateTime.now()));
 
   final DaycareAppointmentRepository daycareAppointmentRepository;
   DaycareAppointment daycareAppointment;
@@ -70,9 +74,9 @@ class KinderCubit extends Cubit<KinderState> {
     emit(state.copyWith(date: date));
   }
 
-  Future<void> addAppointmentDaycareForm (UserProfile user) async{
+  Future<void> addAppointmentDaycareForm(UserProfile user) async {
     emit(state.copyWith(status: FormzStatus.submissionSuccess));
-    try{
+    try {
       daycareAppointment = new DaycareAppointment(
         age: state.age,
         date: state.date,
@@ -89,10 +93,9 @@ class KinderCubit extends Cubit<KinderState> {
         lastProtectionFleas: state.lastProtectionFleas,
         transfer: state.transporte,
         isConfirmed: false,
-      );      
+      );
       daycareAppointmentRepository.addNewAppointment(daycareAppointment);
-
-    }catch (error){
+    } catch (error) {
       emit(state.copyWith(status: FormzStatus.submissionFailure));
     }
   }

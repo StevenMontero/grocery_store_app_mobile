@@ -8,7 +8,9 @@ import 'package:lamanda_petshopcr/src/repository/hotel_appointment_repositorydb.
 part 'hotel_state.dart';
 
 class HotelCubit extends Cubit<HotelState> {
-  HotelCubit(this.hotelAppointmentRepository) : super(HotelState(entryDate: DateTime.now()));
+  HotelCubit(this.hotelAppointmentRepository)
+      : super(HotelState(
+            entryDate: DateTime.now(), departureDate: DateTime.now()));
   final HotelAppointmentRepository hotelAppointmentRepository;
   HotelAppointment hotelAppointment;
 
@@ -65,9 +67,9 @@ class HotelCubit extends Cubit<HotelState> {
     emit(state.copyWith(isSociable: value));
   }
 
-  Future<void> addAppointmentHotelForm (UserProfile user) async{
+  Future<void> addAppointmentHotelForm(UserProfile user) async {
     emit(state.copyWith(status: FormzStatus.submissionSuccess));
-    try{
+    try {
       hotelAppointment = new HotelAppointment(
         age: state.age,
         endDate: state.departureDate,
@@ -83,10 +85,9 @@ class HotelCubit extends Cubit<HotelState> {
         pestProtection: state.lastProtectionFleas,
         race: state.race,
         transfer: state.transporte,
-      );      
+      );
       hotelAppointmentRepository.addNewAppointment(hotelAppointment);
-
-    }catch (error){
+    } catch (error) {
       emit(state.copyWith(status: FormzStatus.submissionFailure));
     }
   }

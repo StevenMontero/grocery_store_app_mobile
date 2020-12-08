@@ -55,8 +55,7 @@ class VeterinaryAppointmentRepository {
 
   Future<List<DateTime>> getListAppointmetsFree(DateTime date) async {
     List<DateTime> _schedule = await _getSchedule('0erT6C3IbEKcLJCRlxyb');
-    QuerySnapshot snapshot =
-        await _ref.where('entryDate', isGreaterThanOrEqualTo: date).get();
+    QuerySnapshot snapshot = await _ref.get();
     DateTime _auxDaate;
     DateTime _auxHour;
     final result = snapshot.docs;

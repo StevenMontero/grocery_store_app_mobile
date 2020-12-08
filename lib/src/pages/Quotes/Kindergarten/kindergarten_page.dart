@@ -246,16 +246,19 @@ class _BodyState extends State<Body> {
                       color: ColorsApp.primaryColorPink,
                       press: state.userPickup != '' && state.userDeliver != null
                           ? () {
-                             final user = BlocProvider.of<AuthenticationBloc>(context).state.user;
+                              final user =
+                                  BlocProvider.of<AuthenticationBloc>(context)
+                                      .state
+                                      .user;
                               context
-                              .bloc<KinderCubit>()
-                              .addAppointmentDaycareForm(new UserProfile(
-                                  userName: user.name,
-                                  email: user.email,
-                                  id: user.id,
-                                  photoUri: user.photo));
-                                  Navigator.of(context).pop();
-                          }
+                                  .bloc<KinderCubit>()
+                                  .addAppointmentDaycareForm(new UserProfile(
+                                      userName: user.name,
+                                      email: user.email,
+                                      id: user.id,
+                                      photoUri: user.photo));
+                              Navigator.of(context).pop();
+                            }
                           : null,
                       text: 'Reservar',
                     );
@@ -277,7 +280,7 @@ class _BodyState extends State<Body> {
         child: TextField(
             maxLines: 3,
             onChanged: (value) =>
-                context.bloc<HotelCubit>().direccionChanged(value),
+                context.bloc<KinderCubit>().direccionChanged(value),
             decoration: InputDecoration(
               hintText: 'Escriba aqui la dirección',
               filled: true,
@@ -370,7 +373,7 @@ class _BodyState extends State<Body> {
                   onChanged: (value) {
                     setState(() {
                       _valueTypeRace = value;
-                      context.bloc<HotelCubit>().raceChanged(value);
+                      context.bloc<KinderCubit>().raceChanged(value);
                     });
                   },
                 ),
@@ -409,7 +412,7 @@ class _BodyState extends State<Body> {
                   onChanged: (value) {
                     setState(() {
                       edad = value;
-                      context.bloc<HotelCubit>().ageChanged(value);
+                      context.bloc<KinderCubit>().ageChanged(value);
                     });
                   },
                 ),
