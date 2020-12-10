@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:lamanda_petshopcr/src/blocs/mainpageCubit/mainpage_cubit.dart';
 import 'package:lamanda_petshopcr/src/theme/colors.dart';
-import 'package:lamanda_petshopcr/src/widgets/BottomNavBar/cubit/navbar_cubit.dart';
 
 class BottomNavBar extends StatefulWidget {
   final Function(int index) onTap;
@@ -16,8 +16,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 60.0,
-      child: BlocBuilder<NavbarCubit, NavbarState>(
+      height: 65.0,
+      child: BlocBuilder<MainPageCubit, MainPageState>(
         buildWhen: (previous, current) =>
             current.currenIndex != previous.currenIndex,
         builder: (context, state) {

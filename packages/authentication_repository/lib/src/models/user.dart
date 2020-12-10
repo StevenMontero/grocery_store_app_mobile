@@ -26,8 +26,7 @@ class User extends Equatable {
   final String name;
 
   /// Url for the current user's photo.
-  final String photo;
-
+  final   String photo;
   /// Empty user which represents an unauthenticated user.
   static const empty = User(email: '', id: '', name: null, photo: null);
 

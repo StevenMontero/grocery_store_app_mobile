@@ -7,8 +7,7 @@ import 'package:lamanda_petshopcr/src/library/language_library/easy_localization
 import 'package:lamanda_petshopcr/src/models/product.dart';
 import 'package:lamanda_petshopcr/src/theme/colors.dart';
 import 'package:lamanda_petshopcr/src/widgets/BottomNavBar/bottom_navbar.dart';
-import 'package:lamanda_petshopcr/src/widgets/BottomNavBar/cubit/navbar_cubit.dart';
-import 'package:lamanda_petshopcr/src/widgets/Category/category.dart';
+//import 'package:lamanda_petshopcr/src/widgets/Category/category.dart';
 import 'package:lamanda_petshopcr/src/widgets/product_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -5,8 +7,11 @@ import 'package:formz/formz.dart';
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:lamanda_petshopcr/src/blocs/signupCubit/sign_up_cubit.dart';
 import 'package:lamanda_petshopcr/src/library/language_library/easy_localization.dart';
+//import 'package:lamanda_petshopcr/src/models/userProfile.dart';
 import 'package:lamanda_petshopcr/src/pages/LoginAndSignUp/Login/login_page.dart';
+//import 'package:lamanda_petshopcr/src/repository/user_repository.dart';
 import 'package:lamanda_petshopcr/src/theme/colors.dart';
+//import 'package:lamanda_petshopcr/src/utils/regularExpressions/email.dart';
 import 'package:lamanda_petshopcr/src/widgets/textfield.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -43,8 +48,8 @@ class _SignupScreenState extends State<SignupScreen>
                 Scaffold.of(context)
                   ..hideCurrentSnackBar()
                   ..showSnackBar(
-                    const SnackBar(content: Text('Sign Up Failure')),
-                  );
+                    SnackBar(content: Text( '${state.message}'),
+                  ));
               }
             },
             child: BodyWidget(mediaQueryData: mediaQueryData),
@@ -110,7 +115,7 @@ class BodyWidget extends StatelessWidget {
                                   tag: "Treva",
                                   child: Container(
                                     height: mediaQueryData.size.height * 0.2,
-                                    width: mediaQueryData.size.width * 0.45,
+                                    width: mediaQueryData.size.width * 0.55,
                                     child: SvgPicture.asset(
                                       'assets/images/Logo_COLOR.svg',
                                       fit: BoxFit.cover,
@@ -118,24 +123,53 @@ class BodyWidget extends StatelessWidget {
                                   ),
                                 ),
                               ),
+
+                              /// TextFromField Number User name
                               Padding(
                                   padding:
                                       EdgeInsets.symmetric(vertical: 20.0)),
-                              TextFromField(
-                                icon: Icons.account_circle,
-                                password: false,
-                                lavel: AppLocalizations.of(context).tr('email'),
-                                inputType: TextInputType.text,
-                                onChanged: (value) {},
+
+                              BlocBuilder<SignUpCubit, SignUpState>(
+                                buildWhen: (previous, current) =>
+                                    previous.userName != current.userName,
+                                builder: (context, state) {
+                                  return TextFromField(
+                                    errorOccurred: state.userName.invalid,
+                                    errorMessage: "No debe ingresar caracteres especiales",
+                                    icon: Icons.account_circle,
+                                    password: false,
+                                    lavel: AppLocalizations.of(context)
+                                        .tr('User Name'),
+                                    inputType: TextInputType.text,
+                                    onChanged: (value) => context
+                                        .bloc<SignUpCubit>()
+                                        .userNameChanged(value),
+                                  );
+                                },
                               ),
+
+                              /// TextFromField Number Phone
                               Padding(
                                   padding: EdgeInsets.symmetric(vertical: 5.0)),
-                              TextFromField(
-                                icon: Icons.phone_iphone,
-                                password: false,
-                                lavel: AppLocalizations.of(context).tr('email'),
-                                inputType: TextInputType.number,
-                                onChanged: (value) {},
+
+                              BlocBuilder<SignUpCubit, SignUpState>(
+                                buildWhen: (previous, current) =>
+                                    previous.phone != current.phone,
+                                builder: (context, state) {
+                                  return TextFromField(
+                                    errorOccurred: state.phone.invalid,
+                                    errorMessage:
+                                        'Número de telefono no valido',
+                                    icon: Icons.phone_iphone,
+                                    password: false,
+                                    lavel: AppLocalizations.of(context)
+                                        .tr('Number Phone'),
+                                    inputType: TextInputType.number,
+                                    onChanged: (value) => context
+                                        .bloc<SignUpCubit>()
+                                        .phoneChanged(value),
+                                  );
+                                },
                               ),
                               Padding(
                                   padding: EdgeInsets.symmetric(vertical: 5.0)),
@@ -147,11 +181,11 @@ class BodyWidget extends StatelessWidget {
                                 builder: (context, state) {
                                   return TextFromField(
                                     errorOccurred: state.email.invalid,
-                                    erroMessage: 'El email no es valido',
+                                    errorMessage: 'El email no es valido',
                                     icon: Icons.email,
                                     password: false,
                                     lavel: AppLocalizations.of(context)
-                                        .tr('email'),
+                                        .tr('Email'),
                                     inputType: TextInputType.emailAddress,
                                     onChanged: (value) => context
                                         .bloc<SignUpCubit>()
@@ -168,13 +202,13 @@ class BodyWidget extends StatelessWidget {
                                     previous.password != current.password,
                                 builder: (context, state) {
                                   return TextFromField(
-                                    errorOccurred: state.email.invalid,
-                                    erroMessage: 'La contraseña no es valida',
+                                    errorOccurred: state.password.invalid,
+                                    errorMessage: 'La contraseña debe contener al menos 6 dígitos',
                                     icon: Icons.vpn_key,
                                     password: true,
                                     lavel: AppLocalizations.of(context)
-                                        .tr('password'),
-                                    inputType: TextInputType.emailAddress,
+                                        .tr('Password'),
+                                    inputType: TextInputType.text,
                                     onChanged: (value) => context
                                         .bloc<SignUpCubit>()
                                         .passwordChanged(value),
@@ -215,10 +249,7 @@ class BodyWidget extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 30.0, vertical: 10),
                       child: MaterialButton(
-                        onPressed: () {
-                          //TODO: Validar el usuario con firebase
-                          print('valiadar');
-                        },
+                        onPressed: () => context.bloc<SignUpCubit>().signUpFormSubmitted(),                                                                          
                         minWidth: mediaQueryData.size.width * 0.85,
                         height: mediaQueryData.size.height * 0.065,
                         color: ColorsApp.primaryColorBlue,
