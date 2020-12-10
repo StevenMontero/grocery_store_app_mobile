@@ -36,13 +36,13 @@ class _ProfilePage extends State<ProfilePage> {
             top: 0,
             child: Container(
               color: ColorsApp.secondaryColorlightPurple,
-              width: 800,
-              height: 150,
+              width: 500,
+              height: 100,
             ),
           ),
           // Container(
           Positioned(
-            top: 90,
+            top: 30,
             child: Center(
               child: CircleAvatar(
                   radius: 60,
@@ -58,18 +58,21 @@ class _ProfilePage extends State<ProfilePage> {
             ),
           ),
           Positioned(
-            top: 220,
+            top: 145,
             child: Column(
               children: <Widget>[
                 botonPerfil(),
               ],
             ),
           ),
-          Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                botonsOptions(),
-              ])
+          Positioned(
+            top: 235,
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  botonsOptions(),
+                ]),
+          )
         ],
       ),
     );
@@ -80,8 +83,10 @@ class _ProfilePage extends State<ProfilePage> {
       children: <Widget>[
         Center(
           child: Text("Nombre Apellido",
-              style: new TextStyle(fontSize: 15,
-                  fontWeight: FontWeight.bold, color: Colors.black)),
+              style: new TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black)),
         ),
         MaterialButton(
           onPressed: () {
@@ -93,7 +98,7 @@ class _ProfilePage extends State<ProfilePage> {
                   color: ColorsApp.secondaryColorlightPurple, size: 20),
               Text("   Editar Perfil",
                   style: new TextStyle(
-                      fontSize: 12, 
+                      fontSize: 12,
                       fontWeight: FontWeight.bold,
                       color: ColorsApp.secondaryColorlightPurple)),
             ],
