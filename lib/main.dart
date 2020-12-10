@@ -81,7 +81,7 @@ class _AppViewState extends State<AppView> {
           listener: (context, state) {
             switch (state.status) {
               case AuthenticationStatus.authenticated:
-                _navigator.pushReplacementNamed('home');
+                _navigator.pushReplacementNamed('profile');
                 break;
               case AuthenticationStatus.unauthenticated:
                 _navigator.pushReplacementNamed('choseLogOSig');
