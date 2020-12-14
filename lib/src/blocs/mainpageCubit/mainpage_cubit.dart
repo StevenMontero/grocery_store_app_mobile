@@ -26,8 +26,11 @@ class MainPageCubit extends Cubit<MainPageState> {
       case 2:
         return QuotesPage();
         break;
-      default:
+      case 4:
         return ProfilePage();
+        break;
+      default:
+        return HomePage();
         break;
     }
   }

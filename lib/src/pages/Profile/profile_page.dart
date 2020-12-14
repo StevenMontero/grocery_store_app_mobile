@@ -1,17 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lamanda_petshopcr/src/blocs/AuthenticationBloc/authentication_bloc.dart';
-import 'package:lamanda_petshopcr/src/library/language_library/easy_localization.dart';
-import 'package:lamanda_petshopcr/src/models/product.dart';
 import 'package:lamanda_petshopcr/src/theme/colors.dart';
-import 'package:lamanda_petshopcr/src/widgets/BottomNavBar/bottom_navbar.dart';
-//import 'package:lamanda_petshopcr/src/widgets/Category/category.dart';
-import 'package:lamanda_petshopcr/src/widgets/product_card.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-
 import '../../theme/colors.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -68,7 +60,7 @@ class _ProfilePage extends State<ProfilePage> {
           Positioned(
             top: 235,
             child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   botonsOptions(),
                 ]),
@@ -109,8 +101,8 @@ class _ProfilePage extends State<ProfilePage> {
   }
 
   Widget botonsOptions() {
-    return Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    return Column(crossAxisAlignment: CrossAxisAlignment.start,
+        //mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           MaterialButton(
               onPressed: () {},
@@ -190,6 +182,25 @@ class _ProfilePage extends State<ProfilePage> {
                   Padding(
                     padding: const EdgeInsets.only(left: 20.0),
                     child: Text("Sobre nosotros"),
+                  ),
+                ],
+              )),
+          MaterialButton(
+              onPressed: () => BlocProvider.of<AuthenticationBloc>(context)
+                    .add(AuthenticationLogoutRequested()),
+              color: Colors.white,
+              minWidth: 100,
+              height: 60,
+              child: Row(
+                children: [
+                  Image.asset(
+                    "assets/icons/logout.png",
+                    width: 40,
+                    height: 40,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20.0),
+                    child: Text("Cerrar Sesión"),
                   ),
                 ],
               ))
