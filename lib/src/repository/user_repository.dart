@@ -23,7 +23,7 @@ class UserRepository{
     }
   }
 
-  Future<void> updateUser(UserProfile user, ){
+  Future<void> updateUser(UserProfile user){
     return _ref.doc(user.id)
     .update(user.toJson())
     .then((value) => print('Success Update'))

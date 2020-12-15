@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lamanda_petshopcr/src/blocs/AuthenticationBloc/authentication_bloc.dart';
+import 'package:lamanda_petshopcr/src/pages/Profile/add_pet_page.dart';
 import 'package:lamanda_petshopcr/src/theme/colors.dart';
 import '../../theme/colors.dart';
 
@@ -185,9 +186,12 @@ class _ProfilePage extends State<ProfilePage> {
                   ),
                 ],
               )),
+          Divider(
+            height: 0.5,
+          ),
           MaterialButton(
               onPressed: () => BlocProvider.of<AuthenticationBloc>(context)
-                    .add(AuthenticationLogoutRequested()),
+                  .add(AuthenticationLogoutRequested()),
               color: Colors.white,
               minWidth: 100,
               height: 60,
@@ -201,6 +205,26 @@ class _ProfilePage extends State<ProfilePage> {
                   Padding(
                     padding: const EdgeInsets.only(left: 20.0),
                     child: Text("Cerrar Sesión"),
+                  ),
+                ],
+              )),
+          MaterialButton(
+              onPressed: () {
+                Navigator.of(context).pushNamed('petForm');
+              },
+              color: Colors.white,
+              minWidth: 100,
+              height: 60,
+              child: Row(
+                children: [
+                  Image.asset(
+                    "assets/icons/logout.png",
+                    width: 40,
+                    height: 40,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20.0),
+                    child: Text("Mis Mascotas"),
                   ),
                 ],
               ))

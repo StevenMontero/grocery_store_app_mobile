@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lamanda_petshopcr/src/pages/Profile/add_pet_page.dart';
 import 'package:lamanda_petshopcr/src/pages/Quotes/Hotel/hotel_page.dart';
 import 'package:lamanda_petshopcr/src/pages/Quotes/Nursey/nursey_page.dart';
 import 'package:lamanda_petshopcr/src/pages/Quotes/QuotesGrooming/grooming_page.dart';
@@ -24,5 +25,6 @@ Map<String, WidgetBuilder> getRoutesApp() {
     'kinder': (BuildContext context) => KindergartenScreen(),
     'hotel': (BuildContext context) => HotelScreen(),
     'nursey': (BuildContext context) => NurseyScreen(),
+    'petForm': (BuildContext context) => PetFormPage(),
   };
 }

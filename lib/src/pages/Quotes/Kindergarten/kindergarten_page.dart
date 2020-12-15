@@ -1,10 +1,8 @@
 //KindergartenScreen
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lamanda_petshopcr/src/blocs/AuthenticationBloc/authentication_bloc.dart';
-import 'package:lamanda_petshopcr/src/blocs/HotelCubit/hotel_cubit.dart';
 import 'package:lamanda_petshopcr/src/blocs/KinderCubit/kinder_cubit.dart';
 import 'package:lamanda_petshopcr/src/models/userProfile.dart';
 import 'package:lamanda_petshopcr/src/repository/daycare_appointment_repositorydb.dart';

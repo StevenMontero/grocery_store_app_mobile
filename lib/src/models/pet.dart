@@ -3,60 +3,52 @@ class Pet{
   String petId;
   String userId;
   String name;
-  double size;
   String breed;
-  String age;
+  int age;
   String fur;
-  bool vaccine;
-  bool deworming;
-  bool pestProtection;
-  bool sociable;
+  bool isVaccinationUpDate;
   bool castrated;
+  bool sociable;
+  String photoUrl;
 
   Pet({
     this.petId,
     this.userId,
     this.name,
-    this.size,
     this.breed,
     this.age,
     this.fur,
-    this.vaccine,
-    this.deworming,
-    this.pestProtection,
+    this.isVaccinationUpDate,
+    this.castrated,
     this.sociable,
-    this.castrated
+    this.photoUrl
   });
 
    Pet.fromJson(Map<String, dynamic> json){
-    this.petId = json['idPet'];
-    this.userId = json['idUser'];
+    this.petId = json['petID'];
+    this.userId = json['userID'];
     this.name = json['petName'];
-    this.size = json['size'];
     this.breed = json['breed'];
     this.age = json['age'];
     this.fur = json['fur'];
-    this.vaccine = json['vaccine'];
-    this.deworming = json['deworming'];
-    this.pestProtection = json['pestProtection'];
-    this.sociable = json['sociable'];
+    this.isVaccinationUpDate = json['isVaccinationUpDate'];
     this.castrated = json['castrated'];
+    this.sociable = json['sociable'];
+    this.photoUrl = json['photoUrl'];
   }
 
   Map<String, dynamic> toJson(){
     return {
-      'idPet': this.petId,
-      'idUser': this.userId,
+      'petID': this.petId,
+      'userID': this.userId,
       'petName': this.name,
-      'size': this.size,
       'breed': this.breed,
       'age': this.age,
       'fur': this.fur,
-      'vaccine': this.vaccine,
-      'deworming': this.deworming,
-      'pestProtection' : this.pestProtection,
+      'isVaccinationUpDate': this.isVaccinationUpDate,
+      'castrated': this.castrated,
       'sociable': this.sociable,
-      'castrated': this.castrated
+      'photoUrl': this.photoUrl
     };
   }
 }
