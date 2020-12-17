@@ -67,7 +67,7 @@ class _EditProfilePage extends State<EditProfilePage> {
               color: ColorsApp.secondaryColorlightPurple,
             ),
             onPressed: () {
-              Navigator.of(context).pushReplacementNamed('profile');
+              Navigator.of(context).pop();
             },
           );
         },
