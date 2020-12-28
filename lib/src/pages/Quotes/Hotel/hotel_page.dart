@@ -67,14 +67,12 @@ class _BodyState extends State<Body> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _calendarController = CalendarController();
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     _calendarController.dispose();
     super.dispose();
   }

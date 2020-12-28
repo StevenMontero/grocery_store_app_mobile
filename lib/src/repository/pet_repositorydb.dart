@@ -28,4 +28,16 @@ class PetRepository {
     .then((value) => print('Success Update'))
     .catchError((error) => print('Failure Update'));
   }
+
+  Future<List<Pet>> getpetList(String id) async{
+    List<Pet> pets = new List();
+    QuerySnapshot snapshot = await _ref.get();
+    final result = snapshot.docs.where((DocumentSnapshot document) =>
+        document.data()['userID'].contains(id));
+    result.forEach((element) {
+      pets.add(Pet.fromJson(element.data()));
+    });
+
+    return pets;
+  }
 }

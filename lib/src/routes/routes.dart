@@ -11,6 +11,8 @@ import 'package:lamanda_petshopcr/src/pages/LoginAndSignUp/choseLoginOrSignuo_pa
 import 'package:lamanda_petshopcr/src/pages/Profile/edit_profile_page.dart';
 import 'package:lamanda_petshopcr/src/pages/Profile/profile_page.dart';
 import 'package:lamanda_petshopcr/src/pages/ProductDetail/product_detail_page.dart';
+import 'package:lamanda_petshopcr/src/pages/Profile/pet_list_page.dart';
+
 
 Map<String, WidgetBuilder> getRoutesApp() {
   return <String, WidgetBuilder>{
@@ -26,5 +28,6 @@ Map<String, WidgetBuilder> getRoutesApp() {
     'hotel': (BuildContext context) => HotelScreen(),
     'nursey': (BuildContext context) => NurseyScreen(),
     'petForm': (BuildContext context) => PetFormPage(),
+    'petList': (BuildContext context) => PetListPage(),
   };
 }

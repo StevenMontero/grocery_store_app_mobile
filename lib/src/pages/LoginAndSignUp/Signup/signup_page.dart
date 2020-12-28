@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,11 +5,8 @@ import 'package:formz/formz.dart';
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:lamanda_petshopcr/src/blocs/signupCubit/sign_up_cubit.dart';
 import 'package:lamanda_petshopcr/src/library/language_library/easy_localization.dart';
-//import 'package:lamanda_petshopcr/src/models/userProfile.dart';
 import 'package:lamanda_petshopcr/src/pages/LoginAndSignUp/Login/login_page.dart';
-//import 'package:lamanda_petshopcr/src/repository/user_repository.dart';
 import 'package:lamanda_petshopcr/src/theme/colors.dart';
-//import 'package:lamanda_petshopcr/src/utils/regularExpressions/email.dart';
 import 'package:lamanda_petshopcr/src/widgets/textfield.dart';
 
 class SignupScreen extends StatefulWidget {

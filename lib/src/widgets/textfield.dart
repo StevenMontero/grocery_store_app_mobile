@@ -39,7 +39,6 @@ class TextFromField extends StatelessWidget {
             onChanged: onChanged,
             obscureText: password,
             decoration: InputDecoration(
-                //TODO: agregar el mensaje de error al indioma y al SingSate
                 errorText: errorOccurred ? errorMessage: null,
                 labelText: lavel,
                 icon: Icon(

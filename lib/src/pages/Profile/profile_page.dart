@@ -75,7 +75,7 @@ class _ProfilePage extends State<ProfilePage> {
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(left: 20.0),
-                                    child: Text("Ordenes"),
+                                    child: Text("Órdenes"),
                                   ),
                                 ],
                               )),
@@ -105,7 +105,7 @@ class _ProfilePage extends State<ProfilePage> {
                           ),
                           MaterialButton(
                               onPressed: () {
-                                Navigator.of(context).pushNamed('petForm');
+                                Navigator.of(context).pushNamed('petList');
                               },
                               color: Colors.white,
                               minWidth: 100,
@@ -113,7 +113,7 @@ class _ProfilePage extends State<ProfilePage> {
                               child: Row(
                                 children: [
                                   Image.asset(
-                                    "assets/icons/creditAcount.png",
+                                    "assets/icons/pawprint.png",
                                     width: 40,
                                     height: 40,
                                   ),
@@ -203,13 +203,19 @@ class _ProfilePage extends State<ProfilePage> {
                 padding: const EdgeInsets.only(top: 5.0),
                 child: Text(user.name),
               ),
-              InkWell(
-                onTap: () {
-                  Navigator.of(context).pushNamed('editProfile');
-                },
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 0.0),
-                  child: Text('Edit Profile'),
+              Container(
+                decoration: BoxDecoration(
+                  color: ColorsApp.secondaryColorlightPurple,
+                  borderRadius: BorderRadius.circular(10.0)
+                ),
+                child: InkWell(
+                  onTap: () {
+                    Navigator.of(context).pushNamed('editProfile');
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(3.0),
+                    child: Text('Editar Perfil', style: TextStyle(color: Colors.white),),
+                  ),
                 ),
               )
             ],

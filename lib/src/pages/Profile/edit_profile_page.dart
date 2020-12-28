@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lamanda_petshopcr/src/blocs/AuthenticationBloc/authentication_bloc.dart';
+import 'package:lamanda_petshopcr/src/blocs/profileCubit/profile_cubit.dart';
+import 'package:lamanda_petshopcr/src/repository/user_repository.dart';
 import 'package:lamanda_petshopcr/src/theme/colors.dart';
-import 'package:meta/meta.dart';
 
 class EditProfilePage extends StatefulWidget {
   @override
@@ -16,45 +16,46 @@ class _EditProfilePage extends State<EditProfilePage> {
   @override
   Widget build(BuildContext context) {
     final user = BlocProvider.of<AuthenticationBloc>(context).state.user;
-    return Scaffold(
-        appBar: buildAppbar(),
-        body: SingleChildScrollView(
-          child: Column(
-            //con Stack
-            //alignment: Alignment.center,
-            children: [
-              Container(
-                color: Colors.white,
-              ),
-              Positioned(
-                top: 15,
-                child: Center(
-                  child: CircleAvatar(
-                    radius: 55,
-                    backgroundImage:
-                        user.photo != null ? NetworkImage(user.photo) : null,
-                    child: user.photo == null
-                        ? const Icon(Icons.person_outline, size: 20)
-                        : null,
-                  ),
-                ),
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
+    return BlocProvider(
+        create: (context) => ProfileCubit(UserRepository()),
+        child: Scaffold(
+            appBar: buildAppbar(),
+            body: SingleChildScrollView(
+              child: Column(
+                children: [
                   Container(
-                    child: Text("Datos personales",
-                        style: new TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: ColorsApp.secondaryColorlightPurple)),
+                    color: Colors.white,
                   ),
-                  buildOptionPerfil(),
+                  Positioned(
+                    top: 15,
+                    child: Center(
+                      child: CircleAvatar(
+                        radius: 55,
+                        backgroundImage: user.photo != null
+                            ? NetworkImage(user.photo)
+                            : null,
+                        child: user.photo == null
+                            ? const Icon(Icons.person_outline, size: 20)
+                            : null,
+                      ),
+                    ),
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Container(
+                        child: Text("Datos personales",
+                            style: new TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: ColorsApp.secondaryColorlightPurple)),
+                      ),
+                      buildOptionPerfil(),
+                    ],
+                  )
                 ],
-              )
-            ],
-          ),
-        ));
+              ),
+            )));
   }
 
   Widget buildAppbar() {
@@ -76,17 +77,23 @@ class _EditProfilePage extends State<EditProfilePage> {
           child: Text('Perfil',
               style: new TextStyle(fontSize: 20, color: Colors.black))),
       actions: <Widget>[
-        IconButton(
-          icon:
-              new Icon(Icons.save, color: ColorsApp.secondaryColorlightPurple),
-          onPressed: () {},
-        ),
+        BlocBuilder<ProfileCubit, ProfileState>(builder: (context, state) {
+          return IconButton(
+            icon: new Icon(Icons.save,
+                color: ColorsApp.secondaryColorlightPurple),
+            onPressed: () {
+              final user =
+                  BlocProvider.of<AuthenticationBloc>(context).state.user;
+              context.bloc<ProfileCubit>().editUserForm(user.id);
+              Navigator.of(context).pop();
+            },
+          );
+        })
       ],
     );
   }
 
   Widget buildOptionPerfil() {
-    bool _rest = false;
     return Column(children: <Widget>[
       Container(
         margin: EdgeInsets.all(15),
@@ -98,39 +105,21 @@ class _EditProfilePage extends State<EditProfilePage> {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.only(left: 20.0),
-              child: TextField(
-                decoration: InputDecoration(
-                    border: InputBorder.none, hintText: 'Nombre completo'),
+              child: BlocBuilder<ProfileCubit, ProfileState>(
+                buildWhen: (previous, current) =>
+                    previous.userName != current.userName,
+                builder: (context, state) {
+                  return TextFormField(
+                    initialValue: '',
+                    decoration: InputDecoration(
+                        border: InputBorder.none, hintText: 'Nombre'),
+                    onChanged: (value) =>
+                        context.bloc<ProfileCubit>().userNameChanged(value),
+                  );
+                },
               ),
-            ),
+            )
           ],
-        ),
-      ),
-      Text("Genero",style: new TextStyle(fontSize: 18)),
-      Container(
-        child: CheckboxListTile(
-          title: Text("Hombre"),
-          secondary: Icon(Icons.accessibility_new),
-          controlAffinity: ListTileControlAffinity.platform,
-          value: _rest,
-          onChanged: (bool value) {
-            setState(() {
-              _rest = value;
-            });
-          },
-        ),
-      ),
-      Container(
-        child: CheckboxListTile(
-          title: Text("Mujer"),
-          secondary: Icon(Icons.accessibility_new),
-          controlAffinity: ListTileControlAffinity.platform,
-          value: _rest,
-          onChanged: (bool value) {
-            setState(() {
-              _rest = value;
-            });
-          },
         ),
       ),
       Container(
@@ -143,9 +132,18 @@ class _EditProfilePage extends State<EditProfilePage> {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.only(left: 20.0),
-              child: TextField(
-                decoration: InputDecoration(
-                    border: InputBorder.none, hintText: 'Correo electronico'),
+              child: BlocBuilder<ProfileCubit, ProfileState>(
+                buildWhen: (previous, current) =>
+                    previous.lastName != current.lastName,
+                builder: (context, state) {
+                  return TextFormField(
+                    initialValue: '',
+                    decoration: InputDecoration(
+                        border: InputBorder.none, hintText: 'Apellidos'),
+                    onChanged: (value) =>
+                        context.bloc<ProfileCubit>().lastNameChanged(value),
+                  );
+                },
               ),
             ),
           ],
@@ -161,9 +159,19 @@ class _EditProfilePage extends State<EditProfilePage> {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.only(left: 20.0),
-              child: TextField(
-                decoration: InputDecoration(
-                    border: InputBorder.none, hintText: 'Telefono'),
+              child: BlocBuilder<ProfileCubit, ProfileState>(
+                buildWhen: (previous, current) =>
+                    previous.email != current.email,
+                builder: (context, state) {
+                  return TextFormField(
+                    initialValue: '',
+                    decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: 'Correo Electrónico'),
+                    onChanged: (value) =>
+                        context.bloc<ProfileCubit>().emailChanged(value),
+                  );
+                },
               ),
             ),
           ],
@@ -179,9 +187,46 @@ class _EditProfilePage extends State<EditProfilePage> {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.only(left: 20.0),
-              child: TextField(
-                decoration: InputDecoration(
-                    border: InputBorder.none, hintText: 'Sobre mi'),
+              child: BlocBuilder<ProfileCubit, ProfileState>(
+                buildWhen: (previous, current) =>
+                    previous.phone != current.phone,
+                builder: (context, state) {
+                  return TextFormField(
+                    initialValue: '',
+                    decoration: InputDecoration(
+                        border: InputBorder.none, hintText: 'Teléfono'),
+                    onChanged: (value) =>
+                        context.bloc<ProfileCubit>().phoneChanged(value),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+      Container(
+        margin: EdgeInsets.all(15),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+            border: Border.all(
+                width: 2, color: ColorsApp.secondaryColorlightPurple)),
+        child: Column(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(left: 20.0),
+              child: BlocBuilder<ProfileCubit, ProfileState>(
+                buildWhen: (previous, current) =>
+                    previous.addres != current.addres,
+                builder: (context, state) {
+                  return TextFormField(
+                    initialValue: '',
+                    decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: 'Dirección de domicilio'),
+                    onChanged: (value) =>
+                        context.bloc<ProfileCubit>().addresChanged(value),
+                  );
+                },
               ),
             ),
           ],

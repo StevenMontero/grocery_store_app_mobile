@@ -68,7 +68,6 @@ class _BodyState extends State<Body> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _calendarController = CalendarController();
     context.bloc<KinderCubit>().dateInCalendarChanged(DateTime.now());
@@ -76,7 +75,6 @@ class _BodyState extends State<Body> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     _calendarController.dispose();
     super.dispose();
   }

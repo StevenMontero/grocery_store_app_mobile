@@ -52,7 +52,6 @@ class GroomingCubit extends Cubit<GroomingFormState> {
 
   Future<void> addAppointmentGroomingForm(UserProfile user) async {
     try {
-      final a = state.address;
       stheticAppointment = new StheticAppointment(
           entrytDate: state.date,
           entrytHour: state.hourRerservation,

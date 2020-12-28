@@ -13,6 +13,7 @@ class PetState extends Equatable {
     this.isCastrated = false,
     this.isSociable = false,
     this.photoUrl,
+    this.petList,
     this.status
   });
 
@@ -26,6 +27,7 @@ class PetState extends Equatable {
   final bool isCastrated;
   final bool isSociable;
   final String photoUrl;
+  final List<Pet> petList;
   final FormzStatus status;
   
   PetState copyWith({
@@ -39,6 +41,7 @@ class PetState extends Equatable {
     bool isCastrated,
     bool isSociable,
     String photoUrl,
+    List<Pet> petList,
     FormzStatus status,
   }) {
     return PetState(
@@ -52,6 +55,7 @@ class PetState extends Equatable {
         isCastrated: isCastrated ?? this.isCastrated,
         isSociable: isSociable ?? this.isSociable,
         photoUrl: photoUrl ?? this.photoUrl,
+        petList: petList ?? this.petList,
         status: status ?? this.status,
         );
   }
@@ -68,6 +72,7 @@ class PetState extends Equatable {
         isCastrated,
         isSociable,
         photoUrl,
+        petList,
         status,  
       ];
 }

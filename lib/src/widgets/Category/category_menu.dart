@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:lamanda_petshopcr/src/library/language_library/easy_localization.dart';
 import 'package:lamanda_petshopcr/src/widgets/Category/category_item.dart';
 
 class CategoryRowMenue extends StatelessWidget {
