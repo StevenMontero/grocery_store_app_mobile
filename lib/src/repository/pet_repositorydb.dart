@@ -11,7 +11,7 @@ class PetRepository {
     .catchError((error) => print('Failed to add pet: $error'));
   }
 
-  Future<Pet> getpet(String idPet) async{
+  Future<Pet> getPet(String idPet) async{
     Pet pet;
     DocumentSnapshot snapshot;
     snapshot = await _ref.doc(idPet).get();

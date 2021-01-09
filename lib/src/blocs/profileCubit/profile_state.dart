@@ -2,7 +2,7 @@ part of 'profile_cubit.dart';
 
 class ProfileState extends Equatable {
   const ProfileState({
-
+    this.userID,
     this.userName,
     this.email,
     this.photoUrl,
@@ -12,6 +12,7 @@ class ProfileState extends Equatable {
     this.status
   });
 
+  final String userID;
   final String userName;
   final String email;
   final String photoUrl;
@@ -21,6 +22,7 @@ class ProfileState extends Equatable {
   final FormzStatus status;
   
   ProfileState copyWith({
+   String userID,
    String userName,
    String email,
    String photoUrl,
@@ -30,6 +32,7 @@ class ProfileState extends Equatable {
   FormzStatus status,
   }) {
     return ProfileState(
+      userID: userID ?? this.userName,
         userName: userName ?? this.userName,
         email: email ?? this.email,
         photoUrl: photoUrl ?? this.photoUrl,
@@ -42,6 +45,7 @@ class ProfileState extends Equatable {
 
   @override
   List<Object> get props => [
+        userID,
         userName,
         email,
         photoUrl,

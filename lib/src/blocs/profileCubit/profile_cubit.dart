@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
+import 'package:rxdart/rxdart.dart';
+import 'package:equatable/equatable.dart';
 import 'package:lamanda_petshopcr/src/models/userProfile.dart';
 import 'package:lamanda_petshopcr/src/repository/user_repository.dart';
 
@@ -11,6 +12,8 @@ class ProfileCubit extends Cubit<ProfileState> {
       : super(ProfileState());
   final UserRepository userRepository;
   UserProfile userProfile;
+  final _userController = new BehaviorSubject<UserProfile>();
+  get getUserStream => _userController.stream;
 
   void userNameChanged(String username) {
     emit(state.copyWith(userName: username));
@@ -36,14 +39,14 @@ class ProfileCubit extends Cubit<ProfileState> {
     emit(state.copyWith(phone: phone));
   }
 
-  Future<void> editUserForm(String userID) async {
+  Future<void> editUserForm(String userID, String photoUrl) async {
     emit(state.copyWith(status: FormzStatus.submissionSuccess));
     try {
       userProfile = new UserProfile(
         id: userID,
         userName: state.userName,
         email: state.email,
-        photoUri: state.photoUrl,
+        photoUri: photoUrl,
         lastName: state.lastName,
         address: state.addres,
         phone: state.phone,
@@ -52,5 +55,18 @@ class ProfileCubit extends Cubit<ProfileState> {
     } catch (error) {
       emit(state.copyWith(status: FormzStatus.submissionFailure));
     }
+  }
+
+  Future<UserProfile> getUser(String idUser) async {
+    userProfile = await userRepository.getUserProfile(idUser);
+    if (userProfile != null) {
+      emit(state.copyWith(userID: userProfile.id));
+    }
+    _userController.sink.add(userProfile);
+    return userProfile;
+  }
+
+  dispose() {
+    _userController?.close();
   }
 }

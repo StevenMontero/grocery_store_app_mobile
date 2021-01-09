@@ -13,6 +13,7 @@ class PetCubit extends Cubit<PetState> {
   final PetRepository petRepository;
   Pet pet;
   final _petsController = new BehaviorSubject<List<Pet>>();
+  final _petController = new BehaviorSubject<Pet>();
   get getPetsStream => _petsController.stream;
 
   void nameChanged(String name) {
@@ -66,17 +67,14 @@ class PetCubit extends Cubit<PetState> {
     }
   }
 
-  // Future<List<Pet>> getPetList(String id) async {
-    // List<Pet> petList = await petRepository.getpetList(id);
-// 
-    // if (petList.isEmpty != true) {
-      // emit(state.copyWith(petList: petList));
-      // return petList;
-    // }else {
-      // emit(state.copyWith(petList: petList));
-      // return null;
-    // }
-  // }
+  Future<Pet> getMyPet(String idPet) async {
+    pet = await petRepository.getPet(idPet);
+    if (pet != null) {
+      emit(state.copyWith(petID: pet.petId));
+    }
+    _petController.sink.add(pet);
+    return pet;
+  }
 
   Future<List<Pet>> getPets(String id) async {
     List<Pet> list = await petRepository.getpetList(id);
@@ -89,5 +87,7 @@ class PetCubit extends Cubit<PetState> {
 
   dispose() {
     _petsController?.close();
+    _petController?.close();
   }
+  
 }
